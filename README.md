@@ -13,6 +13,7 @@ This bot was tested under Ubuntu Linux and Mac OS X.  Windows compatibility is u
 Development
 ===========
 
+#Built in APIs
 ###Module Management
 #####Loading a Module
 To load a module, just insert the following snippet of code:
