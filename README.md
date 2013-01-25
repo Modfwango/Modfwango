@@ -10,6 +10,12 @@ Install
 This bot was tested under Ubuntu Linux and Mac OS X.  Windows compatibility is unknown, and probably unstable.  To use this framework, make sure that you have the latest version of PHP 5 CLI installed on your machine.  Configuration for this bot is inside `main.php`.  After you are done configuring the bot, just run the main file with `php main.php` and the bot will start.  You can put this into a screen just by doing `screen php main.php`.
 
 
+Development
+===========
+
+Documentation for the devleopment API will be released soon.  I have not had the time to sit down and write the documentation for making modules yet.
+
+
 Support
 =======
 
