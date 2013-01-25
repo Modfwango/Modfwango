@@ -8,7 +8,7 @@
 			$target = $data[2];
 			$message = $data[3];
 			
-			if (preg_match("/^\!memusage(.*)/", $message)) {
+			if (preg_match("/^!memusage(.*)/", $message)) {
 				$connection->send("PRIVMSG ".$target." :".$this->prepareNumber(intval(memory_get_usage() / 1024 / 1024))." MB (".$this->prepareNumber(intval(memory_get_usage() / 1024))." KB)");
 			}
 		}

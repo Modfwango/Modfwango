@@ -9,7 +9,7 @@
 			$target = $data[2];
 			$message = $data[3];
 			
-			if (preg_match("/^\!join (.*)/", $message, $matches)) {
+			if (preg_match("/^!join (.*)/", $message, $matches)) {
 				$module = ModuleManagement::getModuleByName("UserIdentification");
 				if (is_object($module)) {
 					if (stristr($matches[1], ",")) {
@@ -22,7 +22,7 @@
 				}
 			}
 
-			if (preg_match("/^\!part (.*)/", $message, $matches)) {
+			if (preg_match("/^!part (.*)/", $message, $matches)) {
 				$module = ModuleManagement::getModuleByName("UserIdentification");
 				if (is_object($module)) {
 					if (stristr($matches[1], ",")) {
@@ -35,7 +35,7 @@
 				}
 			}
 
-			if (preg_match("/^\!autojoin (.*)/", $message, $matches)) {
+			if (preg_match("/^!autojoin (.*)/", $message, $matches)) {
 				$module = ModuleManagement::getModuleByName("UserIdentification");
 				if (is_object($module)) {
 					if (stristr($matches[1], ",")) {
@@ -48,7 +48,7 @@
 				}
 			}
 
-			if (preg_match("/^\!autopart (.*)/", $message, $matches)) {
+			if (preg_match("/^!autopart (.*)/", $message, $matches)) {
 				$module = ModuleManagement::getModuleByName("UserIdentification");
 				if (is_object($module)) {
 					if (stristr($matches[1], ",")) {
