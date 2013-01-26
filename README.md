@@ -16,7 +16,7 @@ Development
 ===========
 ***
 
-Refer to the Wiki for more information.
+Refer to the [wiki](https://github.com/ClayFreeman/Modfwango/wiki) for more information.
 
 
 Support
