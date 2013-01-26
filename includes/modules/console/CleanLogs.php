@@ -45,8 +45,7 @@
 		public function receiveChannelQuit($name, $data) {
 			$connection = $data[0];
 			$source = $data[1];
-			$target = $data[2];
-			$message = $data[3];
+			$message = $data[2];
 			
 			if ($message != null) {
 				$message = " (".$message.")";
