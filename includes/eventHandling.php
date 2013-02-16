@@ -24,7 +24,9 @@
 		
 		public static function receiveData($connection, $data) {
 			foreach (self::$events as $key => $event) {
-				$event[0]->$event[1]($key, $event[2], $connection, trim($data));
+				if (count($event[2]) > 0) {
+					$event[0]->$event[1]($key, $event[2], $connection, trim($data));
+				}
 			}
 			return true;
 		}

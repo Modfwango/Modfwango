@@ -19,11 +19,16 @@
 	/* Events must be loaded first since some modules depend on them being available. */
 	ModuleManagement::loadModule("events/ChannelJoinEvent");
 	ModuleManagement::loadModule("events/ChannelMessageEvent");
+	ModuleManagement::loadModule("events/ChannelModeEvent");
+	ModuleManagement::loadModule("events/ChannelNoticeEvent");
 	ModuleManagement::loadModule("events/ChannelPartEvent");
 	ModuleManagement::loadModule("events/ChannelQuitEvent");
+	ModuleManagement::loadModule("events/ChannelTopicEvent");
 	ModuleManagement::loadModule("events/NumericEvent");
 	ModuleManagement::loadModule("events/PrivateMessageEvent");
+	ModuleManagement::loadModule("events/PrivateNoticeEvent");
 	ModuleManagement::loadModule("events/RawEvent");
+	ModuleManagement::loadModule("events/UserModeEvent");
 	
 	/* Now we load all the modules. */
 	ModuleManagement::loadModule("admin/ChannelManagement");
