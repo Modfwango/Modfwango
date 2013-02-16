@@ -11,6 +11,9 @@
 	/* Define the root of the project folder. */
 	define("__PROJECTROOT__", dirname(__FILE__));
 	
+	/* Define start time to allow some fancy uptime module features and whatnot */
+	define("__STARTTIME__", time());
+	
 	require_once(__PROJECTROOT__."/includes/connection.php");
 	require_once(__PROJECTROOT__."/includes/connectionManagement.php");
 	require_once(__PROJECTROOT__."/includes/moduleManagement.php");
@@ -35,6 +38,7 @@
 	ModuleManagement::loadModule("admin/MemoryUsage");
 	ModuleManagement::loadModule("admin/ModuleControl");
 	ModuleManagement::loadModule("admin/Power");
+	ModuleManagement::loadModule("admin/Uptime");
 	ModuleManagement::loadModule("console/CleanLogs"); // This one should only be used for development.
 	ModuleManagement::loadModule("internal/PingPong");
 	ModuleManagement::loadModule("internal/Startup");
