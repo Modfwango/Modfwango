@@ -27,9 +27,9 @@
 		public static function receiveData($connection, $data) {
 			foreach (self::$events as $key => $event) {
 				if (count($event[2]) > 0) {
-					Logger::debug("Event '".$name."' is being preprocessed.");
+					Logger::debug("Event '".$key."' is being preprocessed.");
 					$event[0]->$event[1]($key, $event[2], $connection, trim($data));
-					Logger::debug("Event '".$name."' has been preprocessed.");
+					Logger::debug("Event '".$key."' has been preprocessed.");
 				}
 			}
 			return true;
