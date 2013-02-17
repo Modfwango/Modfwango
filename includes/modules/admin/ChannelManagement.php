@@ -99,6 +99,7 @@
 			
 			$autojoins = unserialize(file_get_contents($file));
 			foreach ($channels as $channel) {
+				Logger::info("Adding '".$channel."' to autojoin for '".$network.".'");
 				$autojoins[] = $channel;
 			}
 			file_put_contents($file, serialize($autojoins));
@@ -120,6 +121,7 @@
 			foreach ($channels as $channel) {
 				foreach ($autojoins as $key => $channel1) {
 					if (strtolower($channel) == strtolower($channel1)) {
+						Logger::info("Removing '".$channel."' from autojoin for '".$network.".'");
 						unset($autojoins[$key]);
 					}
 				}

@@ -41,20 +41,21 @@
 			}
 		}
 		
-		public function restart(){
+		public function restart() {
 			$this->stop();
 			die($this->start());
 		}
 		
-		public function start(){
+		public function start() {
 			exec("screen -dm php ".__PROJECTROOT__."/main.php");
 		}
 		
-		public function stop(){
+		public function stop() {
 			foreach (ConnectionManagement::getConnections() as $connection) {
 				$connection->send("QUIT :Shutting down...");
 			}
 			sleep(1);
+			Logger::info("Shutting down...");
 			return null;
 		}
 		
