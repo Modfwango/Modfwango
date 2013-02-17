@@ -17,6 +17,7 @@
 	/* Define the debug constant to allow the logger to be aware of the current logging state */
 	define("__DEBUG__", false);
 	
+	require_once(__PROJECTROOT__."/includes/configParser.php");
 	require_once(__PROJECTROOT__."/includes/connection.php");
 	require_once(__PROJECTROOT__."/includes/connectionManagement.php");
 	require_once(__PROJECTROOT__."/includes/logger.php");
@@ -24,49 +25,27 @@
 	require_once(__PROJECTROOT__."/includes/eventHandling.php");
 	
 	/* Events must be loaded first since some modules depend on them being available. */
-	ModuleManagement::loadModule("events/ChannelJoinEvent");
-	ModuleManagement::loadModule("events/ChannelMessageEvent");
-	ModuleManagement::loadModule("events/ChannelModeEvent");
-	ModuleManagement::loadModule("events/ChannelNoticeEvent");
-	ModuleManagement::loadModule("events/ChannelPartEvent");
-	ModuleManagement::loadModule("events/ChannelQuitEvent");
-	ModuleManagement::loadModule("events/ChannelTopicEvent");
-	ModuleManagement::loadModule("events/NumericEvent");
-	ModuleManagement::loadModule("events/PrivateMessageEvent");
-	ModuleManagement::loadModule("events/PrivateNoticeEvent");
-	ModuleManagement::loadModule("events/RawEvent");
-	ModuleManagement::loadModule("events/UserModeEvent");
+	foreach (explode("\n", trim(file_get_contents(__PROJECTROOT__."/conf/modules.conf"))) as $module) {
+		$module = trim($module);
+		if (strlen($module) > 0) {
+			ModuleManagement::loadModule($module);
+		}
+	}
 	
-	/* Now we load all the modules. */
-	ModuleManagement::loadModule("admin/ChannelManagement");
-	ModuleManagement::loadModule("admin/MemoryUsage");
-	ModuleManagement::loadModule("admin/ModuleControl");
-	ModuleManagement::loadModule("admin/Power");
-	ModuleManagement::loadModule("admin/Uptime");
-	ModuleManagement::loadModule("console/CleanLogs"); // This one should only be used for development.
-	ModuleManagement::loadModule("internal/PingPong");
-	ModuleManagement::loadModule("internal/Startup");
-	ModuleManagement::loadModule("libraries/ChannelAccess");
-	ModuleManagement::loadModule("libraries/Timer");
-	ModuleManagement::loadModule("libraries/UserIdentification");
-	
-	/* Now we estabish server connection settings.
+	/* Now we estabish server connection settings from config files found in "conf/networks/" directory
 	 *	ConnectionManagement::newConnection(Connection);
 	 *		Add a Connection class here so that it can be managed easily.
 	 *	
 	 *	new Connection();
-	 *		First value is the network name.
-	 *		Second value is the address to the server.  This can be IPv4, IPv6 (address has to be surrounded by [] brackets), or a hostname.
-	 *		Third value is the port.
-	 *		Fourth value is whether or not to use SSL for this connection.
-	 *		Fifth value is whether or not to send a password when connecting.  null to not send a password, otherwise set a string value.
-	 *		Sixth value is nickname.
-	 *		Seventh value is username.
-	 *		Eighth value is real name.
-	 *		Ninth value is an array of channels to always join, regardless of the dynamic autojoin provided by the module admin/ChannelManagement.
-	 *		Tenth value is the NickServ password for the account that the nickname is associated with.
 	 */
-	ConnectionManagement::newConnection(new Connection("TinyCrab", "irc.tinycrab.net", 6697, true, null, "Bot", "bot", "Test Bot", array("#modfwango"), "nickservpass"));
+	$networks = ConfigParser::parseFiles(glob(__PROJECTROOT__."/conf/networks/*"));
+	foreach ($networks as $network) {
+		$network = ConfigParser::getAssoc($network);
+		$network['port'] = intval($network['port']);
+		$network['ssl'] = boolval($network['ssl']);
+		$network['channels'] = explode(',', $network['channels']);
+		ConnectionManagement::newConnection(new Connection($network['netname'], $network['address'], $network['port'], $network['ssl'], $network['pass'], $network['nick'], $network['user'], $network['realname'], $network['channels'], $network['nspass']));
+	}
 	
 	/* Don't edit below this line unless you know what you're doing. */
 	
@@ -90,5 +69,12 @@
 				}
 			}
 		}
+	}
+	
+	function boolval($input) {
+		if (trim($input) == "true") {
+			return true;
+		}
+		return false;
 	}
 ?>
