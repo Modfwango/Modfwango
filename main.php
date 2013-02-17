@@ -14,6 +14,9 @@
 	/* Define start time to allow some fancy uptime module features and whatnot */
 	define("__STARTTIME__", time());
 	
+	/* Define the debug constant to allow the logger to be aware of the current logging state */
+	define("__DEBUG__", false);
+	
 	require_once(__PROJECTROOT__."/includes/connection.php");
 	require_once(__PROJECTROOT__."/includes/connectionManagement.php");
 	require_once(__PROJECTROOT__."/includes/moduleManagement.php");
