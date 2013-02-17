@@ -63,8 +63,8 @@
 		}
 		
 		public function userLoginCallback($connection, $id, $nick, $loggedin) {
+			$entry = $this->queue[$id];
 			if ($loggedin == true) {
-				$entry = $this->queue[$id];
 				if ($entry[2][0] == "JOIN") {
 					if (isset($entry[2][2]) && $entry[2][2] == true) {
 						$this->autojoinAdd($connection->getNetworkName(), $entry[2][1]);
