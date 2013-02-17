@@ -2,3 +2,4 @@
 moddata
 conf/modules.conf
 conf/networks/*
+!conf/networks/Example.conf
