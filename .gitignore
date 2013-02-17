@@ -1,2 +1,4 @@
 .DS_Store
 moddata
+conf/modules.conf
+conf/networks/*
