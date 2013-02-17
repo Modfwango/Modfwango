@@ -27,7 +27,7 @@
 				$this->nspass = $nspass;
 				
 				Logger::info("Connection for '".$netname."' created.");
-				Logger::debug("'".$netname."' connection info:  [ Network Name: '".$netname."' Host: '".$host."' Port: '".$port."' SSL: '".$ssl."' Server Password: '".$serverpass."'  Nickname: '".$nickname."' Username: '".$ident."' Real Name: '".$realname."' Channels: '".implode(",", $channels)."' NickServ Password: '".$nspass."' ]");
+				Logger::debug("'".$netname."' connection info:  [ Network Name: '".$netname."' Host: '".$host."' Port: '".$port."' SSL: '".$ssl."' Server Password: '".$serverpass."' Nickname: '".$nickname."' Username: '".$ident."' Real Name: '".$realname."' Channels: '".implode(",", $channels)."' NickServ Password: '".$nspass."' ]");
 				
 				$this->configured = true;
 			}
