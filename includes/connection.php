@@ -25,6 +25,10 @@
 				$this->realname = $realname;
 				$this->channels = $channels;
 				$this->nspass = $nspass;
+				
+				Logger::info("Connection for '".$netname."' created.");
+				Logger::debug("'".$netname."' connection info:  [ Network Name: '".$netname."' Host: '".$host."' Port: '".$port."' SSL: '".$ssl."' Server Password: '".$serverpass."'  Nickname: '".$nickname."' Username: '".$ident."' Real Name: '".$realname."' Channels: '".implode(",", $channels)."' NickServ Password: '".$nspass."' ]");
+				
 				$this->configured = true;
 			}
 			return $this->configured;
@@ -37,22 +41,28 @@
 		public function connect() {
 			if ($this->configured == true) {
 				if ($this->ssl == true) {
+					Logger::debug("Attempting secure connection to '".$this->host."' on port '".$this->port.".'");
 					$this->socket = fsockopen("tls://".$this->host, $this->port);
 				}
 				else {
+					Logger::debug("Attempting plaintext connection to '".$this->host."' on port '".$this->port.".'");
 					$this->socket = fsockopen($this->host, $this->port);
 				}
 				stream_set_blocking($this->socket, 0);
 				if ($this->serverpass != null) {
+					Logger::debug("Sending server password to '".$this->netname.".'");
 					$this->send("PASS ".$this->serverpass);
 				}
+				Logger::debug("Setting nickname '".$this->nickname."' on '".$this->netname.".'");
 				$this->send("NICK ".$this->nickname);
+				Logger::debug("Setting username '".$this->ident."' and realname '".$this->realname."' on '".$this->netname.".'");
 				$this->send("USER ".$this->ident." 8 * :".$this->realname);
 			}
 			return false;
 		}
 		
 		public function disconnect() {
+			Logger::debug("Disconnecting from '".$this->netname.".'");
 			$this->send("QUIT :Disconnecting...");
 			fclose($this->socket);
 		}
@@ -64,6 +74,7 @@
 		public function getData() {
 			$data = trim(fgets($this->socket, 4096));
 			if ($data != false && strlen($data) > 0) {
+				Logger::debug("Data received on '".$this->netname."':  '".$data."'");
 				return $data;
 			}
 			else {
@@ -77,16 +88,20 @@
 		
 		public function identify() {
 			if ($this->nspass != null) {
+				Logger::debug("Identifying to NickServ on '".$this->netname.".'");
 				$this->send("PRIVMSG NickServ :identify ".$this->nickname." ".$this->nspass);
 			}
+			Logger::debug("Decloaking on '".$this->netname.".'");
 			$this->send("MODE ".$this->nickname." -x");
 		}
 		
 		public function joinChannels() {
+			Logger::debug("Joining channels on '".$this->netname.".'");
 			$this->send("JOIN ".implode(",",$this->channels));
 		}
 		
 		public function send($data) {
+			Logger::debug("Sending data on '".$this->netname."':  '".$data."'");
 			fputs($this->socket, trim($data)."\n");
 		}
 	}

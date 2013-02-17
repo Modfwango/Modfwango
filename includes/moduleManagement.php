@@ -22,7 +22,7 @@
 		
 		public static function loadModule($name, $suppressNotice = false) {
 			if ($suppressNotice == false) {
-				echo "Loading module \"".$name."...\"\n";
+				Logger::info("Loading module \"".$name."...\"");
 			}
 			
 			if (!self::isLoaded(basename($name)) && is_readable(__PROJECTROOT__."/includes/modules/".$name.".php")) {
@@ -39,7 +39,7 @@
 		}
 		
 		public static function reloadModule($name) {
-			echo "Reloading module \"".$name."...\"\n";
+			Logger::info("Reloading module \"".$name."...\"");
 			if (self::isLoaded(basename($name))) {
 				if (self::unloadModule(basename($name), true)) {
 					return self::loadModule($name, true);
@@ -50,7 +50,7 @@
 		
 		public static function unloadModule($name, $suppressNotice = false) {
 			if ($suppressNotice == false) {
-				echo "Unloading module \"".$name."...\"\n";
+				Logger::info("Unloading module \"".$name."...\"");
 			}
 			
 			if (self::isLoaded(basename($name))) {

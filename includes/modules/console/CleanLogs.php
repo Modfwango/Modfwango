@@ -11,7 +11,7 @@
 				$target = substr($target, 1);
 			}
 			
-			echo "[".$connection->getNetworkName()." / ".$target."] * ".$source[0]."(".$source[1]."@".$source[2].") Join\n";
+			Logger::info("[".$connection->getNetworkName()." / ".$target."] * ".$source[0]."(".$source[1]."@".$source[2].") Join");
 		}
 		
 		public function receiveChannelMessage($name, $data) {
@@ -22,10 +22,10 @@
 			
 			if (preg_match("/ACTION (.*)/", $message, $matches)) {
 				$message = $matches[1];
-				echo "[".$connection->getNetworkName()." / ".$target."] * ".$source[0]." ".$message."\n";
+				Logger::info("[".$connection->getNetworkName()." / ".$target."] * ".$source[0]." ".$message);
 			}
 			else {
-				echo "[".$connection->getNetworkName()." / ".$target."] <".$source[0]."> ".$message."\n";
+				Logger::info("[".$connection->getNetworkName()." / ".$target."] <".$source[0]."> ".$message);
 			}
 		}
 		
@@ -35,7 +35,7 @@
 			$target = $data[2];
 			$modestring = $data[3];
 			
-			echo "[".$connection->getNetworkName()." / ".$target."] * ".$source[0]."(".$source[1]."@".$source[2].") set mode: ".$modestring."\n";
+			Logger::info("[".$connection->getNetworkName()." / ".$target."] * ".$source[0]."(".$source[1]."@".$source[2].") set mode: ".$modestring);
 		}
 		
 		public function receiveChannelNotice($name, $data) {
@@ -44,7 +44,7 @@
 			$target = $data[2];
 			$message = $data[3];
 			
-			echo "[".$connection->getNetworkName()." / ".$target."] -".$source[0]."- ".$message."\n";
+			Logger::info("[".$connection->getNetworkName()." / ".$target."] -".$source[0]."- ".$message);
 		}
 		
 		public function receiveChannelPart($name, $data) {
@@ -57,7 +57,7 @@
 				$message = " (".$message.")";
 			}
 			
-			echo "[".$connection->getNetworkName()." / ".$target."] * ".$source[0]."(".$source[1]."@".$source[2].") Part".$message."\n";
+			Logger::info("[".$connection->getNetworkName()." / ".$target."] * ".$source[0]."(".$source[1]."@".$source[2].") Part".$message);
 		}
 		
 		public function receiveChannelQuit($name, $data) {
@@ -69,7 +69,7 @@
 				$message = " (".$message.")";
 			}
 			
-			echo "[".$connection->getNetworkName()."] * ".$source[0]."(".$source[1]."@".$source[2].") Quit".$message."\n";
+			Logger::info("[".$connection->getNetworkName()."] * ".$source[0]."(".$source[1]."@".$source[2].") Quit".$message);
 		}
 		
 		public function receiveChannelTopic($name, $data) {
@@ -78,7 +78,7 @@
 			$target = $data[2];
 			$topic = $data[3];
 			
-			echo "[".$connection->getNetworkName()."] * ".$source[0]."(".$source[1]."@".$source[2].") changed the topic to: '".$topic."'\n";
+			Logger::info("[".$connection->getNetworkName()."] * ".$source[0]."(".$source[1]."@".$source[2].") changed the topic to: '".$topic."'");
 		}
 		
 		public function receivePrivateMessage($name, $data) {
@@ -89,10 +89,10 @@
 			
 			if (preg_match("/ACTION (.*)/", $message, $matches)) {
 				$message = $matches[1];
-				echo "[".$connection->getNetworkName()." / PM] * ".$source[0]." ".$message."\n";
+				Logger::info("[".$connection->getNetworkName()." / PM] * ".$source[0]." ".$message);
 			}
 			else {
-				echo "[".$connection->getNetworkName()." / PM] <".$source[0]."> ".$message."\n";
+				Logger::info("[".$connection->getNetworkName()." / PM] <".$source[0]."> ".$message);
 			}
 		}
 		
@@ -102,7 +102,7 @@
 			$target = $data[2];
 			$message = $data[3];
 			
-			echo "[".$connection->getNetworkName()." / PM] -".$source[0]."- ".$message."\n";
+			Logger::info("[".$connection->getNetworkName()." / PM] -".$source[0]."- ".$message);
 		}
 		
 		public function receiveUserMode($name, $data) {
@@ -111,7 +111,7 @@
 			$target = $data[2];
 			$modestring = $data[3];
 			
-			echo "[".$connection->getNetworkName()." / ".$target."] * ".$source[0]." set mode: ".$modestring."\n";
+			Logger::info("[".$connection->getNetworkName()." / ".$target."] * ".$source[0]." set mode: ".$modestring);
 		}
 		
 		public function isInstantiated() {

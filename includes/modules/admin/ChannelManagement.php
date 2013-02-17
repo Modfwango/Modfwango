@@ -136,10 +136,10 @@
 			
 			$file = __PROJECTROOT__."/moddata/autojoin/".$connection->getNetworkName()."-autojoin.txt";
 			if (file_exists($file)) {
-				echo "Loading autojoin database for \"".$connection->getNetworkName()."\"\n";
+				Logger::info("Loading autojoin database for \"".$connection->getNetworkName()."\"");
 				$channels = unserialize(file_get_contents($file));
 				foreach ($channels as $channel) {
-					echo "Autojoining \"".$channel."\" on \"".$connection->getNetworkName()."\"\n";
+					Logger::info("Autojoining \"".$channel."\" on \"".$connection->getNetworkName()."\"");
 					$connection->send("JOIN ".$channel);
 				}
 			}

@@ -19,6 +19,7 @@
 	
 	require_once(__PROJECTROOT__."/includes/connection.php");
 	require_once(__PROJECTROOT__."/includes/connectionManagement.php");
+	require_once(__PROJECTROOT__."/includes/logger.php");
 	require_once(__PROJECTROOT__."/includes/moduleManagement.php");
 	require_once(__PROJECTROOT__."/includes/eventHandling.php");
 	
