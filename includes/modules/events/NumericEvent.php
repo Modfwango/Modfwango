@@ -3,6 +3,8 @@
 		public $name = "NumericEvent";
 		
 		public function preprocessEvent($name, $registrations, $connection, $data) {
+			$preprocessors = $registrations[1];
+			$registrations = $registrations[0];
 			$ex = explode(" ", trim($data));
 			if (is_numeric($ex[1]) && strlen($ex[1]) == 3) {
 				$source = substr($ex[0], 1);

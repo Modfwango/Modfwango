@@ -5,7 +5,7 @@
 		public static function createEvent($name, $module, $callback) {
 			if (method_exists($module, $callback) && !isset(self::$events[$name])) {
 				Logger::debug("Event '".$name."' with callback '".$callback."' created.");
-				self::$events[$name] = array($module, $callback, array());
+				self::$events[$name] = array($module, $callback, array(), array());
 				return true;
 			}
 			return false;
@@ -28,7 +28,7 @@
 			foreach (self::$events as $key => $event) {
 				if (count($event[2]) > 0) {
 					Logger::debug("Event '".$key."' is being preprocessed.");
-					$event[0]->$event[1]($key, $event[2], $connection, trim($data));
+					$event[0]->$event[1]($key, array($event[2], $event[3]), $connection, trim($data));
 					Logger::debug("Event '".$key."' has been preprocessed.");
 				}
 			}
@@ -39,6 +39,15 @@
 			if (isset(self::$events[$name]) && method_exists($module, $callback)) {
 				Logger::debug("Module '".$module->name."' registered for event '".$name.".'");
 				self::$events[$name][2][] = array($module, $callback, $data);
+				return true;
+			}
+			return false;
+		}
+		
+		public static function registerAsEventPreprocessor($name, $module, $callback, $data = null) {
+			if (isset(self::$events[$name]) && method_exists($module, $callback)) {
+				Logger::debug("Module '".$module->name."' registered as an event preprocessor for '".$name.".'");
+				self::$events[$name][3][] = array($module, $callback, $data);
 				return true;
 			}
 			return false;

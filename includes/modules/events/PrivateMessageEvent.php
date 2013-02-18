@@ -3,6 +3,8 @@
 		public $name = "PrivateMessageEvent";
 		
 		public function preprocessEvent($name, $registrations, $connection, $data) {
+			$preprocessors = $registrations[1];
+			$registrations = $registrations[0];
 			$ex = explode(" ", trim($data));
 			if ($ex[1] == "PRIVMSG" && substr($ex[2], 0, 1) != "#") {
 				$nick = explode("!", $ex[0]);

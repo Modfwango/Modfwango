@@ -3,6 +3,8 @@
 		public $name = "ChannelQuitEvent";
 		
 		public function preprocessEvent($name, $registrations, $connection, $data) {
+			$preprocessors = $registrations[1];
+			$registrations = $registrations[0];
 			$ex = explode(" ", trim($data));
 			if ($ex[1] == "QUIT") {
 				$nick = explode("!", $ex[0]);
