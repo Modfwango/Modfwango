@@ -5,7 +5,7 @@
 		
 		public function connectionLoopEnd() {
 			foreach ($this->timers as $id => $timer) {
-				if ($timer != null && $timer["runtime"] <= time()) {
+				if ($timer != null && $timer["runtime"] <= microtime(true)) {
 					$class = $timer["class"];
 					$callback = $timer["callback"];
 					
@@ -25,7 +25,7 @@
 				}
 				
 				$this->timers[$i] = array(
-					"runtime" => (time() + $dtime),
+					"runtime" => (microtime(true) + $dtime),
 					"class" => $class,
 					"callback" => $callback,
 					"params" => $params
