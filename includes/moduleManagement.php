@@ -28,11 +28,21 @@
 			if (!self::isLoaded(basename($name)) && is_readable(__PROJECTROOT__."/includes/modules/".$name.".php")) {
 				$classname = basename($name).time().mt_rand();
 				$eval = str_ireplace("@@CLASSNAME@@", $classname, substr(trim(file_get_contents(__PROJECTROOT__."/includes/modules/".$name.".php")), 5, -2));
-				eval($eval);
-				$module = new $classname();
-				if (is_object($module) && method_exists($module, "isInstantiated") && $module->isInstantiated()) {
-					self::$modules[] = $module;
-					return true;
+				if (eval($eval) != false && class_exists($classname)) {
+					$module = new $classname();
+					if (is_object($module) && method_exists($module, "isInstantiated") && $module->isInstantiated()) {
+						self::$modules[] = $module;
+						Logger::info("Loaded module \"".$name.".\"");
+						return true;
+					}
+					else {
+						Logger::info("Unable to load module \"".$name.".\"");
+						Logger::debug("Class \"".$classname."\" does not contain method \"isInstantiated(),\" or it returned false.  Failing quietly.");
+					}
+				}
+				else {
+					Logger::info("Unable to load module \"".$name.".\"");
+					Logger::debug("Class \"".$classname."\" was not created by eval().  Failing quietly.");
 				}
 			}
 			return false;
