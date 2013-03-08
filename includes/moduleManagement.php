@@ -28,7 +28,8 @@
 			if (!self::isLoaded(basename($name)) && is_readable(__PROJECTROOT__."/includes/modules/".$name.".php")) {
 				$classname = basename($name).time().mt_rand();
 				$eval = str_ireplace("@@CLASSNAME@@", $classname, substr(trim(file_get_contents(__PROJECTROOT__."/includes/modules/".$name.".php")), 5, -2));
-				if (eval($eval) != false && class_exists($classname)) {
+				eval($eval);
+				if (class_exists($classname)) {
 					$module = new $classname();
 					if (is_object($module) && method_exists($module, "isInstantiated") && $module->isInstantiated()) {
 						self::$modules[] = $module;
