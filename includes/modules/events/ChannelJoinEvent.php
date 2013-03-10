@@ -20,12 +20,8 @@
 					$user = $user[0];
 					$source = array($nick, $user, $host);
 					
-					$channels = explode(",", $ex[2]);
-					
 					foreach ($registrations as $id => $registration) {
-						foreach ($channels as $channel) {
-							EventHandling::triggerEvent($name, $id, array($connection, $source, $channel));
-						}
+						EventHandling::triggerEvent($name, $id, array($connection, $source, $ex[2]));
 					}
 				}
 			}
