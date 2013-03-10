@@ -37,7 +37,7 @@
 		
 		public static function registerForEvent($name, $module, $callback, $data = null) {
 			if (isset(self::$events[$name]) && method_exists($module, $callback)) {
-				Logger::debug("Module '".$module->name."' registered for event '".$name.".'");
+				Logger::debug("Module '".$module->name."' registered for event '".$name."'");
 				self::$events[$name][2][] = array($module, $callback, $data);
 				return true;
 			}
@@ -46,7 +46,7 @@
 		
 		public static function registerAsEventPreprocessor($name, $module, $callback, $data = null) {
 			if (isset(self::$events[$name]) && method_exists($module, $callback)) {
-				Logger::debug("Module '".$module->name."' registered as an event preprocessor for '".$name.".'");
+				Logger::debug("Module '".$module->name."' registered as an event preprocessor for '".$name."'");
 				self::$events[$name][3][] = array($module, $callback, $data);
 				return true;
 			}
@@ -57,7 +57,7 @@
 			if (isset(self::$events[$name])) {
 				$registration = self::$events[$name][2][$id];
 				if (method_exists($registration[0], $registration[1])) {
-					Logger::debug("Event '".$name."' has been triggered for '".$registration[0]->name.".'");
+					Logger::debug("Event '".$name."' has been triggered for '".$registration[0]->name."'");
 					$registration[0]->$registration[1]($name, $data);
 				}
 				return true;
@@ -69,7 +69,7 @@
 			if (isset(self::$events[$name])) {
 				foreach (self::$events[$name][2] as $key => $registration) {
 					if ($registration[0]->name == $module->name) {
-						Logger::debug("Module '".$module->name."' unregistered for event '".$name.".'");
+						Logger::debug("Module '".$module->name."' unregistered for event '".$name."'");
 						unset(self::$events[$name][2][$key]);
 						return true;
 					}
