@@ -22,7 +22,7 @@
 		
 		public static function loadModule($name, $suppressNotice = false) {
 			if ($suppressNotice == false) {
-				Logger::info("Loading module \"".$name."...\"");
+				Logger::debug("Loading module \"".$name."...\"");
 			}
 			
 			if (!self::isLoaded(basename($name)) && is_readable(__PROJECTROOT__."/includes/modules/".$name.".php")) {
@@ -50,10 +50,14 @@
 		}
 		
 		public static function reloadModule($name) {
-			Logger::info("Reloading module \"".$name."\"");
+			Logger::debug("Reloading module \"".$name."...\"");
 			if (self::isLoaded(basename($name))) {
 				if (self::unloadModule(basename($name), true)) {
-					return self::loadModule($name, true);
+					$ret = self::loadModule($name, true);
+					if ($ret == true) {
+						Logger::info("Reloaded module \"".$name."\"");
+					}
+					return $ret;
 				}
 			}
 			return false;
@@ -61,7 +65,7 @@
 		
 		public static function unloadModule($name, $suppressNotice = false) {
 			if ($suppressNotice == false) {
-				Logger::info("Unloading module \"".$name."\"");
+				Logger::debug("Unloading module \"".$name."...\"");
 			}
 			
 			if (self::isLoaded(basename($name))) {
@@ -69,6 +73,7 @@
 					if (strtolower($module->name) == strtolower(basename($name))) {
 						EventHandling::unregisterModule($module);
 						unset(self::$modules[$key]);
+						Logger::info("Unloaded module \"".$name."\"");
 						return true;
 					}
 				}
