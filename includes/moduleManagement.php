@@ -33,12 +33,12 @@
 					$module = new $classname();
 					if (is_object($module) && method_exists($module, "isInstantiated") && $module->isInstantiated()) {
 						self::$modules[] = $module;
-						Logger::info("Loaded module \"".$name.".\"");
+						Logger::info("Loaded module \"".$name."\"");
 						return true;
 					}
 					else {
-						Logger::info("Unable to load module \"".$name.".\"");
-						Logger::debug("Class \"".$classname."\" does not contain method \"isInstantiated(),\" or it returned false.  Failing quietly.");
+						Logger::info("Unable to load module \"".$name."\"");
+						Logger::debug("Class \"".$classname."\" does not contain method \"isInstantiated()\" or it returned false.  Failing quietly.");
 					}
 				}
 				else {
@@ -50,7 +50,7 @@
 		}
 		
 		public static function reloadModule($name) {
-			Logger::info("Reloading module \"".$name."...\"");
+			Logger::info("Reloading module \"".$name."\"");
 			if (self::isLoaded(basename($name))) {
 				if (self::unloadModule(basename($name), true)) {
 					return self::loadModule($name, true);
@@ -61,7 +61,7 @@
 		
 		public static function unloadModule($name, $suppressNotice = false) {
 			if ($suppressNotice == false) {
-				Logger::info("Unloading module \"".$name."...\"");
+				Logger::info("Unloading module \"".$name."\"");
 			}
 			
 			if (self::isLoaded(basename($name))) {
