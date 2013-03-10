@@ -89,7 +89,12 @@
 		public function identify() {
 			if ($this->nspass != null) {
 				Logger::debug("Identifying to NickServ on '".$this->netname.".'");
+				
+				#atheme
 				$this->send("PRIVMSG NickServ :identify ".$this->nickname." ".$this->nspass);
+				
+				#anope
+				$this->send("PRIVMSG NickServ :identify ".$this->nspass);
 			}
 			Logger::debug("Decloaking on '".$this->netname.".'");
 			$this->send("MODE ".$this->nickname." -x");
