@@ -102,7 +102,7 @@
 		
 		public function joinChannels() {
 			Logger::debug("Joining channels on '".$this->netname.".'");
-			$this->send("JOIN ".implode(",",$this->channels));
+			$this->send("JOIN ".implode(",", $this->channels));
 		}
 		
 		public function send($data) {
