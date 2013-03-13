@@ -20,9 +20,11 @@
 	require_once(__PROJECTROOT__."/includes/configParser.php");
 	require_once(__PROJECTROOT__."/includes/connection.php");
 	require_once(__PROJECTROOT__."/includes/connectionManagement.php");
+	require_once(__PROJECTROOT__."/includes/eventHandling.php");
 	require_once(__PROJECTROOT__."/includes/logger.php");
 	require_once(__PROJECTROOT__."/includes/moduleManagement.php");
-	require_once(__PROJECTROOT__."/includes/eventHandling.php");
+	require_once(__PROJECTROOT__."/includes/storageHandling.php");
+	
 	
 	/* Events must be loaded first since some modules depend on them being available. */
 	foreach (explode("\n", trim(file_get_contents(__PROJECTROOT__."/conf/modules.conf"))) as $module) {
