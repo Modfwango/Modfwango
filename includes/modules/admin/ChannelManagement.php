@@ -86,47 +86,41 @@
 		}
 		
 		private function autojoinAdd($network, $channels) {
-			$file = __PROJECTROOT__."/moddata/autojoin/".$network."-autojoin.txt";
-			if (!file_exists(__PROJECTROOT__."/moddata")) {
-				mkdir(__PROJECTROOT__."/moddata", 0777);
+			$autojoins = StorageHandling::loadFile($this, $connection->getNetworkName()."-autojoin.txt");
+			if ($autojoins != false && is_string($autojoins) && strlen($autojoins) > 0) {
+				$autojoins = unserialize($autojoins);
+				if (is_array($autojoins)) {
+					foreach ($channels as $channel) {
+						Logger::info("Adding '".$channel."' to autojoin for '".$network.".'");
+						$autojoins[] = $channel;
+					}
+					StorageHandling::saveFile($this, $connection->getNetworkName()."-autojoin.txt", serialize($autojoins));
+				}
 			}
-			if (!file_exists(__PROJECTROOT__."/moddata/autojoin")) {
-				mkdir(__PROJECTROOT__."/moddata/autojoin", 0777);
+			else {
+				StorageHandling::saveFile($this, $connection->getNetworkName()."-autojoin.txt", serialize(array()));
 			}
-			if (!file_exists($file)) {
-				file_put_contents($file, serialize(array()));
-			}
-			
-			$autojoins = unserialize(file_get_contents($file));
-			foreach ($channels as $channel) {
-				Logger::info("Adding '".$channel."' to autojoin for '".$network.".'");
-				$autojoins[] = $channel;
-			}
-			file_put_contents($file, serialize($autojoins));
 		}
 		
 		private function autojoinRemove($network, $channels) {
-			$file = __PROJECTROOT__."/moddata/autojoin/".$network."-autojoin.txt";
-			if (!file_exists(__PROJECTROOT__."/moddata")) {
-				mkdir(__PROJECTROOT__."/moddata", 0777);
-			}
-			if (!file_exists(__PROJECTROOT__."/moddata/autojoin")) {
-				mkdir(__PROJECTROOT__."/moddata/autojoin", 0777);
-			}
-			if (!file_exists($file)) {
-				file_put_contents($file, serialize(array()));
-			}
-			
-			$autojoins = unserialize(file_get_contents($file));
-			foreach ($channels as $channel) {
-				foreach ($autojoins as $key => $channel1) {
-					if (strtolower($channel) == strtolower($channel1)) {
-						Logger::info("Removing '".$channel."' from autojoin for '".$network.".'");
-						unset($autojoins[$key]);
+			$autojoins = StorageHandling::loadFile($this, $connection->getNetworkName()."-autojoin.txt");
+			if ($autojoins != false && is_string($autojoins) && strlen($autojoins) > 0) {
+				$autojoins = unserialize($autojoins);
+				if (is_array($autojoins)) {
+					foreach ($channels as $channel) {
+						foreach ($autojoins as $key => $channel1) {
+							if (strtolower($channel) == strtolower($channel1)) {
+								Logger::info("Removing '".$channel."' from autojoin for '".$network.".'");
+								unset($autojoins[$key]);
+							}
+						}
 					}
+					StorageHandling::saveFile($this, $connection->getNetworkName()."-autojoin.txt", serialize($autojoins));
 				}
 			}
-			file_put_contents($file, serialize($autojoins));
+			else {
+				StorageHandling::saveFile($this, $connection->getNetworkName()."-autojoin.txt", serialize(array()));
+			}
 		}
 		
 		public function autojoinChannels($name, $data) {
@@ -136,14 +130,19 @@
 			$target = $data[3];
 			$message = $data[4];
 			
-			$file = __PROJECTROOT__."/moddata/autojoin/".$connection->getNetworkName()."-autojoin.txt";
-			if (file_exists($file)) {
-				Logger::info("Loading autojoin database for \"".$connection->getNetworkName()."\"");
-				$channels = unserialize(file_get_contents($file));
-				foreach ($channels as $channel) {
-					Logger::info("Autojoining \"".$channel."\" on \"".$connection->getNetworkName()."\"");
-					$connection->send("JOIN ".$channel);
+			$channels = StorageHandling::loadFile($this, $connection->getNetworkName()."-autojoin.txt");
+			if ($channels != false && is_string($channels) && strlen($channels) > 0) {
+				$channels = unserialize($channels);
+				if (is_array($channels)) {
+					Logger::info("Loaded autojoin database for \"".$connection->getNetworkName()."\"");
+					foreach ($channels as $channel) {
+						Logger::info("Autojoining \"".$channel."\" on \"".$connection->getNetworkName()."\"");
+						$connection->send("JOIN ".$channel);
+					}
 				}
+			}
+			else {
+				StorageHandling::saveFile($this, $connection->getNetworkName()."-autojoin.txt", serialize(array()));
 			}
 		}
 		

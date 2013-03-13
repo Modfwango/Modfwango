@@ -65,18 +65,7 @@
 		}
 		
 		private function loadAuthorizedUsers() {
-			$file = __PROJECTROOT__."/moddata/userIdentification/authorizedUsers.txt";
-			if (!file_exists(__PROJECTROOT__."/moddata")) {
-				mkdir(__PROJECTROOT__."/moddata", 0777);
-			}
-			if (!file_exists(__PROJECTROOT__."/moddata/userIdentification")) {
-				mkdir(__PROJECTROOT__."/moddata/userIdentification", 0777);
-			}
-			if (!file_exists($file)) {
-				file_put_contents($file, null);
-			}
-			
-			$contents = trim(file_get_contents($file));
+			$contents = StorageHandling::loadFile($this, "authorizedUsers.txt");
 			if (strlen($contents) > 0) {
 				if (stristr($contents, "\n")) {
 					$this->authorizedUsers = explode("\n", $contents);
