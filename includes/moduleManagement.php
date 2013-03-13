@@ -52,12 +52,11 @@
 		public static function reloadModule($name) {
 			Logger::debug("Reloading module \"".$name."...\"");
 			if (self::isLoaded(basename($name))) {
-				if (self::unloadModule(basename($name), true)) {
-					$ret = self::loadModule($name, true);
-					if ($ret == true) {
+				if (self::unloadModule($name, true)) {
+					if(self::loadModule($name, true)) {
 						Logger::info("Reloaded module \"".$name."\"");
+						return true;
 					}
-					return $ret;
 				}
 			}
 			return false;
