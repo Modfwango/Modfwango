@@ -86,7 +86,7 @@
 		}
 		
 		private function autojoinAdd($network, $channels) {
-			$autojoins = StorageHandling::loadFile($this, $connection->getNetworkName()."-autojoin.txt");
+			$autojoins = StorageHandling::loadFile($this, $network."-autojoin.txt");
 			if ($autojoins != false && is_string($autojoins) && strlen($autojoins) > 0) {
 				$autojoins = unserialize($autojoins);
 				if (is_array($autojoins)) {
@@ -94,16 +94,16 @@
 						Logger::info("Adding '".$channel."' to autojoin for '".$network.".'");
 						$autojoins[] = $channel;
 					}
-					StorageHandling::saveFile($this, $connection->getNetworkName()."-autojoin.txt", serialize($autojoins));
+					StorageHandling::saveFile($this, $network."-autojoin.txt", serialize($autojoins));
 				}
 			}
 			else {
-				StorageHandling::saveFile($this, $connection->getNetworkName()."-autojoin.txt", serialize(array()));
+				StorageHandling::saveFile($this, $network."-autojoin.txt", serialize(array()));
 			}
 		}
 		
 		private function autojoinRemove($network, $channels) {
-			$autojoins = StorageHandling::loadFile($this, $connection->getNetworkName()."-autojoin.txt");
+			$autojoins = StorageHandling::loadFile($this, $network."-autojoin.txt");
 			if ($autojoins != false && is_string($autojoins) && strlen($autojoins) > 0) {
 				$autojoins = unserialize($autojoins);
 				if (is_array($autojoins)) {
@@ -115,11 +115,11 @@
 							}
 						}
 					}
-					StorageHandling::saveFile($this, $connection->getNetworkName()."-autojoin.txt", serialize($autojoins));
+					StorageHandling::saveFile($this, $network."-autojoin.txt", serialize($autojoins));
 				}
 			}
 			else {
-				StorageHandling::saveFile($this, $connection->getNetworkName()."-autojoin.txt", serialize(array()));
+				StorageHandling::saveFile($this, $network."-autojoin.txt", serialize(array()));
 			}
 		}
 		
