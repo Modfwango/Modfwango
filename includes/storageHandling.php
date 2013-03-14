@@ -4,7 +4,7 @@
 			$mname = $module->name;
 			$file = __PROJECTROOT__."/moddata/".$mname."/".$name;
 			
-			if (self::initDirectories($mname)) {
+			if (substr(realpath($file), 0, strlen(__PROJECTROOT__)) == __PROJECTROOT__ && self::initDirectories($mname)) {
 				if (is_writable(dirname($file))) {
 					return mkdir($file);
 				}
@@ -16,7 +16,7 @@
 			$mname = $module->name;
 			$file = __PROJECTROOT__."/moddata/".$mname."/".$name;
 			
-			if (self::initDirectories($mname, $name)) {
+			if (substr(realpath($file), 0, strlen(__PROJECTROOT__)) == __PROJECTROOT__ && self::initDirectories($mname, $name)) {
 				if (is_readable($file)) {
 					return file_get_contents($file);
 				}
@@ -28,7 +28,7 @@
 			$mname = $module->name;
 			$file = __PROJECTROOT__."/moddata/".$mname."/".$name;
 			
-			if (self::initDirectories($mname, $name)) {
+			if (substr(realpath($file), 0, strlen(__PROJECTROOT__)) == __PROJECTROOT__ && self::initDirectories($mname, $name)) {
 				if (is_writable($file)) {
 					return file_put_contents($file, $contents);
 				}
