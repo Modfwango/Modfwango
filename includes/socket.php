@@ -9,13 +9,12 @@
 				$this->host = $host;
 				$this->port = $port;
 				$this->socket = socket_create(AF_INET, SOCK_STREAM, 0);
-				if (socket_bind($this->socket, $this->host, $this->port)) {
+				if (@socket_bind($this->socket, $this->host, $this->port)) {
 					socket_listen($this->socket);
 					socket_set_nonblock($this->socket);
 				}
-				
-				return false;
 			}
+			return false;
 		}
 		
 		public function accept() {
