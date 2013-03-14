@@ -5,7 +5,7 @@
 		public static function newConnection($connection) {
 			if (is_object($connection) && get_class($connection) == "Connection") {
 				self::$connections[] = $connection;
-				Logger::info("New connection added to the connection manager.");
+				Logger::debug("New connection added to the connection manager.");
 				return true;
 			}
 			return false;

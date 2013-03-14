@@ -8,8 +8,6 @@
 		public function __construct($socket) {
 			if (is_resource($socket)) {
 				$this->socket = $socket;
-				
-				Logger::debug("New connection.");
 				return true;
 			}
 			return false;
