@@ -15,7 +15,7 @@
 	define("__STARTTIME__", time());
 	
 	/* Define the debug constant to allow the logger to be aware of the current logging state */
-	define("__DEBUG__", false);
+	define("__DEBUG__", true);
 	
 	require_once(__PROJECTROOT__."/includes/configParser.php");
 	require_once(__PROJECTROOT__."/includes/connection.php");
@@ -23,8 +23,9 @@
 	require_once(__PROJECTROOT__."/includes/eventHandling.php");
 	require_once(__PROJECTROOT__."/includes/logger.php");
 	require_once(__PROJECTROOT__."/includes/moduleManagement.php");
+	require_once(__PROJECTROOT__."/includes/socket.php");
+	require_once(__PROJECTROOT__."/includes/socketManagement.php");
 	require_once(__PROJECTROOT__."/includes/storageHandling.php");
-	
 	
 	/* Events must be loaded first since some modules depend on them being available. */
 	foreach (explode("\n", trim(file_get_contents(__PROJECTROOT__."/conf/modules.conf"))) as $module) {
@@ -34,8 +35,23 @@
 		}
 	}
 	
+	/* Load configured sockets. */
+	foreach (explode("\n", trim(file_get_contents(__PROJECTROOT__."/conf/listen.conf"))) as $sock) {
+		$sock = trim($sock);
+		if (strlen($sock) > 0) {
+			$sock = explode(",", $sock);
+			if (count($sock) == 2) {
+				SocketManagement::newSocket(new Socket($sock[0], $sock[1]));
+			}
+		}
+	}
+	
 	/* Don't edit below this line unless you know what you're doing. */
 	while (true) {
+		foreach (SocketManagement::getSockets() as $socket) {
+			$socket->accept();
+		}
+		
 		foreach (ConnectionManagement::getConnections() as $connection) {
 			$data = $connection->getData();
 			if ($data != false) {
