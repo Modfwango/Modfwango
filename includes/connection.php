@@ -21,7 +21,7 @@
 		}
 		
 		public function getData() {
-			$data = trim(socket_read($client, 8192));
+			$data = trim(socket_read($client, 8192, PHP_NORMAL_READ));
 			if ($data != false && strlen($data) > 0) {
 				Logger::debug("Data received from client:  '".$data."'");
 				return $data;

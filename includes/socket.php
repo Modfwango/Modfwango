@@ -9,7 +9,7 @@
 				$this->host = $host;
 				$this->port = $port;
 				$this->socket = socket_create(AF_INET, SOCK_STREAM, 0);
-				if (socket_bind($this->sock, $this->host, $this->port)) {
+				if (socket_bind($this->socket, $this->host, $this->port)) {
 					socket_set_nonblock($this->socket);
 					socket_listen($this->socket);
 				}
