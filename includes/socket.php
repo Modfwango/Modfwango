@@ -19,7 +19,7 @@
 		}
 		
 		public function accept() {
-			$client = socket_accept($this->socket);
+			$client = @socket_accept($this->socket);
 			if ($client != false) {
 				ConnectionManagement::newConnection(new Connection($client));
 				return true;
