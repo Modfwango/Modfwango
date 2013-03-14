@@ -41,7 +41,13 @@
 		if (strlen($sock) > 0) {
 			$sock = explode(",", $sock);
 			if (count($sock) == 2) {
-				SocketManagement::newSocket(new Socket($sock[0], $sock[1]));
+				$sock = new Socket($sock[0], $sock[1]);
+				if ($sock != false) {
+					SocketManagement::newSocket($sock);
+				}
+				else {
+					Logger::debug("Could not bind to address.");
+				}
 			}
 		}
 	}
