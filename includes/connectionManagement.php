@@ -11,14 +11,14 @@
 			return false;
 		}
 		
-		public static function getConnectionByNetworkName($name) {
+		/*public static function getConnectionByNetworkName($name) { // This will need to be changed to something else.
 			foreach (self::$connections as $connection) {
 				if (strtolower(trim($name)) == strtolower(trim($connection->getNetworkName()))) {
 					return $connection;
 				}
 			}
 			return false;
-		}
+		}*/
 		
 		public static function getConnections() {
 			return self::$connections;

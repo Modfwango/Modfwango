@@ -34,27 +34,7 @@
 		}
 	}
 	
-	/* Now we estabish server connection settings from config files found in "conf/networks/" directory
-	 *	ConnectionManagement::newConnection(Connection);
-	 *		Add a Connection class here so that it can be managed easily.
-	 *	
-	 *	new Connection();
-	 */
-	$networks = ConfigParser::parseFiles(glob(__PROJECTROOT__."/conf/networks/*"));
-	foreach ($networks as $network) {
-		$network = ConfigParser::getAssoc($network);
-		$network['port'] = intval($network['port']);
-		$network['ssl'] = boolval($network['ssl']);
-		$network['channels'] = explode(',', $network['channels']);
-		ConnectionManagement::newConnection(new Connection($network['netname'], $network['address'], $network['port'], $network['ssl'], $network['pass'], $network['nick'], $network['user'], $network['realname'], $network['channels'], $network['nspass']));
-	}
-	
 	/* Don't edit below this line unless you know what you're doing. */
-	
-	foreach (ConnectionManagement::getConnections() as $connection) {
-		$connection->connect();
-	}
-	
 	while (true) {
 		foreach (ConnectionManagement::getConnections() as $connection) {
 			$data = $connection->getData();
