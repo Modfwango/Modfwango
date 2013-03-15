@@ -17,7 +17,6 @@
 	/* Define the debug constant to allow the logger to be aware of the current logging state */
 	define("__DEBUG__", true);
 	
-	require_once(__PROJECTROOT__."/includes/configParser.php");
 	require_once(__PROJECTROOT__."/includes/connection.php");
 	require_once(__PROJECTROOT__."/includes/connectionManagement.php");
 	require_once(__PROJECTROOT__."/includes/eventHandling.php");
