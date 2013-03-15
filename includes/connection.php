@@ -1,7 +1,7 @@
 <?php
 	class Connection {
 		private $socket = null;
-		public $nickname = null;
+		public $nick = null;
 		public $ident = null;
 		public $realname = null;
 		
