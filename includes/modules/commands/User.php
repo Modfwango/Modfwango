@@ -11,7 +11,16 @@
 				if (count($ex) > 4) {
 					if ($connection->ident == null) {
 						if (!preg_match("/[^0-9a-zA-Z\\-.[\\\\\]\\^_`{|}~]/", $ex[1])) {
+							if ($connection->ident == null) {
+								if ($connection->nick == null) {
+									// Host notice
+								}
+								else {
+									// Burst
+								}
+							}
 							$connection->ident = $ex[1];
+							
 							if (substr($ex[4], 0, 1) == ":") {
 								$ex[4] = substr($ex[4], 1);
 							}
@@ -21,12 +30,7 @@
 							}
 							$connection->realname = substr($connection->realname, 1);
 							
-							if ($connection->nick == null) {
-								// Host notice
-							}
-							else {
-								// Burst
-							}
+							Logger::info("Client registered with username \"".$connection->ident."\" and realname \"".$connection->realname."\"");
 						}
 						else {
 							if ($connection->nick != null) {

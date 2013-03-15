@@ -10,14 +10,19 @@
 			if (strtolower($ex[0]) == "nick") {
 				if (count($ex) > 1) {
 					if (!preg_match("/[^0-9a-zA-Z\\-[\\\\\]\\^_`{|}]/", $ex[1])) {
-						$connection->nick = $ex[1];
-						
-						if ($connection->ident == null) {
-							// Host notice
+						if ($connection->nick == null) {
+							if ($connection->ident == null) {
+								// Host notice
+							}
+							else {
+								// Burst
+							}
+							Logger::info("Client set their first nickname to \"".$ex[1]."\"");
 						}
 						else {
-							// Burst
+							Logger::info("\"".$connection->nick."\" changed their nickname to \"".$ex[1]."\"");
 						}
+						$connection->nick = $ex[1];
 					}
 					else {
 						if ($connection->nick != null) {
