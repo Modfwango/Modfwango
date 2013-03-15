@@ -1,9 +1,9 @@
 <?php
 	class Connection {
 		private $socket = null;
-		private $nickname = null;
-		private $ident = null;
-		private $realname = null;
+		public $nickname = null;
+		public $ident = null;
+		public $realname = null;
 		
 		public function __construct($socket) {
 			if (is_resource($socket)) {
@@ -14,7 +14,7 @@
 		}
 		
 		public function kill() {
-			Logger::debug("Killing client.");
+			// Logger::debug("Killing client.");
 			// close socket
 		}
 		
@@ -31,7 +31,7 @@
 		
 		public function send($data) {
 			Logger::debug("Sending data to client:  '".$data."'");
-			// fputs($this->socket, trim($data)."\n"); // Send data
+			socket_write($this->socket, trim($data)."\n"); // Send data
 		}
 	}
 ?>
