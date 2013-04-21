@@ -6,16 +6,21 @@
 		public function connectionLoopEnd() {
 			foreach ($this->timers as $id => $timer) {
 				if ($timer != null && $timer["runtime"] <= microtime(true)) {
-					if (isset($class->name)) {
-						Logger::debug("Processing timer for '".$class->name."->".$callback."()'");
-					}
-					else {
-						Logger::debug("Processing timer for '".$callback."()'");
-					}
+					Logger::debug("Processing timer for '".$timer["class"]->name."->".$timer["callback"]."()'");
 					$class = $timer["class"];
 					$callback = $timer["callback"];
 					
-					$class->$callback($timer["params"]);
+					if (isset($class->name)) {
+						$mod = ModuleManagement::getModuleByName($class->name);
+						if (is_object($mod)) {
+							if (get_class($mod) == get_class($class)) {
+								$class->$callback($timer["params"]);
+							}
+							else {
+								Logger::info("Kept from resurrecting potentially old (unloaded) code.  Module's class name does not match original. (".get_class($mod)." -> ".get_class($class).")");
+							}
+						}
+					}
 					
 					$this->timers[$id] = null;
 				}

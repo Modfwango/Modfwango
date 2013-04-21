@@ -1,9 +1,7 @@
 <?php
 	class Connection {
 		private $socket = null;
-		public $nick = null;
-		public $ident = null;
-		public $realname = null;
+		public $metadata = array();
 		
 		public function __construct($socket) {
 			if (is_resource($socket)) {
@@ -16,6 +14,14 @@
 		public function kill() {
 			// Logger::debug("Killing client.");
 			// close socket
+		}
+		
+		public function getIP() {
+			return gethostbyname($this->socket);
+		}
+		
+		public function getHost() {
+			return gethostbyaddr($this->socket);
 		}
 		
 		public function getData() {
