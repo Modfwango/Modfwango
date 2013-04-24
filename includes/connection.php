@@ -1,7 +1,6 @@
 <?php
 	class Connection {
 		private $socket = null;
-		public $metadata = array();
 		
 		public function __construct($socket) {
 			if (is_resource($socket)) {
@@ -11,33 +10,64 @@
 			return false;
 		}
 		
-		public function kill() {
-			// Logger::debug("Killing client.");
-			// close socket
+		public function disconnect() {
+			if (is_resource($this->socket)) {
+				@socket_shutdown($this->socket);
+				@socket_close($this->socket);
+				$this->socket = null;
+				return true;
+			}
+			return false;
 		}
 		
 		public function getIP() {
-			return gethostbyname($this->socket);
+			if (is_resource($this->socket)) {
+				return gethostbyname($this->socket);
+			}
+			return false;
 		}
 		
 		public function getHost() {
-			return gethostbyaddr($this->socket);
+			if (is_resource($this->socket)) {
+				return gethostbyaddr($this->socket);
+			}
+			return false;
 		}
 		
 		public function getData() {
-			$data = trim(@socket_read($this->socket, 8192, PHP_NORMAL_READ));
-			if ($data != false && strlen($data) > 0) {
-				Logger::debug("Data received from client:  '".$data."'");
-				return $data;
+			if (is_resource($this->socket)) {
+				if ($buf = @socket_read($this->socket, 8192)) === false && socket_last_error($this->socket) != 11) {
+					$this->disconnect();
+				}
+				else {
+					$data = trim($buf);
+					if ($data != false && strlen($data) > 0) {
+						Logger::debug("Data received from client:  '".$data."'");
+						return $data;
+					}
+				}
 			}
-			else {
-				return false;
-			}
+			return false;
 		}
 		
 		public function send($data) {
-			Logger::debug("Sending data to client:  '".$data."'");
-			socket_write($this->socket, trim($data)."\n"); // Send data
+			if (is_resource($this->socket)) {
+				Logger::debug("Sending data to client:  '".$data."'");
+				if ($newline == true) {
+					$status = @socket_write($this->socket, $data."\n"); // Send data
+				}
+				else {
+					$status = @socket_write($this->socket, $data); // Send data
+				}
+			
+				if ($status === false) {
+					$this->disconnect();
+				}
+				else {
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 ?>
