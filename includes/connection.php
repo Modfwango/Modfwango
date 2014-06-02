@@ -37,14 +37,30 @@
       return false;
     }
 
-    public function getIP() {
-      // Check to make sure the socket is a valid resource.
-      if (is_resource($this->socket)) {
-        // Retrieve IP address.
-        socket_getpeername($this->socket, $address);
-        return gethostbyname($address);
-      }
-      return false;
+		public function getData() {
+			// Check to make sure the socket is a valid resource.
+			if (is_resource($this->socket)) {
+				// Attempt to read data from the socket and disconnect if there is an
+				// error.
+				if (($data = @socket_read($this->socket, 8192)) === false
+						&& socket_last_error($this->socket) != 11) {
+					$this->disconnect();
+				}
+				else {
+					// Return data if it isn't null.
+					if ($data != false && strlen($data) > 0) {
+						Logger::debug("Data received from client:  '".$data."'");
+						return $data;
+					}
+				}
+			}
+			return false;
+		}
+
+    public function getConnectionString() {
+      // Build a connection string to identify this connection.
+      return ($this->ssl ? "tls://" : null).$this->getHost().":".
+				$this->getPort();
     }
 
     public function getHost() {
@@ -57,25 +73,15 @@
       return false;
     }
 
-    public function getData() {
-      // Check to make sure the socket is a valid resource.
-      if (is_resource($this->socket)) {
-        // Attempt to read data from the socket and disconnect if there is an
-        // error.
-        if (($data = @socket_read($this->socket, 8192)) === false
-            && socket_last_error($this->socket) != 11) {
-          $this->disconnect();
-        }
-        else {
-          // Return data if it isn't null.
-          if ($data != false && strlen($data) > 0) {
-            Logger::debug("Data received from client:  '".$data."'");
-            return $data;
-          }
-        }
-      }
-      return false;
-    }
+		public function getIP() {
+			// Check to make sure the socket is a valid resource.
+			if (is_resource($this->socket)) {
+				// Retrieve IP address.
+				socket_getpeername($this->socket, $address);
+				return gethostbyname($address);
+			}
+			return false;
+		}
 
     public function send($data, $newline = true) {
       // Check to make sure the socket is a valid resource.
