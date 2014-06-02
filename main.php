@@ -121,7 +121,7 @@
       define("__MODFWANGOROOT__", dirname(__FILE__));
 
       // Change current working directory to project root.
-      chdir(__MODFWANGOROOT__);
+      chdir(__PROJECTROOT__);
 
       // Define start timestamp.
       define("__STARTTIME__", time());
