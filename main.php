@@ -133,6 +133,8 @@
       // Load the connection related classes.
       require_once(__MODFWANGOROOT__."/includes/connection.php");
       require_once(__MODFWANGOROOT__."/includes/connectionManagement.php");
+      require_once(__MODFWANGOROOT__."/includes/socket.php");
+      require_once(__MODFWANGOROOT__."/includes/socketManagement.php");
 
       // Load the event handler.
       require_once(__MODFWANGOROOT__."/includes/eventHandling.php");
