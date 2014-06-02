@@ -46,7 +46,7 @@
           // Make sure we have the correct amount of parameters.
           if (count($sock) == 2) {
             // Attempt to create a socket.
-            $sock = new Socket($sock[0], $sock[1]);
+            $sock = new Socket(trim($sock[0]), trim($sock[1]));
             if ($sock != false) {
               // Add it to the socket management class.
               SocketManagement::newSocket($sock);
