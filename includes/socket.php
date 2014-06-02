@@ -4,6 +4,7 @@
     private $socket = null;
     private $host = null;
     private $port = null;
+    private $ssl = false;
 
     public function __construct($host, $port) {
       // Verify type restrictions.
