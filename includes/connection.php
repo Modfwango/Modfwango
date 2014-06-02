@@ -59,8 +59,7 @@
 
     public function getConnectionString() {
       // Build a connection string to identify this connection.
-      return ($this->ssl ? "tls://" : null).$this->getHost().":".
-				$this->getPort();
+      return $this->getHost().":".$this->getPort();
     }
 
     public function getHost() {

@@ -4,7 +4,6 @@
     private $socket = null;
     private $host = null;
     private $port = null;
-    private $ssl = false;
 
     public function __construct($host, $port) {
       // Verify type restrictions.
@@ -40,7 +39,7 @@
 
     public function getSocketString() {
       // Build a socket string to identify this socket.
-      return ($this->ssl ? "tls://" : null).$this->host.":".$this->port;
+      return $this->host.":".$this->port;
     }
 
     public function accept() {
