@@ -44,7 +44,7 @@
 				// error.
 				if (($data = @socket_read($this->socket, 8192)) === false
 						&& socket_last_error($this->socket) != 11) {
-					$this->disconnect();
+					//$this->disconnect();
 				}
 				else {
 					// Return data if it isn't null.
