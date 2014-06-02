@@ -37,6 +37,11 @@
 			return $this->port;
 		}
 
+    public function getSocketString() {
+      // Build a socket string to identify this socket.
+      return ($this->ssl ? "tls://" : null).$this->host.":".$this->port;
+    }
+
 		public function accept() {
 			// Accept a new client.
 			$client = @socket_accept($this->socket);
