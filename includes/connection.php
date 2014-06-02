@@ -83,6 +83,16 @@
 			return false;
 		}
 
+		public function getPort() {
+			// Check to make sure the socket is a valid resource.
+			if (is_resource($this->socket)) {
+				// Retrieve IP address.
+				socket_getpeername($this->socket, $address, $port);
+				return $port;
+			}
+			return false;
+		}
+
     public function send($data, $newline = true) {
       // Check to make sure the socket is a valid resource.
       if (is_resource($this->socket)) {
