@@ -40,18 +40,14 @@
 		public function getData() {
 			// Check to make sure the socket is a valid resource.
 			if (is_resource($this->socket)) {
-				// Attempt to read data from the socket and disconnect if there is an
-				// error.
-				if (($data = @socket_read($this->socket, 8192)) === false
-						&& socket_last_error($this->socket) != 11) {
-					//$this->disconnect();
-				}
-				else {
-					// Return data if it isn't null.
+				// Attempt to read data from the socket.
+				if ($data = @socket_read($this->socket, 8192)) {
 					if ($data != false && strlen($data) > 0) {
-						Logger::debug("Data received from client:  '".$data."'");
-						return $data;
-					}
+	          // Return the data.
+	          Logger::debug("Data received on '".$this->getConnectionString().
+	            "':  '".$data."'");
+	          return $data;
+	        }
 				}
 			}
 			return false;
