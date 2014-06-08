@@ -9,13 +9,13 @@
       foreach ($this->timers as $id => $timer) {
         // Check to see if the timer is valid and ready to fire.
         if ($timer != null && $timer["runtime"] <= microtime(true)) {
-          Logger::debug("Processing timer for '".$timer["class"]->name."->".
-            $timer["callback"]."()'");
           $class = $timer["class"];
           $callback = $timer["callback"];
 
           // Check to see if the class has a name.
           if (isset($class->name)) {
+            Logger::debug("Processing timer for '".$class->name."->".
+              $callback."()'");
             // Load the module by name.
             $mod = ModuleManagement::getModuleByName($class->name);
             // Make sure the module is an object.
@@ -30,6 +30,11 @@
                   ") code.  Module's class name does not match original. (".
                   get_class($mod)." -> ".get_class($class).")");
               }
+            }
+          }
+          else {
+            if (is_object($class)) {
+              $class->$callback($timer["params"]);
             }
           }
 
