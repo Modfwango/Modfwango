@@ -99,8 +99,6 @@
             // Pass the connection and associated data to the event handler.
             EventHandling::receiveData($connection, $data);
           }
-          // Sleep for a small amount of time to prevent high CPU usage.
-          usleep(10000);
         }
 
         // Iterate through each event to find the connectionLoopEndEvent event.
@@ -113,6 +111,8 @@
             }
           }
         }
+        // Sleep for a small amount of time to prevent high CPU usage.
+        usleep(10000);
       }
     }
 
