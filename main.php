@@ -112,7 +112,7 @@
           }
         }
         // Sleep for a small amount of time to prevent high CPU usage.
-        usleep(10000);
+        usleep(__DELAY__);
       }
     }
 
@@ -129,6 +129,9 @@
       // Define the debug constant to allow the logger determine the correct
       // output type.
       define("__DEBUG__", $debug);
+
+      // Define the time to sleep at the end of every infinite loop.
+      define("__DELAY__", 10000);
 
       // Load the connection related classes.
       require_once(__MODFWANGOROOT__."/includes/connection.php");
