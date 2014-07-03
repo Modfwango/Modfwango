@@ -1,6 +1,10 @@
 <?php
   class Connection {
     private $socket = null;
+    private $address = null;
+    private $port = null;
+    private $t = null;
+    private $options = array();
 
     public function __construct($socket) {
       if (is_resource($socket)) {
@@ -9,6 +13,21 @@
         $this->address = $address;
         $this->port = $port;
         return true;
+
+        // Iterate through each event to find the connectionCreatedEvent
+        // event.
+        foreach (EventHandling::getEvents() as $key => $event) {
+          if ($key == "connectionCreatedEvent") {
+            foreach ($event[2] as $id => $registration) {
+              // Trigger the connectionCreatedEvent event for each registered
+              // module.
+              if (EventHandling::triggerEvent("connectionCreatedEvent", $id,
+                  $this)) {
+                $this->configured = true;
+              }
+            }
+          }
+        }
       }
       return false;
     }
@@ -49,8 +68,6 @@
             return $data;
           }
         }
-        // Check for a dead socket.
-        $this->send(chr(0), false);
       }
       return false;
     }
@@ -70,6 +87,11 @@
       return gethostbyname($this->address);
     }
 
+    public function getOption($key) {
+      // Retrieve the requested option if it exists, otherwise return false.
+      return (isset($this->options[$key]) ? $this->options[$key] : false);
+    }
+
     public function getPort() {
       // Retrieve IP address.
       return $this->port;
@@ -78,7 +100,7 @@
     public function send($data, $newline = true) {
       // Check to make sure the socket is a valid resource.
       if (is_resource($this->socket)) {
-        if ($data != chr(0)) {
+        if (trim($data) != null) {
           Logger::debug("Sending data to client:  '".$data."'");
         }
         // Send data to the client.
@@ -98,6 +120,12 @@
         }
       }
       return false;
+    }
+
+    public function setOption($key, $value) {
+      // Set an option for this connection.
+      $this->options[$key] = $value;
+      return true;
     }
   }
 ?>
