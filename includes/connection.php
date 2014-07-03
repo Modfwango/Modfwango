@@ -13,6 +13,10 @@
         $this->address = $address;
         $this->port = $port;
 
+        // Let people know what's going on.
+        Logger::info("Connection to '".$this->address.":".$this->port.
+          "' created.");
+
         // Iterate through each event to find the connectionCreatedEvent
         // event.
         foreach (EventHandling::getEvents() as $key => $event) {
@@ -33,7 +37,7 @@
 
     public function disconnect() {
       // Close the socket.
-      Logger::debug("Disconnecting from '".$this->getConnectionString().".'");
+      Logger::info("Disconnecting from '".$this->getConnectionString().".'");
 
       // Destroy the socket.
       @socket_shutdown($this->socket);
