@@ -12,7 +12,6 @@
         socket_getpeername($this->socket, $address, $port);
         $this->address = $address;
         $this->port = $port;
-        return true;
 
         // Iterate through each event to find the connectionCreatedEvent
         // event.
@@ -23,7 +22,7 @@
               // module.
               if (EventHandling::triggerEvent("connectionCreatedEvent", $id,
                   $this)) {
-                $this->configured = true;
+                return true;
               }
             }
           }
