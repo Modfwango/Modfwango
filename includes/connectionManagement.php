@@ -81,7 +81,7 @@
         if (!$connection->isAlive()) {
           Logger::info("Pruning connection '".
             $connection->getConnectionString().".'");
-          self::delConnectionByIndex($key);
+          unset(self::$connections[$key]);
         }
       }
     }
