@@ -5,53 +5,55 @@
     public function __construct($socket) {
       if (is_resource($socket)) {
         $this->socket = $socket;
+        socket_getpeername($this->socket, $address, $port);
+        $this->address = $address;
+        $this->port = $port;
         return true;
       }
       return false;
     }
 
     public function disconnect() {
-      if (is_resource($this->socket)) {
-        // Close the socket.
-        Logger::debug("Disconnecting from '".$this->getConnectionString().".'");
+      // Close the socket.
+      Logger::debug("Disconnecting from '".$this->getConnectionString().".'");
 
-        // Destroy the socket.
-        @socket_shutdown($this->socket);
-        @socket_close($this->socket);
-        $this->socket = null;
+      // Destroy the socket.
+      @socket_shutdown($this->socket);
+      @socket_close($this->socket);
+      $this->socket = null;
 
-        // Iterate through each event to find the connectionConnectedEvent
-        // event.
-        foreach (EventHandling::getEvents() as $key => $event) {
-          if ($key == "connectionDisconnectedEvent") {
-            foreach ($event[2] as $id => $registration) {
-              // Trigger the connectionDisconnectedEvent event for each
-              // registered module.
-              EventHandling::triggerEvent("connectionDisconnectedEvent", $id,
-                $this);
-            }
+      // Iterate through each event to find the connectionConnectedEvent
+      // event.
+      foreach (EventHandling::getEvents() as $key => $event) {
+        if ($key == "connectionDisconnectedEvent") {
+          foreach ($event[2] as $id => $registration) {
+            // Trigger the connectionDisconnectedEvent event for each
+            // registered module.
+            EventHandling::triggerEvent("connectionDisconnectedEvent", $id,
+              $this);
           }
         }
-        return true;
+      }
+      return true;
+    }
+
+    public function getData() {
+      // Check to make sure the socket is a valid resource.
+      if (is_resource($this->socket)) {
+        // Attempt to read data from the socket.
+        if ($data = @socket_read($this->socket, 8192)) {
+          if ($data != false && strlen($data) > 0) {
+            // Return the data.
+            Logger::debug("Data received on '".$this->getConnectionString().
+              "':  '".$data."'");
+            return $data;
+          }
+        }
+        // Check for a dead socket.
+        $this->send(chr(0), false);
       }
       return false;
     }
-
-		public function getData() {
-			// Check to make sure the socket is a valid resource.
-			if (is_resource($this->socket)) {
-				// Attempt to read data from the socket.
-				if ($data = @socket_read($this->socket, 8192)) {
-					if ($data != false && strlen($data) > 0) {
-	          // Return the data.
-	          Logger::debug("Data received on '".$this->getConnectionString().
-	            "':  '".$data."'");
-	          return $data;
-	        }
-				}
-			}
-			return false;
-		}
 
     public function getConnectionString() {
       // Build a connection string to identify this connection.
@@ -59,39 +61,26 @@
     }
 
     public function getHost() {
-      // Check to make sure the socket is a valid resource.
-      if (is_resource($this->socket)) {
-        // Retrieve hostname.
-        socket_getpeername($this->socket, $address);
-        return gethostbyaddr($address);
-      }
-      return false;
+      // Retrieve hostname.
+      return gethostbyaddr($this->address);
     }
 
-		public function getIP() {
-			// Check to make sure the socket is a valid resource.
-			if (is_resource($this->socket)) {
-				// Retrieve IP address.
-				socket_getpeername($this->socket, $address);
-				return gethostbyname($address);
-			}
-			return false;
-		}
+    public function getIP() {
+      // Retrieve IP address.
+      return gethostbyname($this->address);
+    }
 
-		public function getPort() {
-			// Check to make sure the socket is a valid resource.
-			if (is_resource($this->socket)) {
-				// Retrieve IP address.
-				socket_getpeername($this->socket, $address, $port);
-				return $port;
-			}
-			return false;
-		}
+    public function getPort() {
+      // Retrieve IP address.
+      return $this->port;
+    }
 
     public function send($data, $newline = true) {
       // Check to make sure the socket is a valid resource.
       if (is_resource($this->socket)) {
-        Logger::debug("Sending data to client:  '".$data."'");
+        if ($data != chr(0)) {
+          Logger::debug("Sending data to client:  '".$data."'");
+        }
         // Send data to the client.
         if ($newline == true) {
           $status = @socket_write($this->socket, $data."\n");
