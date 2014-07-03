@@ -14,7 +14,7 @@
         $this->port = $port;
 
         // Let people know what's going on.
-        Logger::info("Connection to '".$this->address.":".$this->port.
+        Logger::info("Connection to '".$this->getConnectionString().
           "' created.");
 
         // Iterate through each event to find the connectionCreatedEvent
