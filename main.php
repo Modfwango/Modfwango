@@ -91,6 +91,9 @@
           $socket->accept();
         }
 
+        // Prune dead connections.
+        ConnectionManagement::pruneConnections();
+
         // Iterate through each connection.
         foreach (ConnectionManagement::getConnections() as $connection) {
           // Fetch any received data.

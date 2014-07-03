@@ -75,5 +75,15 @@
     public static function getConnections() {
       return self::$connections;
     }
+
+    public static function pruneConnections() {
+      foreach (self::$connections as $key => $connection) {
+        if (!$connection->isAlive()) {
+          Logger::info("Pruning connection '".
+            $connection->getConnectionString().".'");
+          self::delConnectionByIndex($key);
+        }
+      }
+    }
   }
 ?>

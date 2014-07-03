@@ -100,6 +100,13 @@
       return $this->port;
     }
 
+    public function isAlive() {
+      if (is_resource($this->socket)) {
+        return true;
+      }
+      return false;
+    }
+
     public function send($data, $newline = true) {
       // Check to make sure the socket is a valid resource.
       if (is_resource($this->socket)) {
