@@ -104,14 +104,13 @@
           }
         }
 
-        // Iterate through each event to find the connectionLoopEndEvent event.
-        foreach (EventHandling::getEvents() as $key => $event) {
-          if ($key == "connectionLoopEndEvent") {
-            foreach ($event[2] as $id => $registration) {
-              // Trigger the connectionLoopEndEvent event for each registered
-              // module.
-              EventHandling::triggerEvent("connectionLoopEndEvent", $id);
-            }
+        // Get the connectionLoopEndEvent event.
+        $event = EventHandling::getEventByName("connectionLoopEndEvent");
+        if ($event != false) {
+          foreach ($event[2] as $id => $registration) {
+            // Trigger the connectionLoopEndEvent event for each registered
+            // module.
+            EventHandling::triggerEvent("connectionLoopEndEvent", $id);
           }
         }
         // Sleep for a small amount of time to prevent high CPU usage.

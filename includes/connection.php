@@ -17,17 +17,15 @@
         Logger::info("Connection to '".$this->getConnectionString().
           "' created.");
 
-        // Iterate through each event to find the connectionCreatedEvent
-        // event.
-        foreach (EventHandling::getEvents() as $key => $event) {
-          if ($key == "connectionCreatedEvent") {
-            foreach ($event[2] as $id => $registration) {
-              // Trigger the connectionCreatedEvent event for each registered
-              // module.
-              if (EventHandling::triggerEvent("connectionCreatedEvent", $id,
-                  $this)) {
-                return true;
-              }
+        // Get the connectionCreatedEvent event.
+        $event = EventHandling::getEventByName("connectionCreatedEvent");
+        if ($event != false) {
+          foreach ($event[2] as $id => $registration) {
+            // Trigger the connectionCreatedEvent event for each registered
+            // module.
+            if (EventHandling::triggerEvent("connectionCreatedEvent", $id,
+                $this)) {
+              $this->configured = true;
             }
           }
         }
@@ -43,17 +41,15 @@
       @socket_shutdown($this->socket);
       @socket_close($this->socket);
       $this->socket = null;
-
-      // Iterate through each event to find the connectionConnectedEvent
-      // event.
-      foreach (EventHandling::getEvents() as $key => $event) {
-        if ($key == "connectionDisconnectedEvent") {
-          foreach ($event[2] as $id => $registration) {
-            // Trigger the connectionDisconnectedEvent event for each
-            // registered module.
-            EventHandling::triggerEvent("connectionDisconnectedEvent", $id,
-              $this);
-          }
+      
+      // Get the connectionConnectedEvent event.
+      $event = EventHandling::getEventByName("connectionDisconnectedEvent");
+      if ($event != false) {
+        foreach ($event[2] as $id => $registration) {
+          // Trigger the connectionDisconnectedEvent event for each registered
+          // module.
+          EventHandling::triggerEvent("connectionDisconnectedEvent", $id,
+            $this);
         }
       }
       return true;

@@ -2,12 +2,13 @@
   class EventHandling {
     private static $events = array();
 
-    public static function createEvent($name, $module, $callback) {
+    public static function createEvent($name, $module, $callback = null) {
       // Make sure the callback exists for processing data received.
       if (method_exists($module, $callback) && !isset(self::$events[$name])) {
         // Add the event to the pool of events.
-        Logger::debug("Event '".$name."' with callback '".$callback.
-          "' created.");
+        Logger::debug("Event '".$name."'".((is_string($callback) && strlen(
+          $callback) > 0) ? " with callback '".$callback."'" : null).
+          " created.");
         self::$events[$name] = array($module, $callback, array(), array());
         return true;
       }
@@ -24,6 +25,13 @@
       }
       return false;
     }
+    
+    public static function getEventByName($name) {
+      if (isset(self::$events[$name])) {
+        return self::$events[$name];
+      }
+      return false;
+    }
 
     public static function getEvents() {
       // Return an array of all events.
@@ -33,15 +41,14 @@
     public static function receiveData($connection, $data) {
       // Iterate through each event.
       foreach (self::$events as $key => $event) {
-        // Make sure that the event has at least one registration before wasting
-        // compute time on it.
-        if (count($event[2]) > 0) {
+        // Make sure that the event has a data preprocessor and at least one
+        // registration before wasting compute time on it.
+        if (is_string() && strlen() > 0 && count($event[2]) > 0) {
           // Allow the event to preprocess the data received to determine
           // whether or not it should be triggered.
-          Logger::debug("Event '".$key."' is being preprocessed.");
-          $event[0]->$event[1]($key, array($event[2], $event[3]), $connection,
-            trim($data));
-          Logger::debug("Event '".$key."' has been preprocessed.");
+          Logger::debug("Event '".$key."' is preprocessing the data.");
+          $event[0]->$event[1]($key, $event[2], $connection, trim($data));
+          Logger::debug("Event '".$key."' has preprocessed the data.");
         }
       }
       return true;
@@ -61,13 +68,13 @@
     }
 
     public static function registerAsEventPreprocessor($name, $module,
-        $callback, $data = null) {
+        $callback) {
       // Make sure the event and the module's callback exist.
       if (isset(self::$events[$name]) && method_exists($module, $callback)) {
         Logger::debug("Module '".$module->name.
           "' registered as an event preprocessor for '".$name."'");
         // Add the callback to the pool of this event's preprocessors.
-        self::$events[$name][3][] = array($module, $callback, $data);
+        self::$events[$name][3][] = array($module, $callback);
         return true;
       }
       return false;
@@ -79,6 +86,25 @@
         $registration = self::$events[$name][2][$id];
         // Make sure the registration callback exists.
         if (method_exists($registration[0], $registration[1])) {
+          // Loop through each preprocessor for this event.
+          foreach (self::$events[$name][3] as $preprocessor) {
+            // Make sure the preprocessor callback exists.
+            if (method_exists($preprocessor[0], $preprocessor[1])) {
+              // Fetch the result of the preprocessor callback.
+              $result = $preprocessor[0]->$preprocessor[1]($name, $id, $data);
+              // Make sure the result conforms to the result protocol.
+              if (is_array($result)) {
+                if ($result[0] == false) {
+                  // If the result is false, prevent the event from triggering.
+                  return false;
+                }
+                elseif ($result[0] == null && isset($result[1])) {
+                  // If the result is null, replace the data variable.
+                  $data = $result[1];
+                }
+              }
+            }
+          }
           if ($name != "connectionLoopEndEvent") {
             Logger::debug("Event '".$name."' has been triggered for '".
               $registration[0]->name."'");
@@ -86,6 +112,19 @@
           // Call the specified callback with specified parameters.
           return $registration[0]->$registration[1]($name, $data);
         }
+      }
+      return false;
+    }
+
+    public static function unregisterEvent($module) {
+      if (is_object($module) && isset($module->name)) {
+        // If the parameter is a module, remove any event created by it.
+        foreach (self::$events as $key => $event) {
+          if ($event[0]->name == $module->name) {
+            self::destroyEvent($key);
+          }
+        }
+        return true;
       }
       return false;
     }
@@ -109,11 +148,33 @@
       return false;
     }
 
+    public static function unregisterPreprocessorForEvent($name, $module) {
+      // Make sure the event exists.
+      if (isset(self::$events[$name])) {
+        // Iterate through each registration.
+        foreach (self::$events[$name][3] as $key => $preprocessor) {
+          // If the module's name matches the preprocessor's module's name,
+          // cancel the preprocessor.
+          if ($preprocessor[0]->name == $module->name) {
+            Logger::debug("Module '".$module->name."' unregistered ".
+              "preprocessor for event '".$name."'");
+            // Unset the registration by ID.
+            unset(self::$events[$name][3][$key]);
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
     public static function unregisterModule($module) {
+      // Remove any event made by this module.
+      self::unregisterEvent($module);
       // Iterate through each event.
       foreach (self::$events as $key => $event) {
         // Unregister the requested module.
         self::unregisterForEvent($key, $module);
+        self::unregisterPreprocessorForEvent($key, $module);
       }
       return true;
     }
