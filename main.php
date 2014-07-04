@@ -99,8 +99,14 @@
           // Fetch any received data.
           $data = $connection->getData();
           if ($data != false) {
+            if (stristr($data, "\n")) {
+              foreach (explode("\n", trim($data)) as $line) {
+                // Pass the connection and associated data to the event handler.
+                EventHandling::receiveData($connection, trim($line));
+              }
+            }
             // Pass the connection and associated data to the event handler.
-            EventHandling::receiveData($connection, $data);
+            EventHandling::receiveData($connection, trim($data));
           }
         }
 
