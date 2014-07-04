@@ -97,6 +97,8 @@
               if (is_array($result)) {
                 if ($result[0] == false) {
                   // If the result is false, prevent the event from triggering.
+                  Logger::debug("Event '".$name."' has been cancelled for '".
+                    $registration[0]->name."'");
                   return false;
                 }
                 elseif ($result[0] == null && isset($result[1])) {
