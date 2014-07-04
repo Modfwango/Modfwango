@@ -4,7 +4,7 @@
     public $name = "ConnectionCreatedEvent";
 
     public function checkConnection($connection) {
-      if ($connection->send(chr(0), false)) {
+      if ($connection->send(chr(6), false)) {
         $this->setTimer($connection);
       }
     }
