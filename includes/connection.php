@@ -60,6 +60,16 @@
     public function getData() {
       // Check to make sure the socket is a valid resource.
       if (is_resource($this->socket)) {
+        // Detect changes in the socket to determine if it should be killed if
+        // no data is received.
+        $shouldDie = false;
+        $r = array($this->socket);
+        $w = array();
+        $e = array();
+        $o = socket_select($r, $w, $e, 0);
+        if (isset($r[0])) {
+          $shouldDie = true;
+        }
         // Attempt to read data from the socket.
         if ($data = @socket_read($this->socket, 8192)) {
           if ($data != false && strlen($data) > 0) {
@@ -68,6 +78,11 @@
               "':  '".$data."'");
             return $data;
           }
+        }
+        elseif ($shouldDie) {
+          // Kill the socket if it should die upon no data.
+          Logger::info("Socket died");
+          $this->disconnect();
         }
       }
       return false;
