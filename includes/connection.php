@@ -3,13 +3,15 @@
     private $socket = null;
     private $address = null;
     private $port = null;
-    private $t = null;
     private $options = array();
 
     public function __construct($socket) {
       if (is_resource($socket)) {
         $this->socket = $socket;
+        socket_getsockname($this->socket, $localAddress, $localPort);
         socket_getpeername($this->socket, $address, $port);
+        $this->localAddress = $localAddress;
+        $this->localPort = $localPort;
         $this->address = $address;
         $this->port = $port;
 
@@ -86,13 +88,28 @@
       return gethostbyname($this->address);
     }
 
+    public function getLocalHost() {
+      // Retrieve hostname.
+      return gethostbyaddr($this->localAddress);
+    }
+
+    public function getLocalIP() {
+      // Retrieve IP address.
+      return gethostbyname($this->localAddress);
+    }
+
+    public function getLocalPort() {
+      // Retrieve local port.
+      return $this->localPort;
+    }
+
     public function getOption($key) {
       // Retrieve the requested option if it exists, otherwise return false.
       return (isset($this->options[$key]) ? $this->options[$key] : false);
     }
 
     public function getPort() {
-      // Retrieve IP address.
+      // Retrieve port.
       return $this->port;
     }
 
