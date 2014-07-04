@@ -45,6 +45,8 @@
     public function accept() {
       // Accept a new client.
       $client = @socket_accept($this->socket);
+      // Set non-blocking.
+      socket_set_nonblock($client);
       // Make sure an actual client was accepted.
       if ($client != false) {
         // Add the new socket to the connection management class.
