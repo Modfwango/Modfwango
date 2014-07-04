@@ -97,16 +97,18 @@
         // Iterate through each connection.
         foreach (ConnectionManagement::getConnections() as $connection) {
           // Fetch any received data.
-          $data = $connection->getData();
+          $data = trim($connection->getData());
           if ($data != false) {
             if (stristr($data, "\n")) {
-              foreach (explode("\n", trim($data)) as $line) {
+              foreach (explode("\n", $data) as $line) {
                 // Pass the connection and associated data to the event handler.
                 EventHandling::receiveData($connection, trim($line));
               }
             }
-            // Pass the connection and associated data to the event handler.
-            EventHandling::receiveData($connection, trim($data));
+            else {
+              // Pass the connection and associated data to the event handler.
+              EventHandling::receiveData($connection, trim($data));
+            }
           }
         }
 
