@@ -2,16 +2,16 @@
   class Connection {
     private $socket = null;
     private $address = null;
+    private $localAddress = null;
     private $port = null;
     private $options = array();
 
-    public function __construct($socket) {
+    public function __construct($socket, $port) {
       if (is_resource($socket)) {
         $this->socket = $socket;
-        socket_getsockname($this->socket, $localAddress, $localPort);
-        socket_getpeername($this->socket, $address, $port);
+        socket_getsockname($this->socket, $localAddress);
+        socket_getpeername($this->socket, $address);
         $this->localAddress = $localAddress;
-        $this->localPort = $localPort;
         $this->address = $address;
         $this->port = $port;
 
@@ -43,7 +43,7 @@
       @socket_shutdown($this->socket);
       @socket_close($this->socket);
       $this->socket = null;
-      
+
       // Get the connectionConnectedEvent event.
       $event = EventHandling::getEventByName("connectionDisconnectedEvent");
       if ($event != false) {
@@ -96,11 +96,6 @@
     public function getLocalIP() {
       // Retrieve IP address.
       return gethostbyname($this->localAddress);
-    }
-
-    public function getLocalPort() {
-      // Retrieve local port.
-      return $this->localPort;
     }
 
     public function getOption($key) {

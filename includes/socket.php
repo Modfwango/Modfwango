@@ -48,7 +48,8 @@
       // Make sure an actual client was accepted.
       if ($client != false) {
         // Add the new socket to the connection management class.
-        ConnectionManagement::newConnection(new Connection($client));
+        ConnectionManagement::newConnection(new Connection($client,
+          $this->port));
         return true;
       }
       // No new client/error accepting client.
