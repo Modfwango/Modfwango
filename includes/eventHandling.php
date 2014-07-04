@@ -25,7 +25,7 @@
       }
       return false;
     }
-    
+
     public static function getEventByName($name) {
       if (isset(self::$events[$name])) {
         return self::$events[$name];
@@ -43,7 +43,8 @@
       foreach (self::$events as $key => $event) {
         // Make sure that the event has a data preprocessor and at least one
         // registration before wasting compute time on it.
-        if (is_string() && strlen() > 0 && count($event[2]) > 0) {
+        if (is_string($event[1]) && strlen($event[1]) > 0 &&
+            count($event[2]) > 0) {
           // Allow the event to preprocess the data received to determine
           // whether or not it should be triggered.
           Logger::debug("Event '".$key."' is preprocessing the data.");
