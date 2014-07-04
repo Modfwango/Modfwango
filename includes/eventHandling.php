@@ -4,7 +4,7 @@
 
     public static function createEvent($name, $module, $callback = null) {
       // Make sure the callback exists for processing data received.
-      if (method_exists($module, $callback) && !isset(self::$events[$name])) {
+      if (is_object($module) && !isset(self::$events[$name])) {
         // Add the event to the pool of events.
         Logger::debug("Event '".$name."'".((is_string($callback) && strlen(
           $callback) > 0) ? " with callback '".$callback."'" : null).
