@@ -123,7 +123,7 @@
         }
         // Send data to the client.
         if ($newline == true) {
-          $status = @socket_write($this->socket, $data."\n");
+          $status = @socket_write($this->socket, $data."\r\n");
         }
         else {
           $status = @socket_write($this->socket, $data);
