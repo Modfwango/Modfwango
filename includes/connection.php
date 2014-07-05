@@ -14,9 +14,9 @@
         socket_getsockname($this->socket, $localip);
         socket_getpeername($this->socket, $ip);
         $this->ip = $ip;
-        $this->host = gethostbyaddr_cached($ip);
+        $this->host = $this->gethostbyaddr_cached($ip);
         $this->localip = $localip;
-        $this->localhost = gethostbyaddr_cached($localip);
+        $this->localhost = $this->gethostbyaddr_cached($localip);
         $this->port = $port;
 
         // Let people know what's going on.
