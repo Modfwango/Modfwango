@@ -165,6 +165,7 @@
       declare(ticks = 1);
       pcntl_signal(SIGINT,
         function() {
+          echo "\r";
           Logger::info("Caught SIGINT");
           foreach (ConnectionManagement::getConnections() as $c) {
             $c->disconnect();
