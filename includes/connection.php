@@ -125,7 +125,7 @@
 
     public function gethostbyaddr_cached($a) {
       global $dns_cache;
-      if ($dns_cache[$a]) {
+      if (isset($dns_cache[$a])) {
         return $dns_cache[$a];
       }
       else {
