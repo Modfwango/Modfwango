@@ -1,18 +1,22 @@
 <?php
   class Connection {
     private $socket = null;
-    private $address = null;
-    private $localAddress = null;
+    private $ip = null;
+    private $host = null;
+    private $localip = null;
+    private $localhost = null;
     private $port = null;
     private $options = array();
 
     public function __construct($socket, $port) {
       if (is_resource($socket)) {
         $this->socket = $socket;
-        socket_getsockname($this->socket, $localAddress);
-        socket_getpeername($this->socket, $address);
-        $this->localAddress = $localAddress;
-        $this->address = $address;
+        socket_getsockname($this->socket, $localip);
+        socket_getpeername($this->socket, $ip);
+        $this->ip = $ip;
+        $this->host = gethostbyaddr($ip);
+        $this->localip = $localip;
+        $this->localhost = gethostbyaddr($localip);
         $this->port = $port;
 
         // Let people know what's going on.
@@ -60,6 +64,16 @@
       return false;
     }
 
+    private function fetch_ptr($a) {
+      $tmp = dns_get_record(implode(".", array_reverse(explode(".", $a))).
+        ".in-addr.arpa", DNS_PTR);
+      if (isset($tmp[0]["target"])
+          && strtolower($tmp[0]["target"]) == strtolower(gethostbyname($a))) {
+        return $tmp[0]["target"];
+      }
+      return $a;
+    }
+
     public function getData() {
       // Check to make sure the socket is a valid resource.
       if (is_resource($this->socket)) {
@@ -96,24 +110,36 @@
       return $this->getHost().":".$this->getPort();
     }
 
+    public function gethostbyaddr_cached($a) {
+      global $dns_cache;
+      if ($dns_cache[$a]) {
+        return $dns_cache[$a];
+      }
+      else {
+        $temp = $this->fetch_ptr($a);
+        $dns_cache[$a] = $temp;
+        return $temp;
+      }
+    }
+
     public function getHost() {
       // Retrieve hostname.
-      return gethostbyaddr($this->address);
+      return $this->host;
     }
 
     public function getIP() {
-      // Retrieve IP address.
-      return gethostbyname($this->address);
+      // Retrieve IP.
+      return $this->ip);
     }
 
     public function getLocalHost() {
       // Retrieve hostname.
-      return gethostbyaddr($this->localAddress);
+      return $this->localhost;
     }
 
     public function getLocalIP() {
-      // Retrieve IP address.
-      return gethostbyname($this->localAddress);
+      // Retrieve IP.
+      return $this->localip;
     }
 
     public function getOption($key) {
