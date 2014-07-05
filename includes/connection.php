@@ -65,7 +65,7 @@
     }
 
     private function fetch_a($a) {
-      $tmp = dns_get_record($a, DNS_A);
+      $tmp = dns_get_record($a.".", DNS_A);
       if (is_array($tmp) && count($tmp) > 0) {
         return $tmp;
       }
@@ -74,9 +74,9 @@
 
     private function fetch_ptr($a) {
       $tmp = dns_get_record(implode(".", array_reverse(explode(".", $a))).
-        ".in-addr.arpa", DNS_PTR);
+        ".in-addr.arpa.", DNS_PTR);
       Logger::info(var_export($tmp, true));
-      if (count($tmp) > 0) {
+      if (is_array($tmp) && count($tmp) > 0) {
         foreach ($tmp as $entry) {
           $ar = $this->fetch_a($entry["target"]);
           if (is_array($ar)) {
