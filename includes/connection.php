@@ -41,7 +41,9 @@
         Logger::info("Disconnecting from '".$this->getConnectionString().".'");
 
         // Destroy the socket.
-        @socket_shutdown($this->socket);
+        @socket_shutdown($this->socket, 1);
+        $this->getData();
+        @socket_shutdown($this->socket, 0);
         @socket_close($this->socket);
         $this->socket = null;
 
