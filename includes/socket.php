@@ -14,7 +14,7 @@
         // Create the socket.
         $this->socket = socket_create(AF_INET, SOCK_STREAM, 0);
         // Allow reuse of the address.
-        socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
+        socket_set_option($this->socket, SOL_SOCKET, SO_REUSEADDR, 1);
         // Attempt to bind the socket to a host and port.
         if (@socket_bind($this->socket, $this->host, $this->port)) {
           // Setup the socket to listen and be non-blocking.
