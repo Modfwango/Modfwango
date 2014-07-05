@@ -36,25 +36,28 @@
     }
 
     public function disconnect() {
-      // Close the socket.
-      Logger::info("Disconnecting from '".$this->getConnectionString().".'");
+      if ($this->socket != null) {
+        // Close the socket.
+        Logger::info("Disconnecting from '".$this->getConnectionString().".'");
 
-      // Destroy the socket.
-      @socket_shutdown($this->socket);
-      @socket_close($this->socket);
-      $this->socket = null;
+        // Destroy the socket.
+        @socket_shutdown($this->socket);
+        @socket_close($this->socket);
+        $this->socket = null;
 
-      // Get the connectionConnectedEvent event.
-      $event = EventHandling::getEventByName("connectionDisconnectedEvent");
-      if ($event != false) {
-        foreach ($event[2] as $id => $registration) {
-          // Trigger the connectionDisconnectedEvent event for each registered
-          // module.
-          EventHandling::triggerEvent("connectionDisconnectedEvent", $id,
-            $this);
+        // Get the connectionConnectedEvent event.
+        $event = EventHandling::getEventByName("connectionDisconnectedEvent");
+        if ($event != false) {
+          foreach ($event[2] as $id => $registration) {
+            // Trigger the connectionDisconnectedEvent event for each registered
+            // module.
+            EventHandling::triggerEvent("connectionDisconnectedEvent", $id,
+              $this);
+          }
         }
+        return true;
       }
-      return true;
+      return false;
     }
 
     public function getData() {
