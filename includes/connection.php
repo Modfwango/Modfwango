@@ -64,12 +64,25 @@
       return false;
     }
 
+    private function fetch_a($a)
+      $tmp = dns_get_record($a, DNS_PTR);
+      if (count($tmp) > 0) {
+        return $tmp;
+      }
+      return $a;
+    }
+
     private function fetch_ptr($a) {
       $tmp = dns_get_record(implode(".", array_reverse(explode(".", $a))).
         ".in-addr.arpa", DNS_PTR);
-      if (isset($tmp[0]["target"])
-          && strtolower($tmp[0]["target"]) == strtolower(gethostbyname($a))) {
-        return $tmp[0]["target"];
+      if (count($tmp) > 0) {
+        foreach ($tmp as $entry) {
+          foreach ($this->fetch_a($entry["target"]) as $ip) {
+            if ($ip["ip"] == $a) {
+              return $entry["target"];
+            }
+          }
+        }
       }
       return $a;
     }
