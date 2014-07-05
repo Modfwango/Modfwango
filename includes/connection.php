@@ -42,7 +42,7 @@
 
         // Destroy the socket.
         @socket_shutdown($this->socket, 1);
-        $this->getData();
+        @socket_read($this->socket, 8192);
         @socket_shutdown($this->socket, 0);
         @socket_close($this->socket);
         $this->socket = null;
