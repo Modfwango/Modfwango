@@ -64,7 +64,7 @@
       return false;
     }
 
-    private function fetch_a($a)
+    private function fetch_a($a) {
       $tmp = dns_get_record($a, DNS_PTR);
       if (count($tmp) > 0) {
         return $tmp;
