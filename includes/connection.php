@@ -65,7 +65,7 @@
     }
 
     private function fetch_a($a) {
-      $tmp = dns_get_record($a, DNS_PTR);
+      $tmp = dns_get_record($a.".", DNS_PTR);
       if (count($tmp) > 0) {
         return $tmp;
       }
@@ -74,7 +74,7 @@
 
     private function fetch_ptr($a) {
       $tmp = dns_get_record(implode(".", array_reverse(explode(".", $a))).
-        ".in-addr.arpa", DNS_PTR);
+        ".in-addr.arpa.", DNS_PTR);
       if (count($tmp) > 0) {
         foreach ($tmp as $entry) {
           foreach ($this->fetch_a($entry["target"]) as $ip) {
