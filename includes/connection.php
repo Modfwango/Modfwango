@@ -75,7 +75,6 @@
     private function fetch_ptr($a) {
       $tmp = dns_get_record(implode(".", array_reverse(explode(".", $a))).
         ".in-addr.arpa.", DNS_PTR);
-      Logger::info(var_export($tmp, true));
       if (is_array($tmp) && count($tmp) > 0) {
         foreach ($tmp as $entry) {
           $ar = $this->fetch_a($entry["target"]);
