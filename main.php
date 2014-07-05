@@ -162,8 +162,10 @@
       require_once(__MODFWANGOROOT__."/includes/storageHandling.php");
 
       // Register signal handler.
+      declare(ticks = 1);
       pcntl_signal(SIGINT,
         function() {
+          Logger::info("Caught SIGINT");
           foreach (ConnectionManagement::getConnections() as $c) {
             $c->disconnect();
           }
