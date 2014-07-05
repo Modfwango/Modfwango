@@ -129,7 +129,7 @@
 
     public function getIP() {
       // Retrieve IP.
-      return $this->ip);
+      return $this->ip;
     }
 
     public function getLocalHost() {
