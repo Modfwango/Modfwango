@@ -160,11 +160,26 @@
 
       // Load the storage handling class.
       require_once(__MODFWANGOROOT__."/includes/storageHandling.php");
+
+      // Register signal handlers.
+      pcntl_signal(SIGINT,
+        function ($signal) { $this->shutdown($signal); });
     }
 
     private function setErrorReporting() {
       error_reporting(E_ALL);
       ini_set("display_errors", 1);
+    }
+
+    private function shutdown() {
+      foreach (ConnectionManagement::getConnections() as $c) {
+        $c->disconnect();
+      }
+      foreach (SocketManagement::getSockets() as $s) {
+        $s->close();
+      }
+      Logger::info("Shutting down...");
+      die();
     }
 
     private function verifyEnvironment() {
