@@ -13,13 +13,13 @@
       echo " [ INFO ]  ".trim($msg)."\n";
     }
 
-    public function memoryUsage() {
+    public static function memoryUsage() {
       self::info("Memory Usage:  ".$this->prepareNumber(intval(
         memory_get_usage() / 1024 / 1024)). " MB (". $this->prepareNumber(
         intval(memory_get_usage() / 1024)). " KB)");
     }
 
-    private function prepareNumber($num) {
+    private static function prepareNumber($num) {
       $num = strval($num);
       if ($num < 4) {
         return $num;
