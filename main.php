@@ -161,12 +161,12 @@
       // Load the storage handling class.
       require_once(__MODFWANGOROOT__."/includes/storageHandling.php");
 
-      // Register signal handler.
+      // Register signal handlers.
       declare(ticks = 1);
       pcntl_signal(SIGINT,
         function() {
           echo "\r";
-          Logger::info("Caught SIGINT");
+          Logger::info("Caught SIGINT; Begin shutdown procedure...");
           foreach (ConnectionManagement::getConnections() as $c) {
             $c->disconnect();
           }
@@ -175,6 +175,23 @@
           }
           Logger::info("Shutting down...");
           die();
+        }
+      );
+      pcntl_signal(SIGQUIT,
+        function() {
+          echo "\r";
+          Logger::info("Caught SIGQUIT; Begin soft restart procedure...");
+          Logger::info("Disconnecting all connections...");
+          foreach (ConnectionManagement::getConnections() as $connection) {
+            $connection->disconnect();
+          }
+          ConnectionManagement::pruneConnections();
+          Logger::info("Unloading all modules...");
+          foreach (ModuleManagement::getLoadedModules() as $module) {
+            ModuleManagement::unloadModule($module->name);
+          }
+          Logger::info("Loading configured modules...");
+          $this->loadModules();
         }
       );
     }
