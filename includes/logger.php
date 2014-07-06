@@ -14,9 +14,9 @@
     }
 
     public static function memoryUsage() {
-      self::info("Memory Usage:  ".$this->prepareNumber(intval(
-        memory_get_usage() / 1024 / 1024)). " MB (". $this->prepareNumber(
-        intval(memory_get_usage() / 1024)). " KB)");
+      self::info("Memory Usage:  ".self::prepareNumber(intval(
+        memory_get_usage() / 1024 / 1024)). " MB (". self::prepareNumber(intval(
+        memory_get_usage() / 1024)). " KB)");
     }
 
     private static function prepareNumber($num) {
