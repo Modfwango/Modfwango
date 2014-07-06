@@ -193,7 +193,7 @@
           Logger::info("Loading configured modules...");
           $this->loadModules();
         }
-      );SIGTSTP
+      );
       pcntl_signal(SIGTSTP,
         function() {
           echo "\r";
