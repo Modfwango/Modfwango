@@ -182,13 +182,13 @@
           echo "\r";
           Logger::info("Caught SIGQUIT; Begin soft restart procedure...");
           Logger::info("Disconnecting all connections...");
-          foreach (ConnectionManagement::getConnections() as $connection) {
-            $connection->disconnect();
+          foreach (ConnectionManagement::getConnections() as $c) {
+            $c->disconnect();
           }
           ConnectionManagement::pruneConnections();
           Logger::info("Unloading all modules...");
-          foreach (ModuleManagement::getLoadedModules() as $module) {
-            ModuleManagement::unloadModule($module->name);
+          foreach (ModuleManagement::getLoadedModules() as $m) {
+            ModuleManagement::unloadModule($m->name);
           }
           Logger::info("Loading configured modules...");
           $this->loadModules();
