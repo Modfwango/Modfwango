@@ -21,7 +21,7 @@
 
     private static function prepareNumber($num) {
       $num = strval($num);
-      if ($num < 4) {
+      if (strlen($num) < 4) {
         return $num;
       }
       $commacount = intval(strlen($num) / 3);
