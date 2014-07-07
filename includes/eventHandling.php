@@ -95,13 +95,13 @@
               $result = $preprocessor[0]->$preprocessor[1]($name, $id, $data);
               // Make sure the result conforms to the result protocol.
               if (is_array($result)) {
-                if ($result[0] == false) {
+                if ($result[0] === false) {
                   // If the result is false, prevent the event from triggering.
                   Logger::debug("Event '".$name."' has been cancelled for '".
                     $registration[0]->name."'");
                   return false;
                 }
-                elseif ($result[0] == null && isset($result[1])) {
+                elseif ($result[0] === null && isset($result[1])) {
                   // If the result is null, replace the data variable.
                   $data = $result[1];
                 }
