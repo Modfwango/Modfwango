@@ -163,43 +163,45 @@
 
       // Register signal handlers.
       declare(ticks = 1);
-      pcntl_signal(SIGINT,
-        function() {
-          echo "\r";
-          Logger::info("Caught SIGINT; Begin shutdown procedure...");
-          foreach (ConnectionManagement::getConnections() as $c) {
-            $c->disconnect();
+      if (function_exists("pcntl_signal")) {
+        pcntl_signal(SIGINT,
+          function() {
+            echo "\r";
+            Logger::info("Caught SIGINT; Begin shutdown procedure...");
+            foreach (ConnectionManagement::getConnections() as $c) {
+              $c->disconnect();
+            }
+            foreach (SocketManagement::getSockets() as $s) {
+              $s->close();
+            }
+            Logger::info("Shutting down...");
+            die();
           }
-          foreach (SocketManagement::getSockets() as $s) {
-            $s->close();
+        );
+        pcntl_signal(SIGQUIT,
+          function() {
+            echo "\r";
+            Logger::info("Caught SIGQUIT; Begin soft restart procedure...");
+            Logger::info("Disconnecting all connections...");
+            foreach (ConnectionManagement::getConnections() as $c) {
+              $c->disconnect();
+            }
+            ConnectionManagement::pruneConnections();
+            Logger::info("Unloading all modules...");
+            foreach (ModuleManagement::getLoadedModules() as $m) {
+              ModuleManagement::unloadModule($m->name);
+            }
+            Logger::info("Loading configured modules...");
+            $this->loadModules();
           }
-          Logger::info("Shutting down...");
-          die();
-        }
-      );
-      pcntl_signal(SIGQUIT,
-        function() {
-          echo "\r";
-          Logger::info("Caught SIGQUIT; Begin soft restart procedure...");
-          Logger::info("Disconnecting all connections...");
-          foreach (ConnectionManagement::getConnections() as $c) {
-            $c->disconnect();
+        );
+        pcntl_signal(SIGTSTP,
+          function() {
+            echo "\r";
+            Logger::memoryUsage();
           }
-          ConnectionManagement::pruneConnections();
-          Logger::info("Unloading all modules...");
-          foreach (ModuleManagement::getLoadedModules() as $m) {
-            ModuleManagement::unloadModule($m->name);
-          }
-          Logger::info("Loading configured modules...");
-          $this->loadModules();
-        }
-      );
-      pcntl_signal(SIGTSTP,
-        function() {
-          echo "\r";
-          Logger::memoryUsage();
-        }
-      );
+        );
+      }
     }
 
     private function setErrorReporting() {
