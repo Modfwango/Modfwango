@@ -133,6 +133,11 @@
       // Change current working directory to project root.
       chdir(__PROJECTROOT__);
 
+      // Set the default timezone.
+      if (defined("__TIMEZONE__")) {
+        date_default_timezone_set(__TIMEZONE__);
+      }
+
       // Define start timestamp.
       define("__STARTTIME__", time());
 
