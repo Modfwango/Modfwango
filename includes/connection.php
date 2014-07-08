@@ -47,8 +47,8 @@
         Logger::info("Disconnecting from '".$this->getConnectionString().".'");
 
         // Destroy the socket.
-        @socket_shutdown($this->socket);
-        @socket_close($this->socket);
+        @stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
+        @fclose($this->socket);
         $this->socket = null;
 
         // Get the connectionConnectedEvent event.
@@ -175,10 +175,11 @@
         }
         // Send data to the client.
         if ($newline == true) {
-          $status = @socket_write($this->socket, $data."\r\n");
+          $line = $data."\r\n";
+          $status = @fputs($this->socket, $line, strlen($line));
         }
         else {
-          $status = @socket_write($this->socket, $data);
+          $status = @fputs($this->socket, $data, strlen($data));
         }
 
         // Disconnect if an error occurred.
