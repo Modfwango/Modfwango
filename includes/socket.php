@@ -13,13 +13,12 @@
         $this->port = $port;
         // Create the socket.
         $this->socket = socket_create(AF_INET, SOCK_STREAM, 0);
-        // Allow reuse of the address.
-        socket_set_option($this->socket, SOL_SOCKET, SO_REUSEADDR, 1);
         // Attempt to bind the socket to a host and port.
-        if (@socket_bind($this->socket, $this->host, $this->port)) {
-          // Setup the socket to listen and be non-blocking.
-          socket_listen($this->socket);
-          socket_set_nonblock($this->socket);
+        $socket = @stream_socket_server("tcp://".$this->host.":".$this->port);
+        if (is_resource($socket)) {
+          // Setup the socket to be non-blocking.
+          stream_set_blocking($socket, 0);
+          $this->socket = $socket;
           $this->configured = true;
         }
       }
@@ -36,8 +35,8 @@
       Logger::info("Closing '".$this->getSocketString().".'");
 
       // Destroy the socket.
-      @socket_shutdown($this->socket);
-      @socket_close($this->socket);
+      @stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
+      @fclose($this->socket);
       $this->socket = null;
       return true;
     }
@@ -57,11 +56,11 @@
 
     public function accept() {
       // Accept a new client.
-      $client = @socket_accept($this->socket);
+      $client = @stream_socket_accept($this->socket, 0);
       // Make sure an actual client was accepted.
-      if ($client != false) {
+      if (is_resource($client)) {
         // Set non-blocking.
-        socket_set_nonblock($client);
+        stream_set_blocking($client, 0);
         // Add the new socket to the connection management class.
         ConnectionManagement::newConnection(new Connection($client,
           $this->port));

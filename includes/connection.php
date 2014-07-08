@@ -11,8 +11,10 @@
     public function __construct($socket, $port) {
       if (is_resource($socket)) {
         $this->socket = $socket;
-        socket_getsockname($this->socket, $localip);
-        socket_getpeername($this->socket, $ip);
+        $localip = explode(":", stream_socket_get_name($this->socket, false));
+        $localip = $localip[0];
+        $ip = explode(":", stream_socket_get_name($this->socket, true));
+        $ip = $ip[0];
         $this->ip = $ip;
         $this->host = $this->gethostbyaddr_cached($ip);
         $this->localip = $localip;
@@ -93,18 +95,8 @@
     public function getData() {
       // Check to make sure the socket is a valid resource.
       if (is_resource($this->socket)) {
-        // Detect changes in the socket to determine if it should be killed if
-        // no data is received.
-        $shouldDie = false;
-        $r = array($this->socket);
-        $w = array();
-        $e = array();
-        $o = socket_select($r, $w, $e, 0);
-        if (isset($r[0])) {
-          $shouldDie = true;
-        }
         // Attempt to read data from the socket.
-        if ($data = @socket_read($this->socket, 8192)) {
+        if ($data = @fgets($this->socket, 8192)) {
           if ($data != false && strlen($data) > 0) {
             // Return the data.
             Logger::debug("Data received on '".$this->getConnectionString().
@@ -112,7 +104,7 @@
             return $data;
           }
         }
-        elseif ($shouldDie) {
+        elseif (feof($this->socket)) {
           // Kill the socket if it should die upon no data.
           Logger::info("Socket died");
           $this->disconnect();
