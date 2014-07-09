@@ -80,7 +80,7 @@
         // Attempt to open a socket to the requested host.
         Logger::debug("Attempting connection to '".
           $this->getConnectionString()."'");
-        $this->socket = fsockopen(($this->ssl ? "ssl://" : null).$this->host,
+        $this->socket = fsockopen(($this->ssl ? "tls://" : null).$this->host,
           $this->port);
 
         // Make sure that the stream doesn't block until it receives data.
@@ -200,7 +200,7 @@
 
     public function getConnectionString() {
       // Build a connection string to identify this connection.
-      return ($this->ssl ? "ssl://" : "tcp://").$this->getHost().":".
+      return ($this->ssl ? "tls://" : "tcp://").$this->getHost().":".
         $this->getPort();
     }
 
