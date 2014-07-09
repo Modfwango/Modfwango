@@ -169,10 +169,10 @@
       define("__MODFWANGOVERSION__", "1.00");
 
       // Make sure the launcher and updater are up-to-date.
-      if (!file_exists(__PROJECTROOT__."/launcher.php")
+      if (!file_exists(__PROJECTROOT__."/main.php")
           || hash("md5", file_get_contents(__MODFWANGOROOT__."/launcher.php"))
-          != hash("md5", file_get_contents(__PROJECTROOT__."/launcher.php"))) {
-        file_put_contents(__PROJECTROOT__."/launcher.php", file_get_contents(
+          != hash("md5", file_get_contents(__PROJECTROOT__."/main.php"))) {
+        file_put_contents(__PROJECTROOT__."/main.php", file_get_contents(
           __MODFWANGOROOT__."/launcher.php"));
       }
       if (!file_exists(__PROJECTROOT__."/update.sh")
