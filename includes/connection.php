@@ -1,44 +1,125 @@
 <?php
   class Connection {
     private $socket = null;
+    private $configured = false;
     private $ip = null;
     private $host = null;
     private $localip = null;
     private $localhost = null;
     private $port = null;
     private $options = array();
+    private $type = null;
 
-    public function __construct($socket, $port) {
-      if (is_resource($socket)) {
-        $this->socket = $socket;
-        $localip = explode(":", stream_socket_get_name($this->socket, false));
-        $localip = $localip[0];
-        $ip = explode(":", stream_socket_get_name($this->socket, true));
-        $ip = $ip[0];
-        $this->ip = $ip;
-        $this->host = $this->gethostbyaddr_cached($ip);
-        $this->localip = $localip;
-        $this->localhost = $this->gethostbyaddr_cached($localip);
-        $this->port = $port;
-
-        // Let people know what's going on.
-        Logger::info("Connection to '".$this->getConnectionString().
-          "' created.");
-
-        // Get the connectionCreatedEvent event.
-        $event = EventHandling::getEventByName("connectionCreatedEvent");
-        if ($event != false) {
-          foreach ($event[2] as $id => $registration) {
-            // Trigger the connectionCreatedEvent event for each registered
-            // module.
-            if (EventHandling::triggerEvent("connectionCreatedEvent", $id,
-                $this)) {
-              $this->configured = true;
+    public function __construct($type = "0", $data) {
+      if ($type == "0") {
+        $host = $data[0];
+        $port = $data[1];
+        $ssl = $data[2];
+        $options = $data[3];
+        // Verify type restrictions; we don't want anything unexpected.
+        if (is_string($host) && is_numeric($port) && is_bool($ssl)
+            && is_array($options)) {
+          // Assign class properties from construction arguments.
+          if (filter_var($host, FILTER_VALIDATE_IP)) {
+            $this->ip = $host;
+            $this->host = $this->fetch_ptr($this->ip);
+          }
+          else {
+            $this->host = $host;
+            $ips = $this->fetch_a($this->host);
+            if (is_array($ips)) {
+              shuffle($ips);
+              $this->ip = $ips[0]["ip"];
+            }
+            else {
+              return false;
             }
           }
+          $this->localip = "127.0.0.1";
+          $this->localhost = "localhost";
+          $this->port = $port;
+          $this->ssl = $ssl;
+          $this->options = $options;
+          return $this->created();
+        }
+      }
+      elseif ($type == "1") {
+        $socket = $data[0];
+        $port = $data[1];
+        $ssl = $data[2];
+        $options = $data[3];
+        // Verify type restrictions; we don't want anything unexpected.
+        if (is_resource($socket) && is_numeric($port) && is_bool($ssl)
+            && is_array($options)) {
+          $this->socket = $socket;
+          $localip = explode(":", stream_socket_get_name($this->socket, false));
+          $localip = $localip[0];
+          $ip = explode(":", stream_socket_get_name($this->socket, true));
+          $ip = $ip[0];
+          $this->ip = $ip;
+          $this->host = $this->gethostbyaddr_cached($ip);
+          $this->localip = $localip;
+          $this->localhost = $this->gethostbyaddr_cached($localip);
+          $this->port = $port;
+          $this->ssl = $ssl;
+          $this->options = $options;
+          return $this->created();
         }
       }
       return false;
+    }
+
+    public function configured() {
+      return $this->configured;
+    }
+
+    public function connect() {
+      if ($this->type == "0") {
+        // Attempt to open a socket to the requested host.
+        Logger::debug("Attempting connection to '".
+          $this->getConnectionString()."'");
+        $this->socket = fsockopen(($this->ssl ? "tls://" : null).$this->host,
+          $this->port);
+
+        // Verify that a valid connection was established.
+        if (is_resource($this->socket)) {
+          // Make sure that the stream doesn't block until it receives data.
+          stream_set_blocking($this->socket, 0);
+
+          // Get the connectionConnectedEvent event.
+          $event = EventHandling::getEventByName("connectionConnectedEvent");
+          if ($event != false) {
+            foreach ($event[2] as $id => $registration) {
+              // Trigger the connectionConnectedEvent event for each registered
+              // module.
+              EventHandling::triggerEvent("connectionConnectedEvent", $id,
+                $this);
+            }
+          }
+          return true;
+        }
+      }
+      return false;
+    }
+
+    public function created() {
+      // Let people know what's going on.
+      Logger::info("Connection to '".$this->getConnectionString().
+        "' created.");
+
+      // Get the connectionCreatedEvent event.
+      $event = EventHandling::getEventByName("connectionCreatedEvent");
+      if ($event != false) {
+        foreach ($event[2] as $id => $registration) {
+          // Trigger the connectionCreatedEvent event for each registered
+          // module.
+          if (EventHandling::triggerEvent("connectionCreatedEvent", $id,
+              $this)) {
+            $this->configured = true;
+          }
+        }
+      }
+      return $this->configured;
     }
 
     public function disconnect() {
@@ -115,7 +196,8 @@
 
     public function getConnectionString() {
       // Build a connection string to identify this connection.
-      return $this->getHost().":".$this->getPort();
+      return ($this->ssl ? "tls://" : "tcp://").$this->getHost().":".
+        $this->getPort();
     }
 
     public function gethostbyaddr_cached($a) {
@@ -158,6 +240,16 @@
     public function getPort() {
       // Retrieve port.
       return $this->port;
+    }
+
+    public function getSSL() {
+      // Retrieve SSL.
+      return $this->ssl;
+    }
+
+    public function getType() {
+      // Retrieve type.
+      return $this->type;
     }
 
     public function isAlive() {

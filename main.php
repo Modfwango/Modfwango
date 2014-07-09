@@ -24,11 +24,35 @@
       // Discover sockets located in conf/listen.conf.
       $this->discoverSockets();
 
+      // Discover connections located in conf/connections/.
+      $this->discoverConnections();
+
+      // Initiate all loaded connections.
+      $this->activateConnections();
+
       // Start the main loop.
       $this->loop();
 
       // Return a false value if the loop fails.
       return false;
+    }
+
+    private function activateConnections() {
+      // Iterate through the list of defined connections.
+      foreach (ConnectionManagement::getConnections() as $connection) {
+        // Connect.
+        $connection->connect();
+      }
+    }
+
+    private function discoverConnections() {
+      // Get a list of connection configurations.
+      $connections = glob(__PROJECTROOT__."/conf/connections/*.conf");
+
+      // Iterate through the list and load each item individually.
+      foreach ($connections as $file) {
+        ConnectionManagement::loadConnectionFile($file);
+      }
     }
 
     private function discoverSockets() {
@@ -181,23 +205,6 @@
             }
             Logger::info("Shutting down...");
             die();
-          }
-        );
-        pcntl_signal(SIGQUIT,
-          function() {
-            echo "\r";
-            Logger::info("Caught SIGQUIT; Begin soft restart procedure...");
-            Logger::info("Disconnecting all connections...");
-            foreach (ConnectionManagement::getConnections() as $c) {
-              $c->disconnect();
-            }
-            ConnectionManagement::pruneConnections();
-            Logger::info("Unloading all modules...");
-            foreach (ModuleManagement::getLoadedModules() as $m) {
-              ModuleManagement::unloadModule($m->name);
-            }
-            Logger::info("Loading configured modules...");
-            $this->loadModules();
           }
         );
         pcntl_signal(SIGTSTP,

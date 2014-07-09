@@ -78,12 +78,48 @@
 
     public static function pruneConnections() {
       foreach (self::$connections as $key => $connection) {
-        if (!$connection->isAlive()) {
+        if (!$connection->isAlive() && $connection->getType() == "1") {
           Logger::info("Pruning connection '".
             $connection->getConnectionString().".'");
           unset(self::$connections[$key]);
         }
       }
+    }
+
+    public static function loadConnectionFile($file, $connect = false) {
+      // Parse the files using an ini parser.
+      $connection = parse_ini_file($file, true);
+      Logger::debug(str_ireplace("\n", " ", var_export($connection, true)));
+
+      // Require these items to be defined.
+      if (isset($connection['address']) && isset($connection['port'])) {
+        // Define optional parameters to their default values.
+        if (!isset($connection['ssl'])) {
+          $connection['ssl'] = false;
+        }
+
+        if (!isset($connection['options'])
+            || !is_array($connection['options'])) {
+          $connection['options'] = array();
+        }
+
+        // Assign the file path used to load this connection.
+        $connection['options']['file'] = realpath($file);
+
+        // Restrict possible data types for certain values.
+        $connection['port'] = intval($connection['port']);
+        $connection['ssl'] = (bool)$connection['ssl'];
+
+        // Add the network to the connection manager.
+        return self::newConnection(new Connection("0",
+          array($connection['address'], $connection['port'], $connection['ssl'],
+          $connection['options'])), $connect);
+      }
+      else {
+        // Uh-oh!
+        Logger::info("Connection in file \"".$file."\" failed to parse.");
+      }
+      return false;
     }
   }
 ?>

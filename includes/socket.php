@@ -4,6 +4,7 @@
     private $socket = null;
     private $host = null;
     private $port = null;
+    private $ssl = false;
 
     public function __construct($host, $port) {
       // Verify type restrictions.
@@ -51,7 +52,7 @@
 
     public function getSocketString() {
       // Build a socket string to identify this socket.
-      return $this->host.":".$this->port;
+      return ($this->ssl ? "tls://" : "tcp://").$this->host.":".$this->port;
     }
 
     public function accept() {
@@ -62,8 +63,8 @@
         // Set non-blocking.
         stream_set_blocking($client, 0);
         // Add the new socket to the connection management class.
-        ConnectionManagement::newConnection(new Connection($client,
-          $this->port));
+        ConnectionManagement::newConnection(new Connection("1", array($client,
+          $this->port, false, array())));
         return true;
       }
       // No new client/error accepting client.
