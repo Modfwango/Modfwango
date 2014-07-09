@@ -2,6 +2,10 @@
   define("__TIMEZONE__", "America/Chicago");
   define("__PROJECTROOT__", dirname(__FILE__));
 
+  if (basename(__FILE__) != "main.php") {
+    rename(__FILE__, __PROJECTROOT__."/main.php");
+  }
+
   $missing = array();
   $directories = array(
     __PROJECTROOT__."/conf",

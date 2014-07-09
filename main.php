@@ -166,7 +166,7 @@
       define("__MODFWANGOROOT__", dirname(__FILE__));
 
       // Define the current version of Modfwango.
-      define("__MODFWANGOVERSION__", "1.00");
+      define("__MODFWANGOVERSION__", "1.01");
 
       // Make sure the launcher and updater are up-to-date.
       if (!file_exists(__PROJECTROOT__."/main.php")
