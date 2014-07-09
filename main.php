@@ -168,23 +168,6 @@
       // Define the current version of Modfwango.
       define("__MODFWANGOVERSION__", "1.01");
 
-      // Make sure the launcher and updater are up-to-date.
-      if (!file_exists(__PROJECTROOT__."/main.php")
-          || hash("md5", file_get_contents(__MODFWANGOROOT__."/launcher.php"))
-          != hash("md5", file_get_contents(__PROJECTROOT__."/main.php"))) {
-        file_put_contents(__PROJECTROOT__."/main.php", file_get_contents(
-          __MODFWANGOROOT__."/launcher.php"));
-        Logger::info("The launcher has been updated.");
-      }
-      if (!file_exists(__PROJECTROOT__."/update.sh")
-          || hash("md5", file_get_contents(__MODFWANGOROOT__."/update.sh"))
-          != hash("md5", file_get_contents(__PROJECTROOT__."/update.sh"))) {
-        file_put_contents(__PROJECTROOT__."/update.sh", file_get_contents(
-          __MODFWANGOROOT__."/update.sh"));
-        chmod(__PROJECTROOT__."/update.sh", 0777);
-        Logger::info("The update script has been updated.");
-      }
-
       // Change current working directory to project root.
       chdir(__PROJECTROOT__);
 
@@ -214,6 +197,23 @@
 
       // Load the logger.
       require_once(__MODFWANGOROOT__."/includes/logger.php");
+
+      // Make sure the launcher and updater are up-to-date.
+      if (!file_exists(__PROJECTROOT__."/main.php")
+          || hash("md5", file_get_contents(__MODFWANGOROOT__."/launcher.php"))
+          != hash("md5", file_get_contents(__PROJECTROOT__."/main.php"))) {
+        file_put_contents(__PROJECTROOT__."/main.php", file_get_contents(
+          __MODFWANGOROOT__."/launcher.php"));
+        Logger::info("The launcher has been updated.");
+      }
+      if (!file_exists(__PROJECTROOT__."/update.sh")
+          || hash("md5", file_get_contents(__MODFWANGOROOT__."/update.sh"))
+          != hash("md5", file_get_contents(__PROJECTROOT__."/update.sh"))) {
+        file_put_contents(__PROJECTROOT__."/update.sh", file_get_contents(
+          __MODFWANGOROOT__."/update.sh"));
+        chmod(__PROJECTROOT__."/update.sh", 0777);
+        Logger::info("The update script has been updated.");
+      }
 
       // Load the module management class.
       require_once(__MODFWANGOROOT__."/includes/moduleManagement.php");
