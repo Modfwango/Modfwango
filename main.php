@@ -165,12 +165,18 @@
       // Define the current version of Modfwango.
       define("__MODFWANGOVERSION__", "Modfwango-v1.00");
 
-      // Make sure the launcher is up-to-date.
+      // Make sure the launcher and updater are up-to-date.
       if (!file_exists(__PROJECTROOT__."/launcher.php")
           || hash("md5", file_get_contents(__MODFWANGOROOT__."/launcher.php"))
           != hash("md5", file_get_contents(__PROJECTROOT__."/launcher.php"))) {
         file_put_contents(__PROJECTROOT__."/launcher.php", file_get_contents(
           __MODFWANGOROOT__."/launcher.php"));
+      }
+      if (!file_exists(__PROJECTROOT__."/update.sh")
+          || hash("md5", file_get_contents(__MODFWANGOROOT__."/update.sh"))
+          != hash("md5", file_get_contents(__PROJECTROOT__."/update.sh"))) {
+        file_put_contents(__PROJECTROOT__."/update.sh", file_get_contents(
+          __MODFWANGOROOT__."/update.sh"));
       }
 
       // Change current working directory to project root.
