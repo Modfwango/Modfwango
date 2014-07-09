@@ -138,8 +138,8 @@ loaded:
 
 #### Using Available APIs
 
-Modfwango comes packed with some available APIs to allow creating modules to be
-extremely easy.  A list of these are:
+Modfwango comes packed with some APIs to allow creating modules to be extremely
+easy.  A list of these are:
 * `ConnectionManagement`, `Connection` - Allows you to define, undefine,
 connect, and disconnect connections.
 * `EventHandling` - Allows you to create, preprocess, and register for events
