@@ -18,7 +18,7 @@ have the latest version of PHP 5 CLI installed on your machine.
 In order to setup a Modfwango-based project, decide on a project name, then run
 the following commands:
 ```
-mkdir <ProjectName> && cd <ProjectName>
+mkdir ProjectName && cd ProjectName
 git init
 git submodule add https://github.com/ClayFreeman/Modfwango.git .modfwango
 cp .modfwango/launcher.php .
