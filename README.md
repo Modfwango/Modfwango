@@ -158,7 +158,7 @@ The `Connection` constructor method is structured as so:
 bool __construct(String $type, array $data)
 ```
 `Connection` accepts two parameters:
-* The type of connection ("0" for outgoing, "1" for incoming)
+* The type of connection (`"0"` for outgoing, `"1"` for incoming)
 * The associated data array
 
 Currently the data array should contain the following parameters for outgoing
