@@ -154,6 +154,14 @@
       // Define the root of the Modfwango library folder.
       define("__MODFWANGOROOT__", dirname(__FILE__));
 
+      // Make sure the launcher is up-to-date.
+      if (!file_exists(__PROJECTROOT__."/launcher.php")
+          || hash("md5", file_get_contents(__MODFWANGOROOT__."/launcher.php"))
+          != hash("md5", file_get_contents(__PROJECTROOT__."/launcher.php"))) {
+        file_put_contents(__PROJECTROOT__."/launcher.php", file_get_contents(
+          __MODFWANGOROOT__."/launcher.php"));
+      }
+
       // Change current working directory to project root.
       chdir(__PROJECTROOT__);
 
