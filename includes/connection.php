@@ -11,7 +11,8 @@
     private $ssl = false;
     private $type = null;
 
-    public function __construct($type = "0", $data) {
+    public function __construct($type, $data) {
+      $this->type = $type;
       if ($type == "0") {
         $host = $data[0];
         $port = $data[1];
