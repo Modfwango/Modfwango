@@ -50,7 +50,8 @@
 
     private function brag() {
       Logger::info("Welcome to Modfwango!");
-      Logger::info("You're running version ".__MODFWANGOVERSION__.".");
+      Logger::info("You're running Modfwango version ".
+        __MODFWANGOVERSION__.".");
     }
 
     private function discoverConnections() {
@@ -163,7 +164,7 @@
       define("__MODFWANGOROOT__", dirname(__FILE__));
 
       // Define the current version of Modfwango.
-      define("__MODFWANGOVERSION__", "Modfwango-v1.00");
+      define("__MODFWANGOVERSION__", "1.00");
 
       // Make sure the launcher and updater are up-to-date.
       if (!file_exists(__PROJECTROOT__."/launcher.php")
