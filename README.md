@@ -18,6 +18,7 @@ Table of Contents
   * [conf/listen.conf](#conflistenconf)
   * [conf/modules.conf](#confmodulesconf)
   * [conf/connections/name.conf](#confconnectionsnameconf)
+* [Support](#support)
 * [Development](#development)
   * [Creating Your First Module](#creating-your-first-module)
   * [Using Available APIs](#using-available-apis)
@@ -28,7 +29,6 @@ Table of Contents
       * [registerForEvent](#registerforevent)
       * [registerAsEventPreprocessor](#registeraseventpreprocessor)
       * [Methods](#methods-1)
-* [Support](#support)
 
 Install
 =======
@@ -105,6 +105,12 @@ ssl = false
 param1 = "hello"
 param2 = "world"
 ```
+
+Support
+=======
+
+For support with this framework, join IRC at `irc.freenode.org` `#modfwango`,
+open a ticket, or email me using my email address on GitHub.
 
 Development
 ===========
@@ -439,9 +445,3 @@ all event registrations and preprocessors
 
 ##### ModuleManagement
 Document this next.
-
-Support
-=======
-
-For support with this framework, join IRC at `irc.freenode.org` `#modfwango`,
-open a ticket, or email me using my email address on GitHub.
