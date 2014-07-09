@@ -153,7 +153,90 @@ Since `ConnectionManagement` is responsible for managing `Connection` classes,
 we'll cover those next.
 
 ###### Connection
-TODO:  Complete documentation.
+The `Connection` constructor method is structured as so:
+```php
+bool __construct(String $type, array $data)
+```
+`Connection` accepts two parameters:
+* The type of connection ("0" for outgoing, "1" for incoming)
+* The associated data array
+
+Currently the data array should contain the following parameters for outgoing
+connections:
+* A string of the target hostname
+* A string/int of the target port
+* A bool of whether or not SSL should be used
+* [Optional] An array of options
+
+The data array should be structured as so for outgoing connections (the last
+key is optional):
+```php
+array(
+  0 => "hostname.example.org",
+  1 => "1337",
+  2 => true,
+  3 => array(
+    "optional" => "setting",
+    "other" => "setting1"
+  )
+)
+```
+
+Currently the data array should contain the following parameters for incoming
+connections:
+* The socket
+* A string/int of the target port
+* A bool of whether or not SSL should be used
+* [Optional] An array of options
+
+The data array should be structured as so for incoming connections (the last
+key is optional):
+```php
+array(
+  0 => $socket,
+  1 => "1337",
+  2 => false,
+  3 => array(
+    "optional" => "setting",
+    "other" => "setting1"
+  )
+)
+```
+
+And finally, a new connection should be created as so:
+```php
+$connection = new Connection("0", array("example.org", 1337, false, array()));
+```
+
+After a connection has been created, you can use the following available
+methods:
+* `bool configured()` - Returns whether or not the `Connection` was properly
+configured
+* `bool connect()` - Attempts to connect to the specified host/port, returns
+true if successful, returns false upon error or if `$type` is "1"
+* `bool disconnect()` - Disconnects from the socket, returns true if successful,
+returns false if socket property is not a valid resource
+* `mixed getData()` - Retrieves data from the socket, returns
+* `String getConnectionString()` - Returns a string describing the connection
+* `String getHost()` - Returns the hostname of the remote connection endpoint
+* `String getIP()` - Returns the IP of the remote connection endpoint
+* `String getLocalHost()` - Returns the hostname of the local connection
+endpoint
+* `String getLocalIP()` - Returns the IP of the local connection endpoint
+* `mixed getOption(String $key)` - Returns the value of option by `$key`,
+returns false if it doesn't exist
+* `mixed getPort()` - Returns string/int of connection port
+* `bool getSSL()` - Returns true if using SSL, false if using plaintext
+* `String getType()` - Returns "0" if outgoing connection, returns "1" if
+incoming connection
+* `bool isAlive()` - Returns true if socket is a resource, false if it isn't
+* `bool send(String $data, bool $newline = true)` - Returns true on successful
+data transmission, false on failure
+* `bool setOption(String $key, String $value)` - Sets option by `$key` to
+`$value`, always returns true
+
+###### EventHandling
+I'll document `EventHandling` tomorrow.
 
 Support
 =======
