@@ -18,6 +18,9 @@
       // Setup required constants for operation and load required classes.
       $this->prepareEnvironment($debug);
 
+      // Brag about versions and junk.
+      $this->brag();
+
       // Load requested modules.
       $this->loadModules();
 
@@ -43,6 +46,11 @@
         // Connect.
         $connection->connect();
       }
+    }
+
+    private function brag() {
+      Logger::info("Welcome to Modfwango!");
+      Logger::info("You're running version ".__MODFWANGOVERSION__.".");
     }
 
     private function discoverConnections() {
@@ -153,6 +161,9 @@
     private function prepareEnvironment($debug) {
       // Define the root of the Modfwango library folder.
       define("__MODFWANGOROOT__", dirname(__FILE__));
+
+      // Define the current version of Modfwango.
+      define("__MODFWANGOVERSION__", "Modfwango-v1.00");
 
       // Make sure the launcher is up-to-date.
       if (!file_exists(__PROJECTROOT__."/launcher.php")
