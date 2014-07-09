@@ -8,6 +8,7 @@
     private $localhost = null;
     private $port = null;
     private $options = array();
+    private $ssl = false;
     private $type = null;
 
     public function __construct($type = "0", $data) {
