@@ -52,6 +52,8 @@
       Logger::info("Welcome to Modfwango!");
       Logger::info("You're running Modfwango version ".
         __MODFWANGOVERSION__.".");
+      Logger::info("To learn more about how to use Modfwango, visit ".
+        "http://bit.ly/modfwango");
     }
 
     private function discoverConnections() {
