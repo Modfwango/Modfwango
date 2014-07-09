@@ -84,23 +84,20 @@
         $this->socket = fsockopen(($this->ssl ? "tls://" : null).$this->host,
           $this->port);
 
-        // Verify that a valid connection was established.
-        if (is_resource($this->socket)) {
-          // Make sure that the stream doesn't block until it receives data.
-          stream_set_blocking($this->socket, 0);
+        // Make sure that the stream doesn't block until it receives data.
+        stream_set_blocking($this->socket, 0);
 
-          // Get the connectionConnectedEvent event.
-          $event = EventHandling::getEventByName("connectionConnectedEvent");
-          if ($event != false) {
-            foreach ($event[2] as $id => $registration) {
-              // Trigger the connectionConnectedEvent event for each registered
-              // module.
-              EventHandling::triggerEvent("connectionConnectedEvent", $id,
-                $this);
-            }
+        // Get the connectionConnectedEvent event.
+        $event = EventHandling::getEventByName("connectionConnectedEvent");
+        if ($event != false) {
+          foreach ($event[2] as $id => $registration) {
+            // Trigger the connectionConnectedEvent event for each registered
+            // module.
+            EventHandling::triggerEvent("connectionConnectedEvent", $id,
+              $this);
           }
-          return true;
         }
+        return true;
       }
       return false;
     }
