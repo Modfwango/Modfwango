@@ -218,7 +218,8 @@ configured
 true if successful, returns false upon error or if `$type` is "1"
 * `bool disconnect()` - Disconnects from the socket, returns true if successful,
 returns false if socket property is not a valid resource
-* `mixed getData()` - Retrieves data from the socket, returns
+* `mixed getData()` - Retrieves data from the socket, returns a string on
+success, or false on failure
 * `String getConnectionString()` - Returns a string describing the connection
 * `String getHost()` - Returns the hostname of the remote connection endpoint
 * `String getIP()` - Returns the IP of the remote connection endpoint
