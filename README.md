@@ -23,8 +23,8 @@ the following commands:
 mkdir ProjectName && cd ProjectName
 git init
 git submodule add https://github.com/ClayFreeman/Modfwango.git .modfwango
-cp .modfwango/launcher.php .
-php launcher.php
+cp .modfwango/launcher.php main.php
+php main.php
 ```
 
 Those commands will initialize a git repository, add Modfwango as a submodule,
