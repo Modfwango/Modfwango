@@ -117,13 +117,13 @@ loaded:
 
 Modfwango comes packed with some available APIs to allow creating modules to be
 extremely easy.  A list of these are:
-* `ConnectionManagement` - Allows you to define, undefine, connect, and
-disconnect connections.
+* `ConnectionManagement`, `Connection` - Allows you to define, undefine,
+connect, and disconnect connections.
 * `EventHandling` - Allows you to create, preprocess, and register for events
 * `ModuleManagement` - Allows you to control which modules are loaded at any
 given time
-* `SocketManagement` - Allows you to define and undefine server sockets that
-will accept client connections.
+* `SocketManagement`, `Socket` - Allows you to define and undefine server
+sockets that will accept client connections.
 * `StorageHandling` - Allows you to create, delete, write, and read files
 through a simple interface.
 
