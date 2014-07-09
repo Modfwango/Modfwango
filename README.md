@@ -1,5 +1,4 @@
-Modfwango
-=========
+![Modfwango](http://dpr.clayfreeman.com/zarH+ "Modfwango")
 
 Modfwango is a modular socket framework written in PHP.  This framework has been
 refined over the past few years for personal use, and I decided to make it open
