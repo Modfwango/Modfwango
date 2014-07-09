@@ -204,7 +204,7 @@
         $this->getPort();
     }
 
-    public function gethostbyaddr_cached($a) {
+    private function gethostbyaddr_cached($a) {
       global $dns_cache;
       if (isset($dns_cache[$a])) {
         return $dns_cache[$a];
