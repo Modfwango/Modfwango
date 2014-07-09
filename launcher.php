@@ -1,4 +1,8 @@
 <?php
+  if (version_compare(phpversion(), '5.1.1', '<')) {
+      die("You must have PHP version 5.1.1 or higher to use Modfwango.\n");
+  }
+
   define("__TIMEZONE__", "America/Chicago");
   define("__PROJECTROOT__", dirname(__FILE__));
 
