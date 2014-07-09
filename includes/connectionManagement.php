@@ -90,7 +90,7 @@
     public static function loadConnectionFile($file, $connect = false) {
       // Parse the files using an ini parser.
       $connection = parse_ini_file($file, true);
-      Logger::debug(str_ireplace("\n", " ", var_export($connection, true)));
+      Logger::debug(var_export($connection, true));
 
       // Require these items to be defined.
       if (isset($connection['address']) && isset($connection['port'])) {
