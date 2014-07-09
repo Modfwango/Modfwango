@@ -10,6 +10,27 @@ known as Modfwango.  I decided to make the separation, because a networking
 framework with reloadable modules is of more use to people than just a simple
 IRC bot.
 
+Table of Contents
+=================
+
+* [Install](#install)
+* [Update](#update)
+* [Configuration](#configuration)
+  * [conf/listen.conf](#conflistenconf)
+  * [conf/modules.conf](#confmodulesconf)
+  * [conf/connections/name.conf](#confconnectionsnameconf)
+* [Development](#development)
+  * [Creating Your First Module](#creating-your-first-module)
+  * [Using Available APIs](#using-available-apis)
+  * [ConnectionManagement](#connectionmanagement)
+  * [Connection](#connection)
+    * [Methods](#methods)
+  * [EventHandling](#eventhandling)
+    * [registerForEvent](#registerforevent)
+    * [registerAsEventPreprocessor](#registeraseventpreprocessor)
+    * [Methods](#methods-1)
+* [Support](#support)
+
 Install
 =======
 
@@ -71,7 +92,7 @@ events/RawEvent
 libraries/Timer
 ```
 
-#### conf/connections/<name>.conf
+#### conf/connections/name.conf
 If you need to connect to other servers, you need to create a file for each
 connection.  Each file is parsed with the built-in PHP INI file parser.  An
 example file with all parameters is shown below.  You can optionally include the
