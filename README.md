@@ -131,7 +131,7 @@ through a simple interface.
 
 Let's go over each API, shall we?
 
-###### ConnectionManagement
+##### ConnectionManagement
 `ConnectionManagement` has the following available methods:
 * `bool newConnection(Connection $connection)` - Adds a connection to the
 connection manager
@@ -154,7 +154,7 @@ Auto-connects to the connection if specified
 Since `ConnectionManagement` is responsible for managing `Connection` classes,
 we'll cover those next.
 
-###### Connection
+##### Connection
 The `Connection` constructor method is structured as so:
 ```php
 bool __construct(String $type, array $data)
@@ -210,6 +210,8 @@ And finally, a new connection should be created as so:
 $connection = new Connection("0", array("example.org", 1337, false, array()));
 ```
 
+###### Methods
+
 After a connection has been created, you can use the following available
 methods:
 * `bool configured()` - Returns whether or not the `Connection` was properly
@@ -238,8 +240,182 @@ data transmission, false on failure
 * `bool setOption(String $key, String $value)` - Sets option by `$key` to
 `$value`, always returns true
 
-###### EventHandling
-I'll document `EventHandling` tomorrow.
+##### EventHandling
+`EventHandling` is essentially the core idea of the Modfwango project.  The
+`EventHandling` class encompasses the majority of how functionality is usually
+implemented through modules.  Basically, when Modfwango receives data from any
+given `Connection` class, it triggers the `EventHandling::receiveData()` method
+which gives modules that provide events the opportunity to trigger themselves
+for each of their registrations.  This allows you to make events that trigger
+automatically, for example, when a certain string of data is sent, or if certain
+conditions are met.  An event module can be as simple as shown below:
+```php
+<?php
+  class @@CLASSNAME@@ {
+    public $name = "ConnectionConnectedEvent";
+
+    public function isInstantiated() {
+      EventHandling::createEvent("connectionConnectedEvent", $this);
+      return true;
+    }
+  }
+?>
+```
+
+The above event registers itself as a module by the name of
+`ConnectionConnectedEvent` and creates an event called `connectionCreatedEvent`.
+This event requires manual triggering since it doesn't register a data
+preprocessor callback (the third parameter to `EventHandling::createEvent()`).
+An example of an event that includes a data preprocessor is shown below:
+```php
+<?php
+  class @@CLASSNAME@@ {
+    public $name = "RawEvent";
+
+    public function preprocessEvent($name, $registrations, $connection, $data) {
+      $ex = explode(" ", $data);
+
+      // Iterate through each registration.
+      foreach ($registrations as $id => $registration) {
+        // Trigger the event for a certain registration.
+        EventHandling::triggerEvent($name, $id, array($connection, $data, $ex));
+      }
+    }
+
+    public function isInstantiated() {
+      // Create an event for raw data.
+      EventHandling::createEvent("rawEvent", $this, "preprocessEvent");
+      return true;
+    }
+  }
+?>
+```
+
+The above event registers itself as a module by the name of `RawEvent` and
+creates an event called `rawEvent`.  This event is triggered any time data is
+received. This can be useful in very few cases, but it's useful nonetheless.
+
+###### registerForEvent
+
+A module can register for an event by calling
+`bool EventHandling::registerForEvent(String $name, Object $module,
+String $callback, mixed $data = null)`.  This method will return true if the
+registration was successful, or false if it didn't succeed.  An example module
+that registers for an event is shown below:
+```php
+<?php
+  class @@CLASSNAME@@ {
+    public $depend = array("RawEvent");
+    public $name = "DataLogging";
+
+    public function receiveRaw($name, $data) {
+      $connection = $data[0];
+      $data = $data[1];
+
+      Logger::info("Data received from ".$connection->getConnectionString().
+        ":  \"".$data."\"");
+    }
+
+    public function isInstantiated() {
+      EventHandling::registerForEvent("rawEvent", $this, "receiveRaw");
+      return true;
+    }
+  }
+?>
+```
+
+This module registers for the `rawEvent` previously shown.  Any time that data
+is received, this module's `receiveRaw` method is called.  Each event
+registration must have a callback that conforms to the protocol
+`callback(String $name, mixed $data)`.  This ensures that your event
+registration is called appropriately.  `$name` provides you with the event name
+so that you can register more than one event to the same callback, and `$data`
+provides you with something that each specific event thinks is important for you
+to have.  This item will vary for each event.
+
+###### registerAsEventPreprocessor
+
+A module can register as an event preprocessor by calling
+`bool EventHandling::registerAsEventPreprocessor(String $name, Object $module,
+String $callback)`.  This method will return true if the registration was
+successful, or false if it didn't succeed.  Registering as an event preprocessor
+gives your module the opportunity to alter the event, or outright refuse the
+event to trigger.  An example module that registers as an event preprocessor is
+shown below:
+```php
+<?php
+  class @@CLASSNAME@@ {
+    public $depend = array();
+    public $name = "IgnoreConnectionConnectedEvent";
+
+    public function receiveConnectionConnected($name, $id, $data) {
+      return array(false);
+    }
+
+    public function isInstantiated() {
+      EventHandling::registerAsEventPreprocessor("connectionConnectedEvent",
+        $this, "receiveConnectionConnected");
+      return true;
+    }
+  }
+?>
+```
+
+This module registers as a preprocessor for the `connectionConnectedEvent`.  Any
+time that the `connectionConnectedEvent` attempts to trigger, this module's
+`receiveConnectionConnected` method is called.  Each event preprocessor
+registration must have a callback that conforms to the protocol
+`callback(String $name, int $id, mixed $data)`.  This ensures that your event
+preprocessor registration is called appropriately.  `$name` provides you with
+the event name so that you can register more than one preproocessor to the same
+callback, `$id` provides you with the specific registration ID, and `$data`
+provides you with something that each specific event thinks is important for you
+to have.  This item will vary for each event.
+
+When preprocessing an event, `EventHandling` looks for two things:
+* Your return value must be an array or it is ignored
+* Your return value must be equal to `array(false)` or
+`array(null, mixed $data)` before any action is taken (`array(true)` is just
+ignored since it would be considered a successful preprocessor passthrough)
+
+There are two types of return values that alter the event's state:
+* `array(null, mixed $data)` - Tells `EventHandling` that you desire to replace
+the previous `$data` with a new value
+* `array(false)` - Tells `EventHandling` that the event should be cancelled
+
+###### Methods
+
+A full list of methods for the `EventHandling` class is listed below:
+* `bool function createEvent(String $name, Object $module,
+String $callback = null)` - Allows you to create an event named `$name` with an
+origin from your `$module`, with an optional callback of `$callback` to
+preprocess data.  Returns true on successful creation, false upon failure
+* `bool function destroyEvent(String $name)` - Removes an event named `$name`,
+returns true if successful, false if the event didn't exist
+* `mixed function getEventByName(String $name)` - Returns an event with the
+specified `$name`, or false if the event didn't exist
+* `array function getEvents()` - Returns an array of all events
+* `bool function receiveData(Connection $connection, String $data)` - Allows you
+to simulate incoming `$data` from a specified `$connection`
+* `bool function registerForEvent(String $name, Object $module,
+String $callback, mixed $data = null)` - Allows you to register a `$callback` in
+your `$module` for the event with specified `$name`.  You can optionally include
+data to the event's data preprocessor if it exists through the `$data` variable.
+Returns true if registration successful, false if an error occured
+* `bool function registerAsEventPreprocessor(String $name,
+Object $module, String $callback)` - Allows you to register a `$callback` in
+your `$module` for the event with specified `$name`
+* `bool function triggerEvent(String $name, int $id,
+mixed $data = null)` - Triggers a specific registration of `$id` for event named
+`$name` with optional `$data`
+* `bool function unregisterEvent(Object $module)` - Unregisters all events for
+given `$module`
+* `bool function unregisterForEvent(String $name, Object $module)` - Unregisters
+`$module` for event named `$name`
+* `bool function unregisterPreprocessorForEvent(String $name,
+Object $module)` - Unregisters `$module` for event named `$name` as preprocessor
+* `bool function unregisterModule(Object $module)` - Unregisters `$module` for
+all event registrations and preprocessors
 
 Support
 =======
