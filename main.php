@@ -102,7 +102,9 @@
           as $module) {
         $module = trim($module);
         if (strlen($module) > 0) {
-          ModuleManagement::loadModule($module);
+          if (!ModuleManagement::loadModule($module)) {
+            die();
+          }
         }
       }
 
@@ -112,7 +114,9 @@
           as $module) {
         $module = trim($module);
         if (strlen($module) > 0) {
-          ModuleManagement::loadModule($module);
+          if (!ModuleManagement::loadModule($module)) {
+            die();
+          }
         }
       }
     }
@@ -166,7 +170,7 @@
       define("__MODFWANGOROOT__", dirname(__FILE__));
 
       // Define the current version of Modfwango.
-      define("__MODFWANGOVERSION__", "1.01");
+      define("__MODFWANGOVERSION__", "1.02");
 
       // Change current working directory to project root.
       chdir(__PROJECTROOT__);
