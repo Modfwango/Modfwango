@@ -437,6 +437,9 @@ Object $module)` - Unregisters `$module` for event named `$name` as preprocessor
 * `bool function unregisterModule(Object $module)` - Unregisters `$module` for
 all event registrations and preprocessors
 
+##### ModuleManagement
+Document this next.
+
 Support
 =======
 
