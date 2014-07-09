@@ -110,13 +110,18 @@
       // Get the connectionCreatedEvent event.
       $event = EventHandling::getEventByName("connectionCreatedEvent");
       if ($event != false) {
-        foreach ($event[2] as $id => $registration) {
-          // Trigger the connectionCreatedEvent event for each registered
-          // module.
-          if (EventHandling::triggerEvent("connectionCreatedEvent", $id,
-              $this)) {
-            $this->configured = true;
+        if (count($event[2]) > 0) {
+          foreach ($event[2] as $id => $registration) {
+            // Trigger the connectionCreatedEvent event for each registered
+            // module.
+            if (EventHandling::triggerEvent("connectionCreatedEvent", $id,
+                $this)) {
+              $this->configured = true;
+            }
           }
+        }
+        else {
+          $this->configured = true;
         }
       }
       return $this->configured;
