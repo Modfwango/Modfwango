@@ -243,5 +243,5 @@ I'll document `EventHandling` tomorrow.
 Support
 =======
 
-For support with this bot's framework, open a ticket, or email me using my email
-address on GitHub.
+For support with this framework, join IRC at `irc.freenode.org` `#modfwango`,
+open a ticket, or email me using my email address on GitHub.
