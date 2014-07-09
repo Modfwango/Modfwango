@@ -29,6 +29,7 @@
           else {
             $this->host = $host;
             $ips = $this->fetch_a($this->host);
+            Logger::info(var_export($ips, true));
             if (is_array($ips)) {
               shuffle($ips);
               $this->ip = $ips[0]["ip"];
