@@ -28,6 +28,10 @@ Table of Contents
       * [registerForEvent](#registerforevent)
       * [registerAsEventPreprocessor](#registeraseventpreprocessor)
       * [Methods](#methods-1)
+    * [ModuleManagement](#modulemanagement)
+    * [SocketManagement](#socketmanagement)
+    * [Socket](#socket)
+    * [StorageHandling](#storagehandling)
 * [Support](#support)
 
 Install
@@ -118,7 +122,7 @@ Each module has a specific set of requirements in order to be compliant with the
 * Must have a non-static property `$name` defined as the base filename without
 its extension
 * Must have a non-static method `isInstantiated` that returns true if the module
-decides it want's to be loaded, or otherwise return false
+decides it wants to be loaded, or otherwise return false
 * Must have opening and closing `<?php` `?>` tags surrounding code
 
 Here is an example module that does absolutely nothing except allow itself to be
@@ -138,7 +142,8 @@ loaded:
 #### Using Available APIs
 
 Modfwango comes packed with some APIs to allow creating modules to be extremely
-easy.  A list of these are:
+easy.  Each class with "Management" or "Handling" in the name is a completely
+static class.  These APIS consist of:
 * `ConnectionManagement`, `Connection` - Allows you to define, undefine,
 connect, and disconnect connections.
 * `EventHandling` - Allows you to create, preprocess, and register for events
@@ -152,6 +157,7 @@ through a simple interface.
 Let's go over each API, shall we?
 
 ##### ConnectionManagement
+`ConnectionManagement` allows you to control incoming or outgoing connections.
 `ConnectionManagement` has the following available methods:
 * `bool newConnection(Connection $connection)` - Adds a connection to the
 connection manager
@@ -438,7 +444,70 @@ Object $module)` - Unregisters `$module` for event named `$name` as preprocessor
 all event registrations and preprocessors
 
 ##### ModuleManagement
-Document this next.
+`ModuleManagement` enables you to control the current set of loaded modules.  A
+list of methods for this class is shown below:
+* `bool isLoaded(String $name)` - Returns true if a module with the given
+`$name` is loaded, otherwise returns false
+* `array getLoadedModules()` - Returns an array of all loaded module objects
+* `array getLoadedModuleNames()` - Returns an array of names of all loaded
+modules
+* `mixed getModuleByName(String $name)` - Returns a module object with the given
+`$name` if loaded, otherwise returns false
+* `mixed loadModule(String $name, bool $suppressNotice = false)` - Returns true
+if a module with the given `$name` can be loaded, null if the module cannot be
+loaded because of missing dependencies, or false upon failure.  An optional
+`$suppressNotice` flag can be set to true to hide the logging for the method
+* `bool reloadModule(String $name)` - Simply calls `unloadModule` and
+`loadModule` and returns true if both are successful, otherwise returns false
+* `bool unloadModule(String $name, bool $suppressNotice = false)` - Unloads a
+module with the given `$name` and returns true upon success, or false upon
+failure.  Also includes the optional `$suppressNotice` variable to hide logging
+
+##### SocketManagement
+`SocketManagement` allows you to control server sockets that accept clients.
+`SocketManagement` has the following available methods:
+* `bool newSocket(Socket $socket)` - Adds a socket to the socket manager
+* `mixed getSocketByHost(String $host)` - Returns a socket that has the provided
+host, or returns false
+* `mixed getSocketByIndex(int $index)` - Returns a socket that has the provided
+index, or returns false
+* `bool delSocketByHost(String $host)` - Removes a socket that has the provided
+host, or returns false
+* `bool delSocketByIndex(int $index)` - Removes a socket that has the provided
+index, or returns false
+* `mixed getSocketIndexByHost(String $host)` - Returns the index of a socket
+that has the provided host, or returns false
+* `array getSockets()` - Returns an array of all sockets known by the socket
+manager
+
+##### Socket
+The `Socket` constructor method is structured as so:
+```php
+bool __construct(String $host, mixed $port)
+```
+
+`Socket` accepts two parameters:
+* A hostname or IP address bind string
+* A string/int of the port to listen on
+
+A listening socket should be created as so:
+```php
+$socket = new Socket("0.0.0.0", 1337);
+```
+
+###### Methods
+After a socket has been created, you can use the following available methods:
+* `bool configured()` - Returns whether or not the `Socket` was properly
+configured
+* `bool close()` - Closes the socket, always returns true
+* `String getHost()` - Returns the bind hostname
+* `mixed getPort()` - Returns the bind port
+* `String getSocketString()` - Returns a string describing the socket
+* `bool accept()` - Attempts to accept a new client and add it to the
+`ConnectionManager`.  Returns true if a client was accepted, otherwise false
+
+
+##### StorageHandling
 
 Support
 =======
