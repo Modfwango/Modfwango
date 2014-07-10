@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.04 - July 9, 2014
+Remove update script since it would require local git commits to update core.
+
 ###### 1.03 - July 9, 2014
 Fix problem with deferred modules causing Modfwango to exit.
 

@@ -182,7 +182,7 @@
       define("__MODFWANGOROOT__", dirname(__FILE__));
 
       // Define the current version of Modfwango.
-      define("__MODFWANGOVERSION__", "1.02");
+      define("__MODFWANGOVERSION__", "1.04");
 
       // Change current working directory to project root.
       chdir(__PROJECTROOT__);
@@ -214,21 +214,13 @@
       // Load the logger.
       require_once(__MODFWANGOROOT__."/includes/logger.php");
 
-      // Make sure the launcher and updater are up-to-date.
+      // Make sure the launcher is up-to-date.
       if (!file_exists(__PROJECTROOT__."/main.php")
           || hash("md5", file_get_contents(__MODFWANGOROOT__."/launcher.php"))
           != hash("md5", file_get_contents(__PROJECTROOT__."/main.php"))) {
         file_put_contents(__PROJECTROOT__."/main.php", file_get_contents(
           __MODFWANGOROOT__."/launcher.php"));
         Logger::info("The launcher has been updated.");
-      }
-      if (!file_exists(__PROJECTROOT__."/update")
-          || hash("md5", file_get_contents(__MODFWANGOROOT__."/update"))
-          != hash("md5", file_get_contents(__PROJECTROOT__."/update"))) {
-        file_put_contents(__PROJECTROOT__."/update", file_get_contents(
-          __MODFWANGOROOT__."/update"));
-        chmod(__PROJECTROOT__."/update", 0777);
-        Logger::info("The update script has been updated.");
       }
 
       // Load the module management class.
