@@ -545,10 +545,10 @@ Modfwango.
   * [modules/admin/Eval.php](http://bit.ly/ircbot-eval)
     * Great example of general module setup and logic
   * [modules/events/ChannelMessageEvent.php](http://bit.ly/ircbot-chanmsgevent)
-    * Great use of event data preprocessors
+    * Great example of event data preprocessors
 * [IRCServer-PHP](http://bit.ly/ircserver-php)
   * [modules/modes/NoExternalMessages.php](http://bit.ly/ircserver-noextmsgs)
-    * Great use of event trigger preprocessors
+    * Great example of event trigger preprocessors
 
 Support
 =======
