@@ -78,11 +78,20 @@ To configure Modfwango, follow these simple guidelines:
 #### conf/listen.conf
 If you require a socket server to listen for connections, you need to configure
 this file.  The syntax for this file is the listen address, followed by a comma,
-followed by the port you'd like to listen on.  Multiple entries should each be
-on a line by themselves.  An example configuration is shown below.
+followed by the port you'd like to listen on.  Ports can be prefixed with a `+`
+in order to make them listen with SSL enabled.  If you need to use your own
+certificate, put it in place of the one that is automatically generated when you
+first listen on SSL (the path to it will be logged when the certificate is
+generated).  Multiple entries should each be on a line by themselves.  An
+example configuration is shown below.
 ```
 0.0.0.0,1337
-127.0.0.1,1338
+0.0.0.0,+1338
+```
+
+The path for SSL certificates will be formatted as so when they're generated:
+```
+conf/ssl/[port]/[address].pem
 ```
 
 #### conf/modules.conf
