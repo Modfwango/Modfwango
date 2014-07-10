@@ -106,10 +106,6 @@
       Logger::info("Connection to '".$this->getConnectionString().
         "' created.");
 
-      if ($this->type == "1" && $this->ssl == true) {
-        $this->getData();
-      }
-
       // Get the connectionCreatedEvent event.
       $event = EventHandling::getEventByName("connectionCreatedEvent");
       if ($event != false) {
