@@ -128,6 +128,9 @@
       $client = @stream_socket_accept($this->socket, 0);
       // Make sure an actual client was accepted.
       if (is_resource($client)) {
+        // Enable crypto.
+        stream_socket_enable_crypto($client, true,
+          STREAM_CRYPTO_METHOD_TLS_SERVER);
         // Set non-blocking.
         stream_set_blocking($client, 0);
         // Add the new socket to the connection management class.
