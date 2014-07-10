@@ -50,9 +50,9 @@
 
     private function brag() {
       Logger::info("Welcome to Modfwango!");
-      Logger::info("You're running Modfwango version ".
+      Logger::info("You're running Modfwango v".
         __MODFWANGOVERSION__.".");
-      Logger::info("To learn more about how to use Modfwango, visit ".
+      Logger::info("To learn more about Modfwango, visit ".
         "http://bit.ly/modfwango");
     }
 

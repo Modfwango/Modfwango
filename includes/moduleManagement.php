@@ -3,7 +3,7 @@
     private static $modules = array();
     private static $waitingList = array();
 
-    public static function checkDependencies($module) {
+    private static function checkDependencies($module) {
       // Check to see if the module has dependencies.
       if (isset($module->depend) && is_array($module->depend)
           && count($module->depend) > 0) {
@@ -26,7 +26,7 @@
       return false;
     }
 
-    public static function determineModuleRoot($name) {
+    private static function determineModuleRoot($name) {
       // Prefer Modfwango core modules over custom modules.
       if (is_readable(__MODFWANGOROOT__."/modules/".$name.".php")) {
         return __MODFWANGOROOT__;
