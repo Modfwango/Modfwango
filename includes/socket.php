@@ -31,7 +31,7 @@
         }
         if (is_resource($socket)) {
           // Setup the socket to be non-blocking.
-          stream_set_blocking($socket, 0);
+          // stream_set_blocking($socket, 0);
           $this->socket = $socket;
           $this->configured = true;
         }
@@ -131,7 +131,7 @@
       // Make sure an actual client was accepted.
       if (is_resource($client)) {
         // Set non-blocking.
-        // stream_set_blocking($client, 0);
+        stream_set_blocking($client, 0);
         // Add the new socket to the connection management class.
         ConnectionManagement::newConnection(new Connection("1", array($client,
           $this->port, $this->ssl, array())));
