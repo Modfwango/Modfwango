@@ -30,8 +30,6 @@
           $socket = @stream_socket_server("tcp://".$this->host.":".$this->port);
         }
         if (is_resource($socket)) {
-          // Setup the socket to be non-blocking.
-          // stream_set_blocking($socket, 0);
           $this->socket = $socket;
           $this->configured = true;
         }
