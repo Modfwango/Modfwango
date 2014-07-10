@@ -102,7 +102,9 @@
           as $module) {
         $module = trim($module);
         if (strlen($module) > 0) {
-          if (!ModuleManagement::loadModule($module)) {
+          $modules[] = $module;
+          if (ModuleManagement::loadModule($module) === false) {
+            Logger::info("Module \"".$module."\" failed to load.");
             die();
           }
         }
@@ -114,9 +116,19 @@
           as $module) {
         $module = trim($module);
         if (strlen($module) > 0) {
-          if (!ModuleManagement::loadModule($module)) {
+          $modules[] = $module;
+          if (ModuleManagement::loadModule($module) === false) {
+            Logger::info("Module \"".$module."\" failed to load.");
             die();
           }
+        }
+      }
+
+      // Make sure all requested modules were loaded.
+      foreach ($modules as $module) {
+        if (!ModuleManagement::isLoaded(basename($module))) {
+          Logger::info("Module \"".$module."\" failed to load.");
+          die();
         }
       }
     }
