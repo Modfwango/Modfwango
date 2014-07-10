@@ -20,6 +20,7 @@ Table of Contents
   * [conf/connections/name.conf](#confconnectionsnameconf)
 * [Development](#development)
   * [Creating Your First Module](#creating-your-first-module)
+  * [Dependencies](#dependencies)
   * [Using Available APIs](#using-available-apis)
     * [ConnectionManagement](#connectionmanagement)
     * [Connection](#connection)
@@ -31,7 +32,9 @@ Table of Contents
     * [ModuleManagement](#modulemanagement)
     * [SocketManagement](#socketmanagement)
     * [Socket](#socket)
+      * [Methods](#methods-2)
     * [StorageHandling](#storagehandling)
+  * [Examples](#examples)
 * [Support](#support)
 
 Install
@@ -139,6 +142,24 @@ loaded:
 ?>
 ```
 
+#### Dependencies
+Modules can establish certain dependencies that are required in order for them
+to load.  This can be done by defining a class property named `$depend` with a
+value of an array with strings of module names.  An example is shown below:
+```php
+<?php
+  class @@CLASSNAME@@ {
+    public $depend = array("ConnectionConnectedEvent",
+      "ConnectionDisconnectedEvent");
+    public $name = "Example";
+
+    public function isInstantiated() {
+      return true;
+    }
+  }
+?>
+```
+
 #### Using Available APIs
 
 Modfwango comes packed with some APIs to allow creating modules to be extremely
@@ -182,7 +203,7 @@ we'll cover those next.
 
 ##### Connection
 The `Connection` constructor method is structured as so:
-```php
+```
 bool __construct(String $type, array $data)
 ```
 `Connection` accepts two parameters:
@@ -198,7 +219,7 @@ connections:
 
 The data array should be structured as so for outgoing connections (the last
 key is optional):
-```php
+```
 array(
   0 => "hostname.example.org",
   1 => "1337",
@@ -219,7 +240,7 @@ connections:
 
 The data array should be structured as so for incoming connections (the last
 key is optional):
-```php
+```
 array(
   0 => $socket,
   1 => "1337",
@@ -232,7 +253,7 @@ array(
 ```
 
 And finally, a new connection should be created as so:
-```php
+```
 $connection = new Connection("0", array("example.org", 1337, false, array()));
 ```
 
@@ -482,7 +503,7 @@ manager
 
 ##### Socket
 The `Socket` constructor method is structured as so:
-```php
+```
 bool __construct(String $host, mixed $port)
 ```
 
@@ -491,7 +512,7 @@ bool __construct(String $host, mixed $port)
 * A string/int of the port to listen on
 
 A listening socket should be created as so:
-```php
+```
 $socket = new Socket("0.0.0.0", 1337);
 ```
 
@@ -516,6 +537,18 @@ false on error
 file with given `$name` in the given `$module`'s sandbox, or false upon error
 * `bool saveFile(Object $module, String $name, String $contents)` - Saves a
 file named `$name` with given `$contents` in the specified `$module`'s sandbox
+
+#### Examples
+A few examples are listed below to demonstrate the above documentation for
+Modfwango.
+* [IRCBot-PHP](http://bit.ly/ircbot-php)
+  * [modules/admin/Eval.php](http://bit.ly/ircbot-eval)
+    * Great example of general module setup and logic
+  * [modules/events/ChannelMessageEvent.php](http://bit.ly/ircbot-chanmsgevent)
+    * Great use of event data preprocessors
+* [IRCServer-PHP](http://bit.ly/ircserver-php)
+  * [modules/modes/NoExternalMessages.php](http://bit.ly/ircserver-noextmsgs)
+    * Great use of event trigger preprocessors
 
 Support
 =======
