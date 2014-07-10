@@ -506,8 +506,16 @@ configured
 * `bool accept()` - Attempts to accept a new client and add it to the
 `ConnectionManager`.  Returns true if a client was accepted, otherwise false
 
-
 ##### StorageHandling
+`StorageHandling` is a class that promotes hassle free management of storage.  A
+list of available methods is shown below:
+* `bool createDirectory(Object $module, String $name)` - Creates a directory
+named `$name` in the given `$module`'s sandbox, returns true on success, or
+false on error
+* `mixed loadFile(Object $module, String $name)` - Returns the contents of a
+file with given `$name` in the given `$module`'s sandbox, or false upon error
+* `bool saveFile(Object $module, String $name, String $contents)` - Saves a
+file named `$name` with given `$contents` in the specified `$module`'s sandbox
 
 Support
 =======
