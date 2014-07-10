@@ -15,7 +15,8 @@
     __PROJECTROOT__."/conf",
     __PROJECTROOT__."/conf/connections",
     __PROJECTROOT__."/data",
-    __PROJECTROOT__."/modules"
+    __PROJECTROOT__."/modules",
+    __PROJECTROOT__."/ssl"
   );
   $files = array(
     __PROJECTROOT__."/conf/modules.conf",

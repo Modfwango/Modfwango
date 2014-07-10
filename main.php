@@ -52,8 +52,23 @@
       Logger::info("Welcome to Modfwango!");
       Logger::info("You're running Modfwango v".
         __MODFWANGOVERSION__.".");
-      Logger::info("To learn more about Modfwango, visit ".
-        "http://bit.ly/modfwango");
+      // Check for updates to Modfwango.
+      $version = "1.00";
+      $contents = @explode("\n", @file_get_contents("https://raw.githubusercon".
+        "tent.com/ClayFreeman/Modfwango/master/CHANGELOG.md", 0,
+        stream_context_create(array('http' => array('timeout' => 1)))));
+      if (is_array($contents)) {
+        foreach ($contents as $line) {
+          if (preg_match("/^[#]{6} (.*)$/i", trim($line), $matches)) {
+            $v = explode(" ", $matches[1]);
+            $v = trim($v[0]);
+            if (version_compare(__MODFWANGOVERSION__, $v, "<")) {
+              Logger::info("An update is available at http://modfwango.com/");
+            }
+            return;
+          }
+        }
+      }
     }
 
     private function discoverConnections() {
@@ -181,8 +196,22 @@
       // Define the root of the Modfwango library folder.
       define("__MODFWANGOROOT__", dirname(__FILE__));
 
+      // Locate the latest version in CHANGELOG.md.
+      $version = "1.00";
+      if (file_exists(__MODFWANGOROOT__."/CHANGELOG.md")) {
+        $contents = explode("\n", file_get_contents(__MODFWANGOROOT__.
+          "/CHANGELOG.md"));
+        foreach ($contents as $line) {
+          if (preg_match("/^[#]{6} (.*)$/i", trim($line), $matches)) {
+            $version = explode(" ", $matches[1]);
+            $version = trim($version[0]);
+            break;
+          }
+        }
+      }
+
       // Define the current version of Modfwango.
-      define("__MODFWANGOVERSION__", "1.04");
+      define("__MODFWANGOVERSION__", $version);
 
       // Change current working directory to project root.
       chdir(__PROJECTROOT__);

@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+###### 1.10 - July 10, 2014
+Add SSL server socket capabilities.  Denote SSL bindings with a `+` before the
+port number in `listen.conf`.
+
+Added update checker capability to inform users when there is an update to
+Modfwango.
+
 ###### 1.04 - July 9, 2014
 Remove update script since it would require local git commits to update core.
 
