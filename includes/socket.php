@@ -73,7 +73,7 @@
 
       $pem = array();
       openssl_x509_export($cert, $pem[0]);
-      openssl_pkey_export($privkey, $pem[1], "password");
+      openssl_pkey_export($privkey, $pem[1], null);
       $pem = implode($pem);
 
       file_put_contents($file, $pem);
@@ -115,7 +115,7 @@
           "ssl" => array(
             "local_cert" => __PROJECTROOT__."/conf/ssl/".$this->port."/".
               $this->host.".pem",
-            "passphrase" => "password"
+            "passphrase" => null
           )
         ));
         return $ctx;
