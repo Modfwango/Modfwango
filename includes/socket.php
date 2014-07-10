@@ -79,7 +79,7 @@
       $pem = implode($pem);
 
       file_put_contents($file, $pem);
-      chmod($file, 0600);
+      Logger::info("Generated SSL certificate file \"".$file."\"");
     }
 
     public function getHost() {
