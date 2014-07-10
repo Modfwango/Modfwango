@@ -22,7 +22,7 @@
         }
         // Attempt to bind the socket to a host and port.
         if ($this->ssl == true) {
-          $socket = @stream_socket_server("tls://".$this->host.":".$this->port,
+          $socket = @stream_socket_server("ssl://".$this->host.":".$this->port,
             $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $ctx);
         }
         else {
@@ -91,7 +91,7 @@
 
     public function getSocketString() {
       // Build a socket string to identify this socket.
-      return ($this->ssl ? "tls://" : "tcp://").$this->host.":".$this->port;
+      return ($this->ssl ? "ssl://" : "tcp://").$this->host.":".$this->port;
     }
 
     private function loadCertificates() {
@@ -130,7 +130,7 @@
       if (is_resource($client)) {
         // Enable crypto.
         stream_socket_enable_crypto($client, true,
-          STREAM_CRYPTO_METHOD_TLS_SERVER);
+          STREAM_CRYPTO_METHOD_SSLv23_SERVER);
         // Set non-blocking.
         stream_set_blocking($client, 0);
         // Add the new socket to the connection management class.
