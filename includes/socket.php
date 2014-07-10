@@ -64,8 +64,8 @@
         "localityName" => "Chicago",
         "organizationName" => "Your Company",
         "organizationalUnitName" => "Server",
-        "commonName" => "server.example.tld",
-        "emailAddress" => "email@example.tld"
+        "commonName" => "example.org",
+        "emailAddress" => "email@example.org"
       );
 
       $privkey = openssl_pkey_new();
