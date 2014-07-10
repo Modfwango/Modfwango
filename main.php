@@ -222,12 +222,12 @@
           __MODFWANGOROOT__."/launcher.php"));
         Logger::info("The launcher has been updated.");
       }
-      if (!file_exists(__PROJECTROOT__."/update.sh")
-          || hash("md5", file_get_contents(__MODFWANGOROOT__."/update.sh"))
-          != hash("md5", file_get_contents(__PROJECTROOT__."/update.sh"))) {
-        file_put_contents(__PROJECTROOT__."/update.sh", file_get_contents(
-          __MODFWANGOROOT__."/update.sh"));
-        chmod(__PROJECTROOT__."/update.sh", 0777);
+      if (!file_exists(__PROJECTROOT__."/update")
+          || hash("md5", file_get_contents(__MODFWANGOROOT__."/update"))
+          != hash("md5", file_get_contents(__PROJECTROOT__."/update"))) {
+        file_put_contents(__PROJECTROOT__."/update", file_get_contents(
+          __MODFWANGOROOT__."/update"));
+        chmod(__PROJECTROOT__."/update", 0777);
         Logger::info("The update script has been updated.");
       }
 
