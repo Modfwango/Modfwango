@@ -16,13 +16,13 @@
           $this->port = substr($this->port, 1);
           $this->ssl = true;
           $ctx = $this->loadCertificates();
-          if ($ctx == false) {
+          if (!is_resource($ctx)) {
             return false;
           }
         }
         // Attempt to bind the socket to a host and port.
         if ($this->ssl == true) {
-          $socket = @stream_socket_server("ssl://".$this->host.":".$this->port,
+          $socket = @stream_socket_server("tls://".$this->host.":".$this->port,
             $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $ctx);
         }
         else {
@@ -91,7 +91,7 @@
 
     public function getSocketString() {
       // Build a socket string to identify this socket.
-      return ($this->ssl ? "ssl://" : "tcp://").$this->host.":".$this->port;
+      return ($this->ssl ? "tls://" : "tcp://").$this->host.":".$this->port;
     }
 
     private function loadCertificates() {
@@ -112,12 +112,15 @@
 
       if (file_exists(__PROJECTROOT__."/conf/ssl/".$this->port."/".
           $this->host.".pem")) {
-        $ctx = stream_context_create();
-        stream_context_set_option($ctx, "ssl", "local_cert", __PROJECTROOT__.
-          "/conf/ssl/".$this->port."/".$this->host.".pem");
-        stream_context_set_option($ctx, "ssl", "passphrase", null);
-        stream_context_set_option($ctx, "ssl", "allow_self_signed", true);
-        stream_context_set_option($ctx, "ssl", "verify_peer", false);
+        $ctx = stream_context_create(array(
+          "ssl" => array(
+            "local_cert" => __PROJECTROOT__."/conf/ssl/".$this->port."/".
+              $this->host.".pem",
+            "passphrase" => null,
+            "allow_self_signed" => true,
+            "verify_peer" => false
+          )
+        ));
         return $ctx;
       }
       return false;
@@ -128,9 +131,6 @@
       $client = @stream_socket_accept($this->socket, 0);
       // Make sure an actual client was accepted.
       if (is_resource($client)) {
-        // Enable crypto.
-        stream_socket_enable_crypto($client, true,
-          STREAM_CRYPTO_METHOD_SSLv23_SERVER);
         // Set non-blocking.
         stream_set_blocking($client, 0);
         // Add the new socket to the connection management class.
