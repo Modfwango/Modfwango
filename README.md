@@ -169,8 +169,8 @@ value of an array with strings of module names.  An example is shown below:
 #### Using Available APIs
 
 Modfwango comes packed with some APIs to allow creating modules to be extremely
-easy.  Each class with "Management" or "Handling" in the name is a completely
-static class.  These APIS consist of:
+easy.  Each class with `Management` or `Handling` in the name is a completely
+static class.  These APIs consist of:
 * `ConnectionManagement`, `Connection` - Allows you to define, undefine,
 connect, and disconnect connections.
 * `EventHandling` - Allows you to create, preprocess, and register for events
@@ -270,7 +270,7 @@ methods:
 * `bool configured()` - Returns whether or not the `Connection` was properly
 configured
 * `bool connect()` - Attempts to connect to the specified host/port, returns
-true if successful, returns false upon error or if `$type` is "1"
+true if successful, returns false upon error or if `$type` is `"1"`
 * `bool disconnect()` - Disconnects from the socket, returns true if successful,
 returns false if socket property is not a valid resource
 * `mixed getData()` - Retrieves data from the socket, returns a string on
@@ -285,7 +285,7 @@ endpoint
 returns false if it doesn't exist
 * `mixed getPort()` - Returns string/int of connection port
 * `bool getSSL()` - Returns true if using SSL, false if using plaintext
-* `String getType()` - Returns "0" if outgoing connection, returns "1" if
+* `String getType()` - Returns `"0"` if outgoing connection, returns `"1"` if
 incoming connection
 * `bool isAlive()` - Returns true if socket is a resource, false if it isn't
 * `bool send(String $data, bool $newline = true)` - Returns true on successful
