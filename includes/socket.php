@@ -23,7 +23,7 @@
         }
         // Attempt to bind the socket to a host and port.
         if ($this->ssl == true) {
-          Logger::info(var_export($ctx, true));
+          Logger::info(var_export(is_resource($ctx), true));
           $socket = @stream_socket_server("tls://".$this->host.":".$this->port,
             $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $ctx);
         }
