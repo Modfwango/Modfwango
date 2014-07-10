@@ -23,8 +23,7 @@
         }
         // Attempt to bind the socket to a host and port.
         if ($this->ssl == true) {
-          Logger::info(var_export(is_resource($ctx), true));
-          $socket = @stream_socket_server("tls://".$this->host.":".$this->port,
+          $socket = @stream_socket_server("ssl://".$this->host.":".$this->port,
             $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $ctx);
         }
         else {
@@ -93,7 +92,7 @@
 
     public function getSocketString() {
       // Build a socket string to identify this socket.
-      return ($this->ssl ? "tls://" : "tcp://").$this->host.":".$this->port;
+      return ($this->ssl ? "ssl://" : "tcp://").$this->host.":".$this->port;
     }
 
     private function loadCertificates() {
