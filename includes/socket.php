@@ -17,6 +17,7 @@
           $this->ssl = true;
           $ctx = $this->loadCertificates();
           if (!is_resource($ctx)) {
+            $this->ssl = false;
             return false;
           }
         }
@@ -74,7 +75,7 @@
 
       $pem = array();
       openssl_x509_export($cert, $pem[0]);
-      openssl_pkey_export($privkey, $pem[1], null);
+      openssl_pkey_export($privkey, $pem[1], "password");
       $pem = implode($pem);
 
       file_put_contents($file, $pem);
@@ -116,9 +117,7 @@
           "ssl" => array(
             "local_cert" => __PROJECTROOT__."/conf/ssl/".$this->port."/".
               $this->host.".pem",
-            "passphrase" => null,
-            "allow_self_signed" => true,
-            "verify_peer" => false
+            "passphrase" => "password"
           )
         ));
         return $ctx;
