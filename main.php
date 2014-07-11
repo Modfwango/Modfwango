@@ -298,8 +298,11 @@
   }
 
   // Instantiate the bot to get things moving.
-  $bot = new Main($argv);
+  $main = new Main($argv);
+
+  // Make the bot variable accessible from everywhere.
+  define("__MAIN__", $bot);
 
   // Start the main loop.
-  $bot->loop();
+  $main->loop();
 ?>
