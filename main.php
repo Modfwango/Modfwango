@@ -32,12 +32,6 @@
 
       // Initiate all loaded connections.
       $this->activateConnections();
-
-      // Start the main loop.
-      $this->loop();
-
-      // Return a false value if the loop fails.
-      return false;
     }
 
     private function activateConnections() {
@@ -148,7 +142,7 @@
       }
     }
 
-    private function loop() {
+    public function loop() {
       // Infinitely loop.
       while (true) {
         // Iterate through each socket.
@@ -305,4 +299,7 @@
 
   // Instantiate the bot to get things moving.
   $bot = new Main($argv);
+
+  // Start the main loop.
+  $this->loop();
 ?>
