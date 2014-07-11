@@ -300,9 +300,11 @@
   // Instantiate the bot to get things moving.
   $main = new Main($argv);
 
-  // Make the bot variable accessible from everywhere.
-  define("__MAIN__", $main);
-
   // Start the main loop.
   $main->loop();
+
+  // Allow things to easily get the main class.
+  function getMain() {
+    return $GLOBALS['main'];
+  }
 ?>
