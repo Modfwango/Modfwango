@@ -301,7 +301,7 @@
   $main = new Main($argv);
 
   // Make the bot variable accessible from everywhere.
-  define("__MAIN__", $bot);
+  define("__MAIN__", $main);
 
   // Start the main loop.
   $main->loop();
