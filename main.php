@@ -301,5 +301,5 @@
   $bot = new Main($argv);
 
   // Start the main loop.
-  $this->loop();
+  $bot->loop();
 ?>
