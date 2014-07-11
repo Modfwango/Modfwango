@@ -18,7 +18,7 @@
     public static function getConnectionByHost($host) {
       // See if an index for a particular connection exists with provided host.
       $i = self::getConnectionIndexByHost($host);
-      if ($i != false) {
+      if ($i !== false) {
         // Get the connection at said index and return it.
         return self::getConnectionByIndex($i);
       }
@@ -36,7 +36,7 @@
     public static function delConnectionByHost($host) {
       // See if an index for a particular connection exists with provided host.
       $i = self::getConnectionIndexByHost($host);
-      if ($i != false) {
+      if ($i !== false) {
         // Remove this connection by its index.
         return self::delConnectionByIndex($i);
       }
