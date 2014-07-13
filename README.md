@@ -258,7 +258,7 @@ key is optional):
 ```
 array(
   0 => $socket,
-  1 => "1337",
+  1 => 1337,
   2 => false,
   3 => array(
     "optional" => "setting",
