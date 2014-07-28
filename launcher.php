@@ -14,9 +14,9 @@
   $directories = array(
     __PROJECTROOT__."/conf",
     __PROJECTROOT__."/conf/connections",
+    __PROJECTROOT__."/conf/ssl",
     __PROJECTROOT__."/data",
-    __PROJECTROOT__."/modules",
-    __PROJECTROOT__."/ssl"
+    __PROJECTROOT__."/modules"
   );
   $files = array(
     __PROJECTROOT__."/conf/modules.conf",
