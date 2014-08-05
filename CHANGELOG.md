@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.14 - August 5, 2014
+Make the `created()` method in `Connection` available to child classes.
+
 ###### 1.13 - August 5, 2014
 Make parent class properties accessible from child classes.
 

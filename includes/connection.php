@@ -101,7 +101,7 @@
       return false;
     }
 
-    private function created() {
+    protected function created() {
       // Let people know what's going on.
       Logger::info("Connection to '".$this->getConnectionString().
         "' created.");
