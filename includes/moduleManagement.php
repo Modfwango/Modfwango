@@ -115,15 +115,18 @@
                 Logger::info("Loaded module \"".$name."\"");
                 // Iterate through the waiting list to check if loading this
                 // module resolved any other dependencies.
-                foreach (self::$waitingList as $key => $item) {
-                  if (self::checkDependencies($item[1])
-                      && $item[1]->isInstantiated()) {
-                    // Loading the previous module allows this module to be
-                    // loaded.
-                    self::$modules[] = $item[1];
-                    Logger::info("Loaded module \"".$item[0]."\"");
-                    // Remove newly loaded module from the waiting list.
-                    unset(self::$waitingList[$key]);
+                while (count(self::$waitingList) !== $lastCount) {
+                  $lastCount = count(self::$waitingList);
+                  foreach (self::$waitingList as $key => $item) {
+                    if (self::checkDependencies($item[1])
+                        && $item[1]->isInstantiated()) {
+                      // Loading the previous module allows this module to be
+                      // loaded.
+                      self::$modules[] = $item[1];
+                      Logger::info("Loaded module \"".$item[0]."\"");
+                      // Remove newly loaded module from the waiting list.
+                      unset(self::$waitingList[$key]);
+                    }
                   }
                 }
                 return true;

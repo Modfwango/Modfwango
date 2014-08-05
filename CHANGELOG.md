@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.15 - August 5, 2014
+Recursively check dependencies.
+
 ###### 1.14 - August 5, 2014
 Make the `created()` method in `Connection` available to child classes.
 
