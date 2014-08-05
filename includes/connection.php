@@ -1,15 +1,15 @@
 <?php
   class Connection {
-    private $socket = null;
-    private $configured = false;
-    private $ip = null;
-    private $host = null;
-    private $localip = null;
-    private $localhost = null;
-    private $port = null;
-    private $options = array();
-    private $ssl = false;
-    private $type = null;
+    protected $socket = null;
+    protected $configured = false;
+    protected $ip = null;
+    protected $host = null;
+    protected $localip = null;
+    protected $localhost = null;
+    protected $port = null;
+    protected $options = array();
+    protected $ssl = false;
+    protected $type = null;
 
     public function __construct($type, $data) {
       $this->type = $type;

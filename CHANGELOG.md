@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.13 - August 5, 2014
+Make parent class properties accessible from child classes.
+
 ###### 1.12 - August 5, 2014
 Added support for pseudo-connection classes to be added to the connection
 manager for fake clients.
