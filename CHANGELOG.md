@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+###### 1.12 - August 5, 2014
+Added support for pseudo-connection classes to be added to the connection
+manager for fake clients.
+
+###### 1.11 - August 3, 2014
+General improvements to the Modfwango project.
+
 ###### 1.10 - July 10, 2014
 Add SSL server socket capabilities.  Denote SSL bindings with a `+` before the
 port number in `listen.conf`.

@@ -4,7 +4,8 @@
 
     public static function newConnection($connection) {
       // Verify that the connection parameter is in fact a Connection class.
-      if (is_object($connection) && get_class($connection) == "Connection"
+      if (is_object($connection) && (get_class($connection) == "Connection"
+          || get_parent_class($connection) == "Connection")
           && $connection->configured() == true) {
         // Store the connection.
         self::$connections[] = $connection;
