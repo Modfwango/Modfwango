@@ -115,6 +115,7 @@
                 Logger::info("Loaded module \"".$name."\"");
                 // Iterate through the waiting list to check if loading this
                 // module resolved any other dependencies.
+                $lastCount = -1;
                 while (count(self::$waitingList) !== $lastCount) {
                   $lastCount = count(self::$waitingList);
                   foreach (self::$waitingList as $key => $item) {
