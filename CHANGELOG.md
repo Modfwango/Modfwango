@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.16 - August 12, 2014
+Fix minor PHP warning about an undefined variable.
+
 ###### 1.15 - August 5, 2014
 Recursively check dependencies.
 
