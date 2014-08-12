@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.17 - August 12, 2014
+Rebase efforts to the Modfwango organization on GitHub.
+
 ###### 1.16 - August 12, 2014
 Fix minor PHP warning about an undefined variable.
 

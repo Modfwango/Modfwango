@@ -49,7 +49,7 @@
       // Check for updates to Modfwango.
       $version = "1.00";
       $contents = @explode("\n", @file_get_contents("https://raw.githubusercon".
-        "tent.com/ClayFreeman/Modfwango/master/CHANGELOG.md", 0,
+        "tent.com/Modfwango/Modfwango/master/CHANGELOG.md", 0,
         stream_context_create(array('http' => array('timeout' => 1)))));
       if (is_array($contents)) {
         foreach ($contents as $line) {
