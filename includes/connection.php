@@ -182,7 +182,7 @@
       if (is_resource($this->socket)) {
         // Attempt to read data from the socket.
         if ($data = @stream_get_line($this->socket, 8192, "\n")) {
-          if ($data != false && strlen($data) > 0) {
+          if ($data != false) {
             // Sanitize data.
             $data = trim($data);
             // Return the data.
