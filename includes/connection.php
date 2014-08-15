@@ -86,6 +86,9 @@
         // Make sure that the stream doesn't block until it receives data.
         stream_set_blocking($this->socket, 0);
 
+        // Set encoding.
+        stream_encoding($this->socket, "UTF-8");
+
         // Get the connectionConnectedEvent event.
         $event = EventHandling::getEventByName("connectionConnectedEvent");
         if ($event != false) {
@@ -183,9 +186,6 @@
         // Attempt to read data from the socket.
         if ($data = @fgets($this->socket, 8192)) {
           if ($data != false && strlen($data) > 0) {
-            // Correct the encoding of the data.
-            $data = utf8_encode(iconv(mb_detect_encoding($data), 'UTF-8',
-              $data));
             // Return the data.
             Logger::debug("Data received on '".$this->getConnectionString().
               "':  '".$data."'");

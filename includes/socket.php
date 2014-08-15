@@ -130,6 +130,8 @@
       if (is_resource($client)) {
         // Set non-blocking.
         stream_set_blocking($client, 0);
+        // Set encoding.
+        stream_encoding($client, "UTF-8");
         // Add the new socket to the connection management class.
         ConnectionManagement::newConnection(new Connection("1", array($client,
           $this->port, $this->ssl, array())));
