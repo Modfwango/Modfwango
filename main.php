@@ -225,9 +225,6 @@
       // Define the time to sleep at the end of every infinite loop.
       define("__DELAY__", 10000);
 
-      // Auto detect line endings.
-      ini_set("auto_detect_line_endings", true);
-
       // Load the connection related classes.
       require_once(__MODFWANGOROOT__."/includes/connection.php");
       require_once(__MODFWANGOROOT__."/includes/connectionManagement.php");

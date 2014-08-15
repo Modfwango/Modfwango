@@ -181,8 +181,10 @@
       // Check to make sure the socket is a valid resource.
       if (is_resource($this->socket)) {
         // Attempt to read data from the socket.
-        if ($data = @fgets($this->socket, 8192)) {
+        if ($data = @stream_get_line($this->socket, 8192, "\n")) {
           if ($data != false && strlen($data) > 0) {
+            // Sanitize data.
+            $data = trim($data);
             // Return the data.
             Logger::debug("Data received on '".$this->getConnectionString().
               "':  '".$data."'");
