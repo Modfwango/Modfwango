@@ -86,9 +86,6 @@
         // Make sure that the stream doesn't block until it receives data.
         stream_set_blocking($this->socket, 0);
 
-        // Set encoding.
-        stream_encoding($this->socket, "UTF-8");
-
         // Get the connectionConnectedEvent event.
         $event = EventHandling::getEventByName("connectionConnectedEvent");
         if ($event != false) {
