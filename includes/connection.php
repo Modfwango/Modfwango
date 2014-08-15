@@ -184,7 +184,8 @@
         if ($data = @fgets($this->socket, 8192)) {
           if ($data != false && strlen($data) > 0) {
             // Correct the encoding of the data.
-            $data = iconv(mb_detect_encoding($data), 'UTF-8', $data);
+            $data = utf8_encode(iconv(mb_detect_encoding($data), 'UTF-8',
+              $data));
             // Return the data.
             Logger::debug("Data received on '".$this->getConnectionString().
               "':  '".$data."'");
