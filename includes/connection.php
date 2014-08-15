@@ -272,10 +272,10 @@
         // Send data to the client.
         if ($newline == true) {
           $line = $data."\r\n";
-          $status = @stream_socket_recvfrom($this->socket, $line);
+          $status = @fputs($this->socket, $line, strlen($line));
         }
         else {
-          $status = @stream_socket_recvfrom($this->socket, $data);
+          $status = @fputs($this->socket, $data, strlen($data));
         }
 
         // Disconnect if an error occurred.
