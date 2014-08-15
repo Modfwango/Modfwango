@@ -181,7 +181,7 @@
       // Check to make sure the socket is a valid resource.
       if (is_resource($this->socket)) {
         // Attempt to read data from the socket.
-        if ($data = @fread($this->socket, 8192)) {
+        if ($data = @stream_socket_recvfrom($this->socket, 8192)) {
           if ($data != false && strlen($data) > 0) {
             // Return the data.
             Logger::debug("Data received on '".$this->getConnectionString().
@@ -272,10 +272,10 @@
         // Send data to the client.
         if ($newline == true) {
           $line = $data."\r\n";
-          $status = @fputs($this->socket, $line, strlen($line));
+          $status = @stream_socket_recvfrom($this->socket, $line);
         }
         else {
-          $status = @fputs($this->socket, $data, strlen($data));
+          $status = @stream_socket_recvfrom($this->socket, $data);
         }
 
         // Disconnect if an error occurred.
