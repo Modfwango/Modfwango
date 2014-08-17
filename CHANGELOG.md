@@ -5,6 +5,8 @@ Change Log
 Deprecate `@@CLASSNAME@@` for better alternative `__CLASSNAME__` that satisfies
 code validation and text editor requirements.
 
+Update all core modules to use `__CLASSNAME__`.
+
 ###### 1.19 - August 16, 2014
 Prevent a module from being unloaded if another module which is unloadable
 depends upon it.
