@@ -165,8 +165,8 @@
       // Make sure the module is actually loaded.
       if (self::isLoaded(basename($name))) {
         // Check to see if the module is reloadable.
-        if (method_exists(self::getModuleByName(basename($name)),
-            "isReloadable") &&
+        if (!method_exists(self::getModuleByName(basename($name)),
+            "isReloadable") ||
             self::getModuleByName(basename($name))->isReloadable() == true) {
           // Unload the module.
           if (self::unloadModule($name, true)) {
