@@ -190,30 +190,35 @@
 
       // Make sure the module is actually loaded.
       if (self::isLoaded(basename($name))) {
-        // Iterate through each module.
-        foreach (self::$modules as $key => $module) {
-          // If the names match, unload the module.
-          if (strtolower($module->name) == strtolower(basename($name))) {
-            // Iterate through all modules.
-            foreach (self::$modules as $m) {
-              // Check if they depend on anything.
-              if (isset($m->depend) && is_array($m->depend)
-                  && count($m->depend) > 0) {
-                foreach ($m->depend as $d) {
-                  // Do they depend on this module?
-                  if (strtolower($d) == strtolower(basename($name))) {
-                    // Unload it as well!
-                    self::unloadModule($m->name);
-                    break;
+        // Check to see if the module is unloadable.
+        if (!method_exists(self::getModuleByName(basename($name)),
+            "isUnloadable") ||
+            self::getModuleByName(basename($name))->isUnloadable() == true) {
+          // Iterate through each module.
+          foreach (self::$modules as $key => $module) {
+            // If the names match, unload the module.
+            if (strtolower($module->name) == strtolower(basename($name))) {
+              // Iterate through all modules.
+              foreach (self::$modules as $m) {
+                // Check if they depend on anything.
+                if (isset($m->depend) && is_array($m->depend)
+                    && count($m->depend) > 0) {
+                  foreach ($m->depend as $d) {
+                    // Do they depend on this module?
+                    if (strtolower($d) == strtolower(basename($name))) {
+                      // Unload it as well!
+                      self::unloadModule($m->name);
+                      break;
+                    }
                   }
                 }
               }
+              // Unregister all events associated with this module.
+              EventHandling::unregisterModule($module);
+              unset(self::$modules[$key]);
+              Logger::info("Unloaded module \"".$name."\"");
+              return true;
             }
-            // Unregister all events associated with this module.
-            EventHandling::unregisterModule($module);
-            unset(self::$modules[$key]);
-            Logger::info("Unloaded module \"".$name."\"");
-            return true;
           }
         }
       }

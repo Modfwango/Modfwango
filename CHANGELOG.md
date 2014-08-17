@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.18 - August 16, 2014
+Allow modules to explicitly declare if they're reloadable or unloadable.
+
 ###### 1.17 - August 12, 2014
 Rebase efforts to the Modfwango organization on GitHub.
 
