@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+###### 1.19 - August 16, 2014
+Prevent a module from being unloaded if another module which is unloadable
+depends upon it.
+
 ###### 1.18 - August 16, 2014
 Allow modules to explicitly declare if they're reloadable or unloadable.
 
