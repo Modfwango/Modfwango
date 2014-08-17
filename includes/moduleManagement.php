@@ -164,12 +164,17 @@
       Logger::debug("Reloading module \"".$name."...\"");
       // Make sure the module is actually loaded.
       if (self::isLoaded(basename($name))) {
-        // Unload the module.
-        if (self::unloadModule($name, true)) {
-          // Load the module.
-          if(self::loadModule($name, true)) {
-            Logger::info("Reloaded module \"".$name."\"");
-            return true;
+        // Check to see if the module is reloadable.
+        if (method_exists(self::getModuleByName(basename($name)),
+            "isReloadable") &&
+            self::getModuleByName(basename($name))->isReloadable() == true) {
+          // Unload the module.
+          if (self::unloadModule($name, true)) {
+            // Load the module.
+            if(self::loadModule($name, true)) {
+              Logger::info("Reloaded module \"".$name."\"");
+              return true;
+            }
           }
         }
       }
