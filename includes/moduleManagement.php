@@ -207,7 +207,11 @@
                     // Do they depend on this module?
                     if (strtolower($d) == strtolower(basename($name))) {
                       // Unload it as well!
-                      self::unloadModule($m->name);
+                      if (!self::unloadModule($m->name)) {
+                        // If we can't unload this module, we can't unload the
+                        // original module.
+                        return false;
+                      }
                       break;
                     }
                   }
