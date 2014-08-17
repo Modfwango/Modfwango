@@ -94,9 +94,9 @@
         // Generate a random class name to allow for reloadable modules.
         $classname = basename($name).time().mt_rand();
         // Setup the eval string, replacing placeholders with values.
-        $eval = str_ireplace("@@CLASSNAME@@", $classname,
-          substr(trim(file_get_contents($root."/modules/".
-          $name.".php")), 5, -2));
+        $eval = str_ireplace("@@CLASSNAME@@", $classname, str_ireplace(
+          "__CLASSNAME__", $classname, substr(trim(file_get_contents($root.
+          "/modules/".$name.".php")), 5, -2)));
         // Eval the string to create the class.
         eval($eval);
         // Make sure something didn't go wrong.

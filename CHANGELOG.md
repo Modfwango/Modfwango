@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+###### 1.20 - August 17, 2014
+Deprecate `@@CLASSNAME@@` for better alternative `__CLASSNAME__` that satisfies
+code validation and text editor requirements.
+
 ###### 1.19 - August 16, 2014
 Prevent a module from being unloaded if another module which is unloadable
 depends upon it.

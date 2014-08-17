@@ -136,7 +136,8 @@ Development
 Each module has a specific set of requirements in order to be compliant with the
 `ModuleManagement` class:
 * Must be located somewhere inside the `modules` directory in your project root
-* Must be inside of a class named `@@CLASSNAME@@`
+* Must be inside of a class named `__CLASSNAME__` (or `@@CLASSNAME@@` for
+  legacy modules)
 * Must have a non-static property `$name` defined as the base filename without
 its extension
 * Must have a non-static method `isInstantiated` that returns true if the module
@@ -147,7 +148,7 @@ Here is an example module that does absolutely nothing except allow itself to be
 loaded:
 ```php
 <?php
-  class @@CLASSNAME@@ {
+  class __CLASSNAME__ {
     public $name = "ModuleFileName";
 
     public function isInstantiated() {
@@ -163,7 +164,7 @@ to load.  This can be done by defining a class property named `$depend` with a
 value of an array with strings of module names.  An example is shown below:
 ```php
 <?php
-  class @@CLASSNAME@@ {
+  class __CLASSNAME__ {
     public $depend = array("ConnectionConnectedEvent",
       "ConnectionDisconnectedEvent");
     public $name = "Example";
@@ -313,7 +314,7 @@ automatically, for example, when a certain string of data is sent, or if certain
 conditions are met.  An event module can be as simple as shown below:
 ```php
 <?php
-  class @@CLASSNAME@@ {
+  class __CLASSNAME__ {
     public $name = "ConnectionConnectedEvent";
 
     public function isInstantiated() {
@@ -331,7 +332,7 @@ preprocessor callback (the third parameter to `EventHandling::createEvent()`).
 An example of an event that includes a data preprocessor is shown below:
 ```php
 <?php
-  class @@CLASSNAME@@ {
+  class __CLASSNAME__ {
     public $name = "RawEvent";
 
     public function preprocessEvent($name, $registrations, $connection, $data) {
@@ -366,7 +367,7 @@ registration was successful, or false if it didn't succeed.  An example module
 that registers for an event is shown below:
 ```php
 <?php
-  class @@CLASSNAME@@ {
+  class __CLASSNAME__ {
     public $depend = array("RawEvent");
     public $name = "DataLogging";
 
@@ -406,7 +407,7 @@ event to trigger.  An example module that registers as an event preprocessor is
 shown below:
 ```php
 <?php
-  class @@CLASSNAME@@ {
+  class __CLASSNAME__ {
     public $depend = array();
     public $name = "IgnoreConnectionConnectedEvent";
 
