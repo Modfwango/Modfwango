@@ -557,13 +557,13 @@ file named `$name` with given `$contents` in the specified `$module`'s sandbox
 #### Examples
 A few examples are listed below to demonstrate the above documentation for
 Modfwango.
-* [IRCBot-PHP](http://bit.ly/ircbot-php)
-  * [modules/admin/Eval.php](http://bit.ly/ircbot-eval)
+* [IRCBot-PHP](http://bit.ly/1pDxlhP)
+  * [modules/admin/Eval.php](http://bit.ly/1pVcvtj)
     * Great example of general module setup and logic
-  * [modules/events/ChannelMessageEvent.php](http://bit.ly/ircbot-chanmsgevent)
+  * [modules/events/ChannelMessageEvent.php](http://bit.ly/1tdemKn)
     * Great example of event data preprocessors
-* [IRCServer-PHP](http://bit.ly/ircserver-php)
-  * [modules/modes/NoExternalMessages.php](http://bit.ly/ircserver-noextmsgs)
+* [IRCServer-PHP](http://bit.ly/1vZ7t4M)
+  * [modules/modes/NoExternalMessages.php](http://bit.ly/1t8Emsc)
     * Great example of event trigger preprocessors
 
 Support
