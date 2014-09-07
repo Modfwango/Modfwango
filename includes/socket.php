@@ -12,7 +12,6 @@
       if (is_string($host) && !stristr($host, "/") && is_numeric($port)) {
         // Assign class properties.
         $this->host = $host;
-        $this->port = $port;
         if (substr($this->port, 0, 1) == "+") {
           $this->port = substr($this->port, 1);
           $this->ssl = true;
@@ -34,7 +33,8 @@
           $socket = @stream_socket_server("tcp://".$this->host.":".$this->port);
         }
         if (is_resource($socket)) {
-          Logger::info(stream_socket_get_name($socket, false));
+          $url = parse_url(stream_socket_get_name($socket, false));
+          $this->port = $url["port"];
           $this->socket = $socket;
           $this->configured = true;
         }
