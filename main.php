@@ -76,17 +76,6 @@
     }
 
     private function discoverSockets() {
-      // Attempt to create the inter-process communication socket.
-      $sock = new Socket("127.0.0.1", "4120");
-      if ($sock != false) {
-        // Add it to the socket management class.
-        SocketManagement::newSocket($sock);
-      }
-      else {
-        // Couldn't bind!
-        Logger::debug("Could not bind to address.");
-      }
-
       // Load the listen configuration.
       $listen = trim(file_get_contents(__PROJECTROOT__."/conf/listen.conf"));
       $listen = explode("\n", $listen);
@@ -112,6 +101,17 @@
             }
           }
         }
+      }
+
+      // Attempt to create the inter-process communication socket.
+      $sock = new Socket("127.0.0.1", "0");
+      if ($sock != false) {
+        // Add it to the socket management class.
+        SocketManagement::newSocket($sock);
+      }
+      else {
+        // Couldn't bind!
+        Logger::debug("Could not bind to address.");
       }
     }
 
