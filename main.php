@@ -189,7 +189,7 @@
               // Check to see if this is an inter-process communication socket.
               if ($connection->getIPC()) {
                 // Pass the connection and associated data to the IPC handler.
-                IPCHandling::receiveData($connection, trim($line));
+                IPCHandling::receiveData($connection, trim($data));
               }
               else {
                 // Pass the connection and associated data to the event handler.
