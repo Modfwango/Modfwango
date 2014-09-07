@@ -1,6 +1,6 @@
 <?php
   class IPCHandling {
-    public function receiveData($connection, $data) {
+    public static function receiveData($connection, $data) {
       Logger::info($data);
     }
   }
