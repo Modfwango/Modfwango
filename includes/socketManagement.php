@@ -9,8 +9,8 @@
           && self::getSocketByHost($socket->getHost()) == false) {
         // Store the socket.
         self::$sockets[] = $socket;
-        Logger::info("Socket '".$socket->getSocketString().
-          "' added to the socket manager.");
+        Logger::info(($socket->getIPC() ? "IPC " : null)."Socket '".
+          $socket->getSocketString()."' added to the socket manager.");
         return true;
       }
       return false;

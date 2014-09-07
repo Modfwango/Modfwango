@@ -90,6 +90,10 @@
       return $this->host;
     }
 
+    public function getIPC() {
+      return $this->ipc;
+    }
+
     public function getPort() {
       return $this->port;
     }
