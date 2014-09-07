@@ -107,8 +107,9 @@
 
     protected function created() {
       // Let people know what's going on.
-      Logger::info("Connection ".($this->type == "0" ? "to" : "from")." '".
-        $this->getConnectionString()."' created.");
+      Logger::info(($connection->getIPC() ? "IPC " : null)."Connection ".
+        ($this->type == "0" ? "to" : "from")." '".$this->getConnectionString().
+        "' created.");
 
       // Use an alternate event for inter-process communication sockets.
       if ($this->ipc == true) {
