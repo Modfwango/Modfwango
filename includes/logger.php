@@ -1,6 +1,13 @@
 <?php
   class Logger {
     public static function debug($msg) {
+      // Split multi-line messages.
+      if (stristr($msg, "\n")) {
+        foreach (explode("\n", $msg) as $line) {
+          self::debug($msg);
+        }
+        return;
+      }
       // If debug mode is on, show debug messages.
       if (__DEBUG__ == true) {
         // Show a message.
@@ -9,6 +16,13 @@
     }
 
     public static function info($msg) {
+      // Split multi-line messages.
+      if (stristr($msg, "\n")) {
+        foreach (explode("\n", $msg) as $line) {
+          self::info($msg);
+        }
+        return;
+      }
       // Show a message.
       echo " [ INFO ]  ".trim($msg)."\n";
     }

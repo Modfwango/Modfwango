@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+###### 1.21 - September 6, 2014
+Add inter-process communication handling and modify the rest of the framework to
+integrate it.
+
+Update `Logger` to separate multiple lines into multiple `Logger` calls.
+
 ###### 1.20 - August 17, 2014
 Deprecate `@@CLASSNAME@@` for better alternative `__CLASSNAME__` that satisfies
 code validation and text editor requirements.

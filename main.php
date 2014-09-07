@@ -76,6 +76,17 @@
     }
 
     private function discoverSockets() {
+      // Attempt to create the inter-process communication socket.
+      $sock = new Socket("127.0.0.1", "4120");
+      if ($sock != false) {
+        // Add it to the socket management class.
+        SocketManagement::newSocket($sock);
+      }
+      else {
+        // Couldn't bind!
+        Logger::debug("Could not bind to address.");
+      }
+
       // Load the listen configuration.
       $listen = trim(file_get_contents(__PROJECTROOT__."/conf/listen.conf"));
       $listen = explode("\n", $listen);
@@ -161,13 +172,29 @@
           if ($data != false) {
             if (stristr($data, "\n")) {
               foreach (explode("\n", $data) as $line) {
-                // Pass the connection and associated data to the event handler.
-                EventHandling::receiveData($connection, trim($line));
+                // Check to see if this is an inter-process communication
+                // socket.
+                if ($connection->getIPC()) {
+                  // Pass the connection and associated data to the IPC handler.
+                  IPCHandling::receiveData($connection, trim($line));
+                }
+                else {
+                  // Pass the connection and associated data to the event
+                  // handler.
+                  EventHandling::receiveData($connection, trim($line));
+                }
               }
             }
             else {
-              // Pass the connection and associated data to the event handler.
-              EventHandling::receiveData($connection, trim($data));
+              // Check to see if this is an inter-process communication socket.
+              if ($connection->getIPC()) {
+                // Pass the connection and associated data to the IPC handler.
+                IPCHandling::receiveData($connection, trim($line));
+              }
+              else {
+                // Pass the connection and associated data to the event handler.
+                EventHandling::receiveData($connection, trim($data));
+              }
             }
           }
         }
@@ -230,6 +257,9 @@
       require_once(__MODFWANGOROOT__."/includes/connectionManagement.php");
       require_once(__MODFWANGOROOT__."/includes/socket.php");
       require_once(__MODFWANGOROOT__."/includes/socketManagement.php");
+
+      // Load the inter-process communication handler.
+      require_once(__MODFWANGOROOT__."/includes/IPCHandling.php");
 
       // Load the event handler.
       require_once(__MODFWANGOROOT__."/includes/eventHandling.php");
