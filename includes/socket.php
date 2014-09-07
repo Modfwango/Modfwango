@@ -12,6 +12,7 @@
       if (is_string($host) && !stristr($host, "/") && is_numeric($port)) {
         // Assign class properties.
         $this->host = $host;
+        $this->port = $port;
         if (substr($this->port, 0, 1) == "+") {
           $this->port = substr($this->port, 1);
           $this->ssl = true;
