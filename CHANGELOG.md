@@ -5,7 +5,8 @@ Change Log
 Add inter-process communication handling and modify the rest of the framework to
 integrate it.
 
-Update `Logger` to separate multiple lines into multiple `Logger` calls.
+Update `Logger` to separate multiple lines into multiple `Logger` calls and
+right align the log type prefix.
 
 ###### 1.20 - August 17, 2014
 Deprecate `@@CLASSNAME@@` for better alternative `__CLASSNAME__` that satisfies

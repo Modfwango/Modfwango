@@ -24,7 +24,7 @@
         return;
       }
       // Show a message.
-      echo " [ INFO ]  ".trim($msg)."\n";
+      echo "  [ INFO ] ".trim($msg)."\n";
     }
 
     public static function memoryUsage() {
