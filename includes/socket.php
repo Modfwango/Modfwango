@@ -34,7 +34,7 @@
           $socket = @stream_socket_server("tcp://".$this->host.":".$this->port);
         }
         if (is_resource($socket)) {
-          Logger::info(stream_socket_get_name($socket));
+          Logger::info(stream_socket_get_name($socket, false));
           $this->socket = $socket;
           $this->configured = true;
         }
