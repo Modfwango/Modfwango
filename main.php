@@ -104,7 +104,7 @@
       }
 
       // Attempt to create the inter-process communication socket.
-      $sock = new Socket("127.0.0.1", "0");
+      $sock = new Socket("127.0.0.1", "0", true);
       if ($sock != false) {
         // Add it to the socket management class.
         SocketManagement::newSocket($sock);
