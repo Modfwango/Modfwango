@@ -98,6 +98,10 @@
       return $this->port;
     }
 
+    public function getSSL() {
+      return $this->ssl;
+    }
+
     public function getSocketString() {
       // Build a socket string to identify this socket.
       return ($this->ssl ? "tls://" : "tcp://").$this->host.":".$this->port;
