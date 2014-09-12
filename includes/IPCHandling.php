@@ -6,6 +6,7 @@
         die('could not fork');
       } else if ($pid) {
         //parent
+        pcntl_wait($status, WNOHANG);
         return $pid;
       } else {
         //child
