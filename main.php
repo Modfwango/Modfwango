@@ -172,29 +172,14 @@
           if ($data != false) {
             if (stristr($data, "\n")) {
               foreach (explode("\n", $data) as $line) {
-                // Check to see if this is an inter-process communication
-                // socket.
-                if ($connection->getIPC()) {
-                  // Pass the connection and associated data to the IPC handler.
-                  IPCHandling::receiveData($connection, trim($line));
-                }
-                else {
-                  // Pass the connection and associated data to the event
-                  // handler.
-                  EventHandling::receiveData($connection, trim($line));
-                }
+                // Pass the connection and associated data to the event
+                // handler.
+                EventHandling::receiveData($connection, trim($line));
               }
             }
             else {
-              // Check to see if this is an inter-process communication socket.
-              if ($connection->getIPC()) {
-                // Pass the connection and associated data to the IPC handler.
-                IPCHandling::receiveData($connection, trim($data));
-              }
-              else {
-                // Pass the connection and associated data to the event handler.
-                EventHandling::receiveData($connection, trim($data));
-              }
+              // Pass the connection and associated data to the event handler.
+              EventHandling::receiveData($connection, trim($data));
             }
           }
         }

@@ -24,18 +24,5 @@
         die();
       }
     }
-
-    public static function receiveData($connection, $data) {
-      // Get the IPCRawEvent event.
-      $event = EventHandling::getEventByName("IPCRawEvent");
-      if ($event != false) {
-        foreach ($event[2] as $id => $registration) {
-          // Trigger the IPCRawEvent event for each registered
-          // module.
-          EventHandling::triggerEvent("IPCRawEvent", $id,
-            array($connection, $data));
-        }
-      }
-    }
   }
 ?>
