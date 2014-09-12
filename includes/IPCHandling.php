@@ -21,6 +21,7 @@
             $connection->disconnect();
           }
         }
+        die();
       }
     }
 
