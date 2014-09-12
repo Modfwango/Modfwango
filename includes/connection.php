@@ -38,6 +38,9 @@
               return false;
             }
           }
+          if ($ipc == true) {
+            $this->ipc = true;
+          }
           $this->localip = "127.0.0.1";
           $this->localhost = "localhost";
           $this->port = $port;
