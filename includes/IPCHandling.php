@@ -20,10 +20,10 @@
             $connection->connect();
             $connection->send(json_encode($module->$method($data)));
             $connection->disconnect();
+            Logger::info("Finished dispatch.");
+            die();
           }
         }
-        Logger::info("Finished dispatch.");
-        die();
       }
     }
   }
