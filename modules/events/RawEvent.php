@@ -8,7 +8,7 @@
       // Iterate through each registration.
       foreach ($registrations as $id => $registration) {
         // Trigger the event for a certain registration.
-        Logger::info(var_export($registration, true));
+        Logger::info(var_export($registration[2], true));
         EventHandling::triggerEvent($name, $id, array($connection, $data, $ex));
       }
     }
