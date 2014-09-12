@@ -17,6 +17,7 @@
               $socket->getSSL(),
               array()
             ), true);
+            $connection->connect();
             $connection->send(json_encode($module->$method($data)));
             $connection->disconnect();
           }
