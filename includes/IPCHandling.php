@@ -15,7 +15,8 @@
               $socket->getHost(),
               $socket->getPort(),
               $socket->getSSL(),
-              array()
+              array(),
+              true
             ));
             $connection->send(json_encode($module->$method($data)));
             $connection->disconnect();
