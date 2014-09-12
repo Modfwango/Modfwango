@@ -1,12 +1,15 @@
 <?php
   class IPCHandling {
-    public static function dispatch($module, $method, $callback, $data = null) {
+    public static function dispatch($module, $method, $data = null) {
+      $uuid = md5(rand().time());
       $pid = pcntl_fork();
       if ($pid == -1) {
-        die('could not fork');
+        Logger::info("Couldn't fork. Exiting...");
+        die();
       } else if ($pid) {
         //parent
-        return $pid;
+        Logger::debug("Dispatched thread for UUID ".$uuid);
+        return $uuid;
       } else {
         //child
         foreach (SocketManagement::getSockets() as $socket) {
@@ -18,12 +21,17 @@
               array()
             ), true);
             $connection->connect();
-            $connection->send(json_encode($module->$method($data)));
+            $connection->send(json_encode(array(
+              $uuid,
+              $module->$method($data)
+            )));
             $connection->disconnect();
-            Logger::info("Finished dispatch.");
+            Logger::debug("Finished dispatch for UUID ".$uuid);
             die();
           }
         }
+        // Make sure the child dies if there is no IPC socket.
+        die();
       }
     }
   }
