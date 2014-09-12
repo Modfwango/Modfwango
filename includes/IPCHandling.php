@@ -6,7 +6,6 @@
         die('could not fork');
       } else if ($pid) {
         //parent
-        pcntl_wait($status, WNOHANG);
         return $pid;
       } else {
         //child
@@ -22,6 +21,7 @@
             $connection->disconnect();
           }
         }
+        Logger::info("Finished dispatch.");
         die();
       }
     }
