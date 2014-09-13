@@ -44,7 +44,7 @@
         $module = self::$threads[$data[0]][0];
         $callback = self::$threads[$data[0]][1];
         $module->$callback($data[0], $data[1]);
-        unset($threads[$data[0]]);
+        unset(self::$threads[$data[0]]);
       }
       $connection->disconnect();
     }
