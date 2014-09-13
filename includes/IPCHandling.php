@@ -9,10 +9,12 @@
       if ($pid == -1) {
         Logger::info("Couldn't fork. Exiting...");
         die();
-      } else if ($pid) {
+      }
+      elseif ($pid) {
         Logger::debug("Dispatched thread for UUID ".$uuid);
         return $uuid;
-      } else {
+      }
+      else {
         foreach (SocketManagement::getSockets() as $socket) {
           if ($socket->getIPC() == true) {
             $connection = new Connection("0", array(
