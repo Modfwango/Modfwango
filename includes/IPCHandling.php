@@ -4,7 +4,7 @@
 
     public static function dispatch($module, $method, $callback, $data = null) {
       $uuid = md5(rand().time());
-      self::$dispatches[$uuid] = array($module, $callback);
+      self::$threads[$uuid] = array($module, $callback);
       $pid = pcntl_fork();
       if ($pid == -1) {
         Logger::info("Couldn't fork. Exiting...");
