@@ -114,27 +114,8 @@
         ($this->type == "0" ? "to" : "from")." '".$this->getConnectionString().
         "' created.");
 
-      // Use an alternate event for inter-process communication sockets.
-      if ($this->ipc == true) {
-        // Get the IPCConnectionCreatedEvent event.
-        $event = EventHandling::getEventByName("IPCConnectionCreatedEvent");
-        if ($event != false) {
-          if (count($event[2]) > 0) {
-            foreach ($event[2] as $id => $registration) {
-              // Trigger the IPCConnectionCreatedEvent event for each registered
-              // module.
-              if (EventHandling::triggerEvent("IPCConnectionCreatedEvent", $id,
-                  $this)) {
-                $this->configured = true;
-              }
-            }
-          }
-          else {
-            $this->configured = true;
-          }
-        }
-      }
-      else {
+      // Don't trigger the event for inter-process communication sockets.
+      if ($this->ipc != true) {
         // Get the connectionCreatedEvent event.
         $event = EventHandling::getEventByName("connectionCreatedEvent");
         if ($event != false) {
@@ -166,21 +147,8 @@
         @fclose($this->socket);
         $this->socket = null;
 
-        // Use an alternate event for inter-process communication sockets.
-        if ($this->ipc == true) {
-          // Get the IPCConnectionDisconnectedEvent event.
-          $event = EventHandling::getEventByName(
-            "IPCConnectionDisconnectedEvent");
-          if ($event != false) {
-            foreach ($event[2] as $id => $registration) {
-              // Trigger the IPCConnectionDisconnectedEvent event for each
-              // registered module.
-              EventHandling::triggerEvent("IPCConnectionDisconnectedEvent", $id,
-                $this);
-            }
-          }
-        }
-        else {
+        // Don't trigger the event for inter-process communication sockets.
+        if ($this->ipc != true) {
           // Get the connectionDisconnectedEvent event.
           $event = EventHandling::getEventByName("connectionDisconnectedEvent");
           if ($event != false) {

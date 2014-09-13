@@ -172,14 +172,26 @@
           if ($data != false) {
             if (stristr($data, "\n")) {
               foreach (explode("\n", $data) as $line) {
-                // Pass the connection and associated data to the event
-                // handler.
-                EventHandling::receiveData($connection, trim($line));
+                if ($connection->getIPC() == true) {
+                  // Pass the connection and associated data to the IPC handler.
+                  IPCHandling::receiveData($connection, trim($line));
+                }
+                else {
+                  // Pass the connection and associated data to the event
+                  // handler.
+                  EventHandling::receiveData($connection, trim($line));
+                }
               }
             }
             else {
-              // Pass the connection and associated data to the event handler.
-              EventHandling::receiveData($connection, trim($data));
+              if ($connection->getIPC() == true) {
+                // Pass the connection and associated data to the IPC handler.
+                IPCHandling::receiveData($connection, trim($line));
+              }
+              else {
+                // Pass the connection and associated data to the event handler.
+                EventHandling::receiveData($connection, trim($data));
+              }
             }
           }
         }

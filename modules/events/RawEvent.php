@@ -8,10 +8,8 @@
       // Iterate through each registration.
       foreach ($registrations as $id => $registration) {
         // Trigger the event for a certain registration.
-        if ($registration[2] == true) {
-          EventHandling::triggerEvent($name, $id, array($connection, $data,
-            $ex));
-        }
+        EventHandling::triggerEvent($name, $id, array($connection, $data,
+          $ex));
       }
     }
 
