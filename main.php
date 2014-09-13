@@ -186,7 +186,7 @@
             else {
               if ($connection->getIPC() == true) {
                 // Pass the connection and associated data to the IPC handler.
-                IPCHandling::receiveData($connection, trim($line));
+                IPCHandling::receiveData($connection, trim($data));
               }
               else {
                 // Pass the connection and associated data to the event handler.
