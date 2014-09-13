@@ -26,7 +26,6 @@
               $uuid,
               $module->$method($data)
             )));
-            $connection->disconnect();
             Logger::debug("Finished dispatch for UUID ".$uuid);
             break;
           }
