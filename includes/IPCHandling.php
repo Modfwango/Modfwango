@@ -37,6 +37,7 @@
     }
 
     public static function receiveData($connection, $data) {
+      Logger::debug(var_export($data, true));
       $data = @json_decode($data, true);
       if (is_array($data) && isset($threads[$data[0]])) {
         $threads[$data[0]][0]->$threads[$data[0]][1]($data[0], $data[1]);
