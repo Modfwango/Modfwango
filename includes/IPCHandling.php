@@ -39,9 +39,11 @@
     public static function receiveData($connection, $data) {
       Logger::debug(var_export($data, true));
       $data = @json_decode($data, true);
-      if (is_array($data) && isset($threads[$data[0]])) {
+      if (is_array($data) && isset(self::$threads[$data[0]])) {
         Logger::debug("Calling dispatch callback for UUID ".$data[0]);
-        $threads[$data[0]][0]->$threads[$data[0]][1]($data[0], $data[1]);
+        $module = self::$threads[$data[0]][0];
+        $callback = self::$threads[$data[0]][1];
+        $module->$callback($data[0], $data[1]);
         unset($threads[$data[0]]);
       }
       $connection->disconnect();

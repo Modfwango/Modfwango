@@ -170,8 +170,6 @@
           // Fetch any received data.
           $data = trim($connection->getData());
           if ($data != false) {
-            Logger::debug("Received Data:");
-            Logger::debug($data);
             if (stristr($data, "\n")) {
               foreach (explode("\n", $data) as $line) {
                 if ($connection->getIPC() == true) {
