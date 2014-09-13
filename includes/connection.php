@@ -115,7 +115,10 @@
         "' created.");
 
       // Don't trigger the event for inter-process communication sockets.
-      if ($this->ipc != true) {
+      if ($this->ipc == true) {
+        $this->configured = true;
+      }
+      else {
         // Get the connectionCreatedEvent event.
         $event = EventHandling::getEventByName("connectionCreatedEvent");
         if ($event != false) {
