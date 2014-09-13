@@ -39,7 +39,6 @@
     public static function receiveData($connection, $data) {
       Logger::debug(var_export($data, true));
       $data = @json_decode($data, true);
-      Logger::debug(var_export($data, true));
       if (is_array($data) && isset($threads[$data[0]])) {
         Logger::debug("Calling dispatch callback for UUID ".$data[0]);
         $threads[$data[0]][0]->$threads[$data[0]][1]($data[0], $data[1]);
