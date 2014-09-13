@@ -5,8 +5,9 @@
     private $host = null;
     private $port = null;
     private $ssl = false;
+    private $ipc = false;
 
-    public function __construct($host, $port) {
+    public function __construct($host, $port, $ipc = false) {
       // Verify type restrictions.
       if (is_string($host) && !stristr($host, "/") && is_numeric($port)) {
         // Assign class properties.
@@ -21,6 +22,9 @@
             return false;
           }
         }
+        if ($ipc == true) {
+          $this->ipc = true;
+        }
         // Attempt to bind the socket to a host and port.
         if ($this->ssl == true) {
           $socket = @stream_socket_server("tls://".$this->host.":".$this->port,
@@ -30,6 +34,8 @@
           $socket = @stream_socket_server("tcp://".$this->host.":".$this->port);
         }
         if (is_resource($socket)) {
+          $url = parse_url(stream_socket_get_name($socket, false));
+          $this->port = $url["port"];
           $this->socket = $socket;
           $this->configured = true;
         }
@@ -84,8 +90,16 @@
       return $this->host;
     }
 
+    public function getIPC() {
+      return $this->ipc;
+    }
+
     public function getPort() {
       return $this->port;
+    }
+
+    public function getSSL() {
+      return $this->ssl;
     }
 
     public function getSocketString() {
@@ -132,7 +146,7 @@
         stream_set_blocking($client, 0);
         // Add the new socket to the connection management class.
         ConnectionManagement::newConnection(new Connection("1", array($client,
-          $this->port, $this->ssl, array())));
+          $this->port, $this->ssl, array()), $this->ipc));
         return true;
       }
       // No new client/error accepting client.

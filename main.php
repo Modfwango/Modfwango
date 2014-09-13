@@ -102,6 +102,17 @@
           }
         }
       }
+
+      // Attempt to create the inter-process communication socket.
+      $sock = new Socket("127.0.0.1", "0", true);
+      if ($sock != false) {
+        // Add it to the socket management class.
+        SocketManagement::newSocket($sock);
+      }
+      else {
+        // Couldn't bind!
+        Logger::debug("Could not bind to address.");
+      }
     }
 
     private function loadModules() {
@@ -161,13 +172,26 @@
           if ($data != false) {
             if (stristr($data, "\n")) {
               foreach (explode("\n", $data) as $line) {
-                // Pass the connection and associated data to the event handler.
-                EventHandling::receiveData($connection, trim($line));
+                if ($connection->getIPC() == true) {
+                  // Pass the connection and associated data to the IPC handler.
+                  IPCHandling::receiveData($connection, trim($line));
+                }
+                else {
+                  // Pass the connection and associated data to the event
+                  // handler.
+                  EventHandling::receiveData($connection, trim($line));
+                }
               }
             }
             else {
-              // Pass the connection and associated data to the event handler.
-              EventHandling::receiveData($connection, trim($data));
+              if ($connection->getIPC() == true) {
+                // Pass the connection and associated data to the IPC handler.
+                IPCHandling::receiveData($connection, trim($data));
+              }
+              else {
+                // Pass the connection and associated data to the event handler.
+                EventHandling::receiveData($connection, trim($data));
+              }
             }
           }
         }
@@ -230,6 +254,9 @@
       require_once(__MODFWANGOROOT__."/includes/connectionManagement.php");
       require_once(__MODFWANGOROOT__."/includes/socket.php");
       require_once(__MODFWANGOROOT__."/includes/socketManagement.php");
+
+      // Load the inter-process communication handler.
+      require_once(__MODFWANGOROOT__."/includes/IPCHandling.php");
 
       // Load the event handler.
       require_once(__MODFWANGOROOT__."/includes/eventHandling.php");

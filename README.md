@@ -29,6 +29,7 @@ Table of Contents
       * [registerForEvent](#registerforevent)
       * [registerAsEventPreprocessor](#registeraseventpreprocessor)
       * [Methods](#methods-1)
+    * [IPCHandling](#ipchandling)
     * [ModuleManagement](#modulemanagement)
     * [SocketManagement](#socketmanagement)
     * [Socket](#socket)
@@ -479,6 +480,67 @@ given `$module`
 Object $module)` - Unregisters `$module` for event named `$name` as preprocessor
 * `bool function unregisterModule(Object $module)` - Unregisters `$module` for
 all event registrations and preprocessors
+
+##### IPCHandling
+`IPCHandling` allows you to dispatch a method into a new background thread and
+receive a callback in the main thread when processing is complete.
+
+Methods destined for background processing will require one parameter for an
+optional passthrough of job specific data.  Callbacks will require two
+parameters; the first for the thread UUID, the second for the return value of
+the dispatched method.  An example module is shown below:
+
+```php
+<?php
+	class __CLASSNAME__ {
+		public $name = "Test";
+		public $depend = array("ConnectionCreatedEvent", "RawEvent");
+
+		public function receiveConnectionCreated($name, $data) {
+			Logger::debug("Test::receiveConnectionCreated");
+			// Spawn a background thread when a new connection is created.
+			$uuid = IPCHandling::dispatch($this, "testIPCMethod",
+				"testIPCMethodCallback", rand(5, 10));
+			Logger::debug("Thread UUID:  ".$uuid);
+			return true;
+		}
+
+    public function testIPCMethod($data) {
+			// This is the method that will be dispatched into the background.
+			Logger::debug("Test::testIPCMethod");
+			$ret = null;
+			for ($i = 0; $i < $data; $i++) {
+				sleep(1);
+				$ret .= "Hello";
+			}
+			return $ret;
+    }
+
+		public function testIPCMethodCallback($uuid, $data) {
+			// This method will be called when the dispatched method has finished.
+			Logger::debug("Test::testIPCMethodCallback");
+			Logger::debug($uuid);
+			Logger::debug(var_export($data, true));
+		}
+
+		public function isInstantiated() {
+			EventHandling::registerForEvent("connectionCreatedEvent", $this,
+				"receiveConnectionCreated");
+			return true;
+		}
+	}
+?>
+```
+
+In the above example, when a connection is established to the framework, an
+event is fired that causes the `testIPCMethod` method to be dispatched into a
+new background thread.  After it returns a value, the `testIPCMethodCallback`
+method will be called with the return value of the dispatched method.
+
+The only useful method for this class is shown below:
+* `string dispatch(Object $module, String $method, String $callback,
+  mixed $data = null)` - Spawns a new thread and calls the specified `$method`
+  owned by `$module`.
 
 ##### ModuleManagement
 `ModuleManagement` enables you to control the current set of loaded modules.  A

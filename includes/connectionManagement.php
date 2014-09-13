@@ -9,8 +9,9 @@
           && $connection->configured() == true) {
         // Store the connection.
         self::$connections[] = $connection;
-        Logger::info("Connection '".$connection->getConnectionString().
-          "' added to the connection manager.");
+        Logger::info(($connection->getIPC() ? "IPC " : null)."Connection '".
+          $connection->getConnectionString()."' added to the connection ".
+          "manager.");
         return true;
       }
       return false;

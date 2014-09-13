@@ -10,8 +10,9 @@
     protected $options = array();
     protected $ssl = false;
     protected $type = null;
+    protected $ipc = false;
 
-    public function __construct($type, $data) {
+    public function __construct($type, $data, $ipc = false) {
       $this->type = $type;
       if ($type == "0") {
         $host = $data[0];
@@ -37,6 +38,9 @@
               return false;
             }
           }
+          if ($ipc == true) {
+            $this->ipc = true;
+          }
           $this->localip = "127.0.0.1";
           $this->localhost = "localhost";
           $this->port = $port;
@@ -54,6 +58,9 @@
         if (is_resource($socket) && is_numeric($port) && is_bool($ssl)
             && is_array($options)) {
           $this->socket = $socket;
+          if ($ipc == true) {
+            $this->ipc = true;
+          }
           $localip = explode(":", stream_socket_get_name($this->socket, false));
           $localip = $localip[0];
           $ip = explode(":", stream_socket_get_name($this->socket, true));
@@ -103,24 +110,31 @@
 
     protected function created() {
       // Let people know what's going on.
-      Logger::info("Connection to '".$this->getConnectionString().
+      Logger::info(($this->getIPC() ? "IPC " : null)."Connection ".
+        ($this->type == "0" ? "to" : "from")." '".$this->getConnectionString().
         "' created.");
 
-      // Get the connectionCreatedEvent event.
-      $event = EventHandling::getEventByName("connectionCreatedEvent");
-      if ($event != false) {
-        if (count($event[2]) > 0) {
-          foreach ($event[2] as $id => $registration) {
-            // Trigger the connectionCreatedEvent event for each registered
-            // module.
-            if (EventHandling::triggerEvent("connectionCreatedEvent", $id,
-                $this)) {
-              $this->configured = true;
+      // Don't trigger the event for inter-process communication sockets.
+      if ($this->ipc == true) {
+        $this->configured = true;
+      }
+      else {
+        // Get the connectionCreatedEvent event.
+        $event = EventHandling::getEventByName("connectionCreatedEvent");
+        if ($event != false) {
+          if (count($event[2]) > 0) {
+            foreach ($event[2] as $id => $registration) {
+              // Trigger the connectionCreatedEvent event for each registered
+              // module.
+              if (EventHandling::triggerEvent("connectionCreatedEvent", $id,
+                  $this)) {
+                $this->configured = true;
+              }
             }
           }
-        }
-        else {
-          $this->configured = true;
+          else {
+            $this->configured = true;
+          }
         }
       }
       return $this->configured;
@@ -136,14 +150,17 @@
         @fclose($this->socket);
         $this->socket = null;
 
-        // Get the connectionConnectedEvent event.
-        $event = EventHandling::getEventByName("connectionDisconnectedEvent");
-        if ($event != false) {
-          foreach ($event[2] as $id => $registration) {
-            // Trigger the connectionDisconnectedEvent event for each registered
-            // module.
-            EventHandling::triggerEvent("connectionDisconnectedEvent", $id,
-              $this);
+        // Don't trigger the event for inter-process communication sockets.
+        if ($this->ipc != true) {
+          // Get the connectionDisconnectedEvent event.
+          $event = EventHandling::getEventByName("connectionDisconnectedEvent");
+          if ($event != false) {
+            foreach ($event[2] as $id => $registration) {
+              // Trigger the connectionDisconnectedEvent event for each
+              // registered module.
+              EventHandling::triggerEvent("connectionDisconnectedEvent", $id,
+                $this);
+            }
           }
         }
         return true;
@@ -226,6 +243,11 @@
     public function getIP() {
       // Retrieve IP.
       return $this->ip;
+    }
+
+    public function getIPC() {
+      // Retrieve IPC.
+      return $this->ipc;
     }
 
     public function getLocalHost() {
