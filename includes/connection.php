@@ -110,7 +110,7 @@
 
     protected function created() {
       // Let people know what's going on.
-      Logger::info(($this->getIPC() ? "IPC " : null)."Connection ".
+      Logger::debug(($this->getIPC() ? "IPC " : null)."Connection ".
         ($this->type == "0" ? "to" : "from")." '".$this->getConnectionString().
         "' created.");
 
@@ -143,7 +143,7 @@
     public function disconnect() {
       if ($this->socket != null) {
         // Close the socket.
-        Logger::info("Disconnecting from '".$this->getConnectionString().".'");
+        Logger::debug("Disconnecting from '".$this->getConnectionString().".'");
 
         // Destroy the socket.
         @stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
@@ -210,7 +210,7 @@
         }
         elseif (feof($this->socket)) {
           // Kill the socket if it should die upon no data.
-          Logger::info("Socket died");
+          Logger::debug("Socket died");
           $this->disconnect();
         }
       }

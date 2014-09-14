@@ -9,7 +9,7 @@
           && self::getSocketByHost($socket->getHost()) == false) {
         // Store the socket.
         self::$sockets[] = $socket;
-        Logger::info(($socket->getIPC() ? "IPC " : null)."Socket '".
+        Logger::debug(($socket->getIPC() ? "IPC " : null)."Socket '".
           $socket->getSocketString()."' added to the socket manager.");
         return true;
       }
@@ -50,7 +50,7 @@
         // Store socket in a local variable for access after it is removed.
         $s = self::$sockets[$i];
         // Remove the socket.
-        Logger::info("Socket '".
+        Logger::debug("Socket '".
           self::$sockets[$i]->getSocketString().
           "' removed from the socket manager.");
         unset(self::$sockets[$i]);

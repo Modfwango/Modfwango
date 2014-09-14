@@ -46,7 +46,7 @@
 
     public function close() {
       // Close the socket.
-      Logger::info("Closing '".$this->getSocketString().".'");
+      Logger::debug("Closing '".$this->getSocketString().".'");
 
       // Destroy the socket.
       @stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
@@ -60,7 +60,7 @@
     }
 
     private function createSSLCert($file) {
-      Logger::info("Generating SSL certificate for \"".
+      Logger::debug("Generating SSL certificate for \"".
         $this->getSocketString()."\"");
 
       $dn = array(
@@ -83,7 +83,7 @@
       $pem = implode($pem);
 
       file_put_contents($file, $pem);
-      Logger::info("Generated SSL certificate file \"".$file."\"");
+      Logger::debug("Generated SSL certificate file \"".$file."\"");
     }
 
     public function getHost() {

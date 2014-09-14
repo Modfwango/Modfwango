@@ -9,7 +9,7 @@
           && $connection->configured() == true) {
         // Store the connection.
         self::$connections[] = $connection;
-        Logger::info(($connection->getIPC() ? "IPC " : null)."Connection '".
+        Logger::debug(($connection->getIPC() ? "IPC " : null)."Connection '".
           $connection->getConnectionString()."' added to the connection ".
           "manager.");
         return true;
@@ -51,7 +51,7 @@
         // Store connection in a local variable for access after it is removed.
         $c = self::$connections[$i];
         // Remove the connection.
-        Logger::info("Connection '".
+        Logger::debug("Connection '".
           self::$connections[$i]->getConnectionString().
           "' removed from the connection manager.");
         unset(self::$connections[$i]);
@@ -82,7 +82,7 @@
     public static function pruneConnections() {
       foreach (self::$connections as $key => $connection) {
         if (!$connection->isAlive() && $connection->getType() == "1") {
-          Logger::info("Pruning connection '".
+          Logger::debug("Pruning connection '".
             $connection->getConnectionString().".'");
           unset(self::$connections[$key]);
         }
@@ -120,7 +120,7 @@
       }
       else {
         // Uh-oh!
-        Logger::info("Connection in file \"".$file."\" failed to parse.");
+        Logger::debug("Connection in file \"".$file."\" failed to parse.");
       }
       return false;
     }
