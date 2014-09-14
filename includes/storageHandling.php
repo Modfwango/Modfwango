@@ -64,7 +64,8 @@
       return false;
     }
 
-    public static function saveFile($module, $name, $contents) {
+    public static function saveFile($module, $name, $contents,
+        $append = false) {
       // Setup a string of the path of the file that should be loaded.
       $mname = $module->name;
       $file = __PROJECTROOT__."/data/".$mname."/".$name;
@@ -81,6 +82,9 @@
           if (is_writable($file)) {
             Logger::debug("Writing to file now.");
             // Write the contents of the file.
+            if ($append == true) {
+              return file_put_contents($file, $contents, FILE_APPEND);
+            }
             return file_put_contents($file, $contents);
           }
         }
