@@ -4,7 +4,7 @@
       // Split multi-line messages.
       if (stristr($msg, "\n")) {
         foreach (explode("\n", $msg) as $line) {
-          self::displayDebug($msg);
+          self::displayDebug($line);
         }
         return;
       }
@@ -27,7 +27,7 @@
       // Split multi-line messages.
       if (stristr($msg, "\n")) {
         foreach (explode("\n", $msg) as $line) {
-          self::displayInfo($msg);
+          self::displayInfo($line);
         }
         return;
       }
