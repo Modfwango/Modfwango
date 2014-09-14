@@ -10,7 +10,7 @@
       if (self::initDirectories($mname)) {
         Logger::debug("Directories are initialized.");
         // Make sure the module isn't trying to write outside of its sandbox.
-        if (substr(realpath($file), 0, strlen(__PROJECTROOT__))
+        if (substr(realpath(dirname($file)), 0, strlen(__PROJECTROOT__))
             == __PROJECTROOT__) {
           Logger::debug("Sandbox test passed.  Continuing check.");
           // Make sure the parent directory is writable and the target doesn't
@@ -26,9 +26,9 @@
           // A module tried writing outside of its sandbox.  This might be bad.
           Logger::info("Module ".$module->name.
             " tried writing outside of its sandbox.");
-          Logger::debug("Tried writing to ".realpath($file));
-          Logger::debug(substr(realpath($file), 0, strlen(__PROJECTROOT__)).
-            " != ".__PROJECTROOT__);
+          Logger::debug("Tried writing to ".realpath(dirname($file)));
+          Logger::debug(substr(realpath(dirname($file)), 0,
+            strlen(__PROJECTROOT__))." != ".__PROJECTROOT__);
         }
       }
       return false;
