@@ -7,7 +7,7 @@
 
       Logger::debug("Preparing to create directory at ".$file);
       // Make sure all other directories, etc, are initialized.
-      if (self::initDirectories($mname, $name)) {
+      if (self::initDirectories($mname)) {
         Logger::debug("Directories are initialized.");
         // Make sure the module isn't trying to write outside of its sandbox.
         if (substr(realpath($file), 0, strlen(__PROJECTROOT__))
@@ -15,7 +15,8 @@
           Logger::debug("Sandbox test passed.  Continuing check.");
           // Make sure the parent directory is writable and the target doesn't
           // exist.
-          if (is_writable(dirname($file)) && !file_exists($file)) {
+          if (file_exists(dirname($file)) && is_dir(dirname($file))
+              && is_writable(dirname($file)) && !file_exists($file)) {
             // Create the requested directory.
             Logger::debug("Creating directory now.");
             return mkdir($file);
