@@ -13,8 +13,9 @@
         if (substr(realpath($file), 0, strlen(__PROJECTROOT__))
             == __PROJECTROOT__) {
           Logger::debug("Sandbox test passed.  Continuing check.");
-          // Make sure the parent directory is writable.
-          if (is_writable(dirname($file))) {
+          // Make sure the parent directory is writable and the target doesn't
+          // exist.
+          if (is_writable(dirname($file)) && !file_exists($file)) {
             // Create the requested directory.
             Logger::debug("Creating directory now.");
             return mkdir($file);
