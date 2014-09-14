@@ -3,7 +3,7 @@
     public static function debug($msg) {
       // Split multi-line messages.
       if (stristr($msg, "\n")) {
-        foreach (explode("\n", $msg) as $line) {
+        foreach (explode("\n", trim($msg)) as $line) {
           self::displayDebug($line);
         }
         return;
@@ -11,28 +11,28 @@
       // If debug mode is on, show debug messages.
       if (__DEBUG__ == true) {
         // Show a message.
-        self::displayDebug($msg);
+        self::displayDebug(trim($msg));
       }
     }
 
     private static function displayDebug($msg) {
-      echo " [ DEBUG ] ".trim($msg)."\n";
+      echo " [ DEBUG ] ".$msg."\n";
     }
 
     private static function displayInfo($msg) {
-      echo "  [ INFO ] ".trim($msg)."\n";
+      echo "  [ INFO ] ".$msg."\n";
     }
 
     public static function info($msg) {
       // Split multi-line messages.
       if (stristr($msg, "\n")) {
-        foreach (explode("\n", $msg) as $line) {
+        foreach (explode("\n", trim($msg)) as $line) {
           self::displayInfo($line);
         }
         return;
       }
       // Show a message.
-      self::displayInfo($msg);
+      self::displayInfo(trim($msg));
     }
 
     public static function memoryUsage() {
