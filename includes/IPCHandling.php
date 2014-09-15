@@ -30,7 +30,7 @@
             )));
             $connection->disconnect();
             Logger::debug("Finished dispatch for UUID ".$uuid);
-            break;
+            die();
           }
         }
         // Make sure the child dies after it's done processing data.
