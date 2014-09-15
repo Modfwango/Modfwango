@@ -11,6 +11,7 @@
         die();
       }
       elseif ($pid) {
+        self::$threads[$uuid][2] = $pid;
         Logger::debug("Dispatched thread for UUID ".$uuid);
         return $uuid;
       }
@@ -30,7 +31,7 @@
             )));
             $connection->disconnect();
             Logger::debug("Finished dispatch for UUID ".$uuid);
-            die();
+            break;
           }
         }
         // Make sure the child dies after it's done processing data.
@@ -46,6 +47,7 @@
         $module = self::$threads[$data[0]][0];
         $callback = self::$threads[$data[0]][1];
         $module->$callback($data[0], $data[1]);
+        posix_kill(self::$threads[$data[0]][2], SIGKILL);
         unset(self::$threads[$data[0]]);
       }
       $connection->disconnect();
