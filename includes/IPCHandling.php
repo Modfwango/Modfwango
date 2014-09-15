@@ -13,7 +13,7 @@
       elseif ($pid) {
         self::$threads[$uuid][2] = $pid;
         Logger::debug("Dispatched thread for UUID ".$uuid);
-        pcntl_waitpid($pid, $null, WNOHANG);
+        pcntl_wait($null, WNOHANG);
         return $uuid;
       }
       else {
@@ -49,7 +49,7 @@
         $callback = self::$threads[$data[0]][1];
         $module->$callback($data[0], $data[1]);
         posix_kill(self::$threads[$data[0]][2], SIGINT);
-        pcntl_waitpid(self::$threads[$data[0]][2], $null, WNOHANG);
+        pcntl_wait($null, WNOHANG);
         unset(self::$threads[$data[0]]);
       }
       $connection->disconnect();
