@@ -47,7 +47,7 @@
         $module = self::$threads[$data[0]][0];
         $callback = self::$threads[$data[0]][1];
         $module->$callback($data[0], $data[1]);
-        posix_kill(self::$threads[$data[0]][2], SIGKILL);
+        posix_kill(self::$threads[$data[0]][2], SIGINT);
         unset(self::$threads[$data[0]]);
       }
       $connection->disconnect();
