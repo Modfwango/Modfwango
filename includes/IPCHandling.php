@@ -48,7 +48,6 @@
         $module = self::$threads[$data[0]][0];
         $callback = self::$threads[$data[0]][1];
         $module->$callback($data[0], $data[1]);
-        posix_kill(self::$threads[$data[0]][2], SIGINT);
         pcntl_wait($null, WNOHANG);
         unset(self::$threads[$data[0]]);
       }
