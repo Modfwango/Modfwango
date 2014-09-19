@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+###### 1.22 - September 19, 2014
+Fix a few bugs with the `IPCHandling` class, the `Logger` class, and the
+`StorageHandling` class.
+
 ###### 1.21 - September 6, 2014
 Add inter-process communication handling and modify the rest of the framework to
 integrate it.
