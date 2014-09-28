@@ -34,6 +34,20 @@
       return false;
     }
 
+    public static function getPath($module, $name = null) {
+      // Setup a string of the path of the file that should be loaded.
+      $mname = $module->name;
+      $file = __PROJECTROOT__."/data/".$mname.
+        ($name != null ? "/".$name : null);
+
+      // Make sure the module isn't trying to read/write outside of its sandbox.
+      if (substr(realpath($file), 0, strlen(__PROJECTROOT__))
+          == __PROJECTROOT__) {
+        return realpath($file);
+      }
+      return false;
+    }
+
     public static function loadFile($module, $name) {
       // Setup a string of the path of the file that should be loaded.
       $mname = $module->name;

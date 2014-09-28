@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+###### 1.23 - September 28, 2014
+Add the `getPath()` method to `StorageHandling` to enable fetching a simplified,
+correct path to a file or folder.
+
 ###### 1.22 - September 19, 2014
 Fix a few bugs with the `IPCHandling` class, the `Logger` class, and the
 `StorageHandling` class.
