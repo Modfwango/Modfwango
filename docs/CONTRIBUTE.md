@@ -97,6 +97,7 @@ do {
 #### Line Length and Wrapping
 
 * In general, all lines of code should not be longer than 80 chars.
+* When you have to wrap lines, the continuing line should be indented 2 spaces.
 * For conditions which exceed 80 characters, it is recommended practice to split
 out and prepare the conditions separately, which also permits documenting the
 underlying reasons for the conditions:
