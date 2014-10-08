@@ -71,7 +71,7 @@ else {
 }
 ```
 
-*Note: Don't use "else if" -- always use elseif.)*
+*Note: Don't use "else if" -- always use elseif.*
 
 Control statements should have one space between the control keyword and opening
 parenthesis, to distinguish them from function calls.
@@ -100,14 +100,14 @@ underlying reasons for the conditions:
 
 ```php
 // Key is only valid if it matches the current user's ID, as otherwise other
-// users could access any user's things.
+// users could access any user's things
 $is_valid_user = (isset($key) && !empty($user->uid) && $key == $user->uid);
 
-// IP must match the cache to prevent session spoofing.
+// IP must match the cache to prevent session spoofing
 $is_valid_cache = (isset($user->cache) ? $user->cache == ip_address() : FALSE);
 
 // Alternatively, if the request query parameter is in the future, then it
-// is always valid, because the galaxy will implode and collapse anyway.
+// is always valid, because the galaxy will implode and collapse anyway
 $is_valid_query = $is_valid_cache || (isset($value) && $value >= time());
 
 if ($is_valid_user || $is_valid_query) {
@@ -133,7 +133,8 @@ used to assign the return value of a function to a variable.
 
 ```php
 function funstuff_system($field) {
-  $system["description"] = t("This module inserts funny text into posts randomly.");
+  $system["description"] = t("This module inserts funny text into posts ".
+    "randomly.");
   return $system[$field];
 }
 ```
