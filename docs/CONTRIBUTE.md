@@ -1,3 +1,22 @@
+Table of Contents
+=================
+
+* [Introduction](#introduction)
+* [Indenting and Whitespace](#indenting-and-whitespace)
+* [Operators](#operators)
+* [Casting](#casting)
+* [Control Structures](#control-structures)
+* [Line Length and Wrapping](#line-length-and-wrapping)
+* [Function Calls](#function-calls)
+* [Function Declarations](#function-declarations)
+* [Class Constructor Calls](#class-constructor-calls)
+* [Arrays](#arrays)
+* [String Concatenations](#string-concatenations)
+* [Comments](#comments)
+* [Including Code](#including-code)
+* [PHP Code Tags](#php-code-tags)
+* [Naming Conventions](#naming-conventions)
+
 Contribute
 ==========
 
