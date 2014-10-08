@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+###### 1.24 - October 7, 2014
+Rearrange the documentation into the docs/ folder in the project root.
+
+Add some inline documentation to the launcher.
+
 ###### 1.23 - September 28, 2014
 Add the `getPath()` method to `StorageHandling` to enable fetching a simplified,
 correct path to a file or folder.

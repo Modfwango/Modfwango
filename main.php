@@ -49,7 +49,7 @@
       // Check for updates to Modfwango.
       $version = "1.00";
       $contents = @explode("\n", @file_get_contents("https://raw.githubusercon".
-        "tent.com/Modfwango/Modfwango/master/CHANGELOG.md", 0,
+        "tent.com/Modfwango/Modfwango/master/docs/CHANGELOG.md", 0,
         stream_context_create(array('http' => array('timeout' => 1)))));
       if (is_array($contents)) {
         foreach ($contents as $line) {
@@ -214,11 +214,11 @@
       // Define the root of the Modfwango library folder.
       define("__MODFWANGOROOT__", dirname(__FILE__));
 
-      // Locate the latest version in CHANGELOG.md.
+      // Locate the latest version in docs/CHANGELOG.md.
       $version = "1.00";
-      if (file_exists(__MODFWANGOROOT__."/CHANGELOG.md")) {
+      if (file_exists(__MODFWANGOROOT__."/docs/CHANGELOG.md")) {
         $contents = explode("\n", file_get_contents(__MODFWANGOROOT__.
-          "/CHANGELOG.md"));
+          "/docs/CHANGELOG.md"));
         foreach ($contents as $line) {
           if (preg_match("/^[#]{6} (.*)$/i", trim($line), $matches)) {
             $version = explode(" ", $matches[1]);

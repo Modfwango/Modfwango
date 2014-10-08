@@ -1,133 +1,23 @@
-![Modfwango](http://dpr.clayfreeman.com/zarH+ "Modfwango")
-
-Modfwango is a modular socket framework written in PHP.  This framework has been
-refined over the past few years for personal use, and I decided to make it open
-to the public.  It is stable, clean, modular, and object oriented.  This
-particular repo stemmed from the
-[IRCBot-PHP](https://github.com/Modfwango/IRCBot-PHP) framework, formerly
-known as Modfwango.  I decided to make the separation, because a networking
-framework with reloadable modules is of more use to people than just a simple
-IRC bot.
-
 Table of Contents
 =================
 
-* [Install](#install)
-* [Update](#update)
-* [Configuration](#configuration)
-  * [conf/listen.conf](#conflistenconf)
-  * [conf/modules.conf](#confmodulesconf)
-  * [conf/connections/name.conf](#confconnectionsnameconf)
-* [Development](#development)
-  * [Creating Your First Module](#creating-your-first-module)
-  * [Dependencies](#dependencies)
-  * [Using Available APIs](#using-available-apis)
-    * [ConnectionManagement](#connectionmanagement)
-    * [Connection](#connection)
-      * [Methods](#methods)
-    * [EventHandling](#eventhandling)
-      * [registerForEvent](#registerforevent)
-      * [registerAsEventPreprocessor](#registeraseventpreprocessor)
-      * [Methods](#methods-1)
-    * [IPCHandling](#ipchandling)
-    * [ModuleManagement](#modulemanagement)
-    * [SocketManagement](#socketmanagement)
-    * [Socket](#socket)
-      * [Methods](#methods-2)
-    * [StorageHandling](#storagehandling)
-  * [Examples](#examples)
-* [Support](#support)
-
-Install
-=======
-
-This framework is tested under Ubuntu Linux and Mac OS X.  Windows compatibility
-is unknown, and probably unstable.  To use this framework, make sure that you
-have at least version 5.1.1 of PHP (CLI) installed on your machine.
-
-In order to setup a Modfwango-based project, decide on a project name, then run
-the following commands:
-```
-mkdir ProjectName && cd ProjectName
-git init
-git submodule add https://github.com/Modfwango/Modfwango.git .modfwango
-cp .modfwango/launcher.php main.php
-php main.php
-```
-
-Those commands will initialize a git repository, add Modfwango as a submodule,
-provide you with a launcher for your project, and create a base directory/file
-structure.
-
-Update
-======
-
-In order to update Modfwango, run one of the following commands:
-* To get the latest version of Modfwango:
-```
-cd ProjectName && git submodule foreach git pull origin master
-```
-* To checkout the version your git repo was created with:
-```
-cd ProjectName && git submodule update --init
-```
-
-Configuration
-=============
-To configure Modfwango, follow these simple guidelines:
-
-#### conf/listen.conf
-If you require a socket server to listen for connections, you need to configure
-this file.  The syntax for this file is the listen address, followed by a comma,
-followed by the port you'd like to listen on.  Ports can be prefixed with a `+`
-in order to make them listen with SSL enabled.  If you need to use your own
-certificate, put it in place of the one that is automatically generated when you
-first listen on SSL (the path to it will be logged when the certificate is
-generated).  Multiple entries should each be on a line by themselves.  An
-example configuration is shown below.
-```
-0.0.0.0,1337
-0.0.0.0,+1338
-```
-
-The path for SSL certificates will be formatted as so when they're generated:
-```
-conf/ssl/[port]/[address].pem
-```
-
-#### conf/modules.conf
-This file is likely to be required by everyone; if you intend on implementing
-custom functionality in your project, you need to do it with a module.  This
-file allows for modules to be auto-loaded at runtime.  Each module should be on
-its own line, and should be named relative to the `modules` directory inside of
-your project's root folder.  Modules should not include the `.php` file
-extension.  Modules can be nested in an infinite amount of folders.  An example
-configuration file is shown below.  Order doesn't matter; modules will be loaded
-after all of their dependencies have been loaded.
-```
-events/ConnectionConnectedEvent
-events/ConnectionCreatedEvent
-events/ConnectionDisconnectedEvent
-events/ConnectionLoopEndEvent
-events/RawEvent
-
-libraries/Timer
-```
-
-#### conf/connections/name.conf
-If you need to connect to other servers, you need to create a file for each
-connection.  Each file is parsed with the built-in PHP INI file parser.  An
-example file with all parameters is shown below.  You can optionally include the
-`[options]` block, which will be available for use during runtime.
-```
-address = "example.org"
-port = 1337
-ssl = false
-
-[options]
-param1 = "hello"
-param2 = "world"
-```
+* [Creating Your First Module](#creating-your-first-module)
+* [Dependencies](#dependencies)
+* [Using Available APIs](#using-available-apis)
+  * [ConnectionManagement](#connectionmanagement)
+  * [Connection](#connection)
+    * [Methods](#methods)
+  * [EventHandling](#eventhandling)
+    * [registerForEvent](#registerforevent)
+    * [registerAsEventPreprocessor](#registeraseventpreprocessor)
+    * [Methods](#methods-1)
+  * [IPCHandling](#ipchandling)
+  * [ModuleManagement](#modulemanagement)
+  * [SocketManagement](#socketmanagement)
+  * [Socket](#socket)
+    * [Methods](#methods-2)
+  * [StorageHandling](#storagehandling)
+* [Examples](#examples)
 
 Development
 ===========
@@ -492,43 +382,43 @@ the dispatched method.  An example module is shown below:
 
 ```php
 <?php
-	class __CLASSNAME__ {
-		public $name = "Test";
-		public $depend = array("ConnectionCreatedEvent", "RawEvent");
+  class __CLASSNAME__ {
+    public $name = "Test";
+    public $depend = array("ConnectionCreatedEvent", "RawEvent");
 
-		public function receiveConnectionCreated($name, $data) {
-			Logger::debug("Test::receiveConnectionCreated");
-			// Spawn a background thread when a new connection is created.
-			$uuid = IPCHandling::dispatch($this, "testIPCMethod",
-				"testIPCMethodCallback", rand(5, 10));
-			Logger::debug("Thread UUID:  ".$uuid);
-			return true;
-		}
-
-    public function testIPCMethod($data) {
-			// This is the method that will be dispatched into the background.
-			Logger::debug("Test::testIPCMethod");
-			$ret = null;
-			for ($i = 0; $i < $data; $i++) {
-				sleep(1);
-				$ret .= "Hello";
-			}
-			return $ret;
+    public function receiveConnectionCreated($name, $data) {
+      Logger::debug("Test::receiveConnectionCreated");
+      // Spawn a background thread when a new connection is created.
+      $uuid = IPCHandling::dispatch($this, "testIPCMethod",
+        "testIPCMethodCallback", rand(5, 10));
+      Logger::debug("Thread UUID:  ".$uuid);
+      return true;
     }
 
-		public function testIPCMethodCallback($uuid, $data) {
-			// This method will be called when the dispatched method has finished.
-			Logger::debug("Test::testIPCMethodCallback");
-			Logger::debug($uuid);
-			Logger::debug(var_export($data, true));
-		}
+    public function testIPCMethod($data) {
+      // This is the method that will be dispatched into the background.
+      Logger::debug("Test::testIPCMethod");
+      $ret = null;
+      for ($i = 0; $i < $data; $i++) {
+        sleep(1);
+        $ret .= "Hello";
+      }
+      return $ret;
+    }
 
-		public function isInstantiated() {
-			EventHandling::registerForEvent("connectionCreatedEvent", $this,
-				"receiveConnectionCreated");
-			return true;
-		}
-	}
+    public function testIPCMethodCallback($uuid, $data) {
+      // This method will be called when the dispatched method has finished.
+      Logger::debug("Test::testIPCMethodCallback");
+      Logger::debug($uuid);
+      Logger::debug(var_export($data, true));
+    }
+
+    public function isInstantiated() {
+      EventHandling::registerForEvent("connectionCreatedEvent", $this,
+        "receiveConnectionCreated");
+      return true;
+    }
+  }
 ?>
 ```
 
@@ -627,9 +517,3 @@ Modfwango.
 * [IRCServer-PHP](http://bit.ly/1vZ7t4M)
   * [modules/modes/NoExternalMessages.php](http://bit.ly/1t8Emsc)
     * Great example of event trigger preprocessors
-
-Support
-=======
-
-For support with this framework, join IRC at `irc.freenode.org` `#modfwango`,
-open a ticket, or email me using my email address on GitHub.
