@@ -16,7 +16,7 @@ Table of Contents
 * [Update](/docs/UPDATE.md):  Learn how to update Modfwango core in your project
 * [Configuration](/docs/CONFIGURATION.md):  Learn how to configure Modfwango
 * [Change Log](/docs/CHANGELOG.md):  See all changes to Modfwango
-* [Contribute](/docs/CONTRIBUTE.md):  Learn proper code formatting guidelines
+* [Contribute](/docs/CONTRIBUTE.md):  Learn proper code submission guidelines
 * [Development](/docs/DEVELOPMENT.md):  Tutorial for Modfwango development
 * [Support](#support):  Get help with Modfwango
 
