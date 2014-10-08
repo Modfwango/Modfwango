@@ -1,7 +1,7 @@
 Modfwango
 =========
 
-<img align="left" width=80 style="margin-right: 10px;"
+<img align="left" width=75 style="margin: 5px;"
 src="http://dpr.clayfreeman.com/1cc2Y+">
 Modfwango is a modular socket framework written in PHP.  This framework has been
 refined over the past few years for personal use, and I decided to make it open
