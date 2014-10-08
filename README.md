@@ -2,7 +2,7 @@ Modfwango
 =========
 
 <img align="right" width=120 src="http://dpr.clayfreeman.com/1cc2Y+">
-Modfwango (pronounced `mahd-fuan-gogh`) is a modular socket framework written in
+Modfwango (pronounced `mahd-fuān-gogh`) is a modular socket framework written in
 PHP.  This framework has been refined over the past few years for personal use,
 and I decided to make it open to the public.  It is stable, clean, modular, and
 object oriented.  This particular repo stemmed from the
