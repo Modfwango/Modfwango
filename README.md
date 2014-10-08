@@ -25,3 +25,10 @@ Support
 
 For support with this framework, join IRC at `irc.freenode.org` `#modfwango`,
 open a ticket, or email me using my email address on GitHub.
+
+Licensing
+=========
+
+Modfwango (and all code within this repository) is licensed under the [Creative
+Commons Attribution-ShareAlike 4.0 International Public
+License](http://creativecommons.org/licenses/by-sa/4.0/).
