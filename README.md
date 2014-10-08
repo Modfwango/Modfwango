@@ -18,7 +18,6 @@ Table of Contents
 * [Change Log](/docs/CHANGELOG.md):  See all changes to Modfwango
 * [Contribute](/docs/CONTRIBUTE.md):  Learn proper code submission guidelines
 * [Development](/docs/DEVELOPMENT.md):  Tutorial for Modfwango development
-* [Support](#support):  Get help with Modfwango
 
 Support
 =======
