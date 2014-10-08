@@ -12,12 +12,12 @@ IRC bot.
 Table of Contents
 =================
 
-* [Install](/Modfwango/Modfwango/blob/master/docs/INSTALL.md)
-* [Update](/Modfwango/Modfwango/blob/master/docs/UPDATE.md)
-* [Configuration](/Modfwango/Modfwango/blob/master/docs/CONFIGURATION.md)
-* [Change Log](/Modfwango/Modfwango/blob/master/docs/CHANGELOG.md)
-* [Contribute](/Modfwango/Modfwango/blob/master/docs/CONTRIBUTE.md)
-* [Development](/Modfwango/Modfwango/blob/master/docs/DEVELOPMENT.md)
+* [Install](/docs/INSTALL.md)
+* [Update](/docs/UPDATE.md)
+* [Configuration](/docs/CONFIGURATION.md)
+* [Change Log](/docs/CHANGELOG.md)
+* [Contribute](/docs/CONTRIBUTE.md)
+* [Development](/docs/DEVELOPMENT.md)
 * [Support](#support)
 
 Support
