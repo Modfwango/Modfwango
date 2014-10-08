@@ -12,13 +12,13 @@ IRC bot.
 Table of Contents
 =================
 
-* [Install](/docs/INSTALL.md)
-* [Update](/docs/UPDATE.md)
-* [Configuration](/docs/CONFIGURATION.md)
-* [Change Log](/docs/CHANGELOG.md)
-* [Contribute](/docs/CONTRIBUTE.md)
-* [Development](/docs/DEVELOPMENT.md)
-* [Support](#support)
+* [Install](/docs/INSTALL.md):  Learn how to setup a Modfwango-based project
+* [Update](/docs/UPDATE.md):  Learn how to update Modfwango core in your project
+* [Configuration](/docs/CONFIGURATION.md):  Learn how to configure Modfwango
+* [Change Log](/docs/CHANGELOG.md):  See all changes to Modfwango
+* [Contribute](/docs/CONTRIBUTE.md):  Learn proper code formatting guidelines
+* [Development](/docs/DEVELOPMENT.md):  Tutorial for Modfwango development
+* [Support](#support):  Get help with Modfwango
 
 Support
 =======
