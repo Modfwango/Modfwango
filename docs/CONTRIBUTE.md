@@ -4,7 +4,10 @@ Introduction
 This contribution style guide is largely based upon the
 [Drupal Coding Standards](https://www.drupal.org/coding-standards), with slight
 modifications.  Please follow these guidelines as closely as possible when
-submitting code to any of this organization's repositories.
+submitting code to any of this organization's repositories.  You must also note
+that by committing code, either by pull request or explicit organization
+permissions, you agree that your code be licensed under the parent license of
+the Modfwango project.
 
 Table of Contents
 =================
