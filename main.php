@@ -289,6 +289,9 @@
       // output type
       define("__LOGLEVEL__", $loglevel);
 
+      // Load the logger
+      require_once(__MODFWANGOROOT__."/includes/logger.php");
+
       // Load the connection related classes
       require_once(__MODFWANGOROOT__."/includes/connection.php");
       require_once(__MODFWANGOROOT__."/includes/connectionManagement.php");
@@ -303,9 +306,6 @@
 
       // Load the event handler
       require_once(__MODFWANGOROOT__."/includes/eventHandling.php");
-
-      // Load the logger
-      require_once(__MODFWANGOROOT__."/includes/logger.php");
 
       // Make sure the launcher is up-to-date
       if (!file_exists(__PROJECTROOT__."/main.php")
