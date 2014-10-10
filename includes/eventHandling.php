@@ -115,13 +115,15 @@
           if ($name != "connectionLoopEndEvent") {
             Logger::debug("Event '".$name."' has been triggered for '".
               $registration[0]->name."'");
+            Logger::stack("Entering module: ".$registration[0]->name."::".
+              $registration[1]);
           }
           // Call the specified callback with specified parameters.
-          Logger::stack("Entering module: ".$registration[0]->name."::".
-            $registration[1]);
           return $registration[0]->$registration[1]($name, $data);
-          Logger::stack("Left module: ".$registration[0]->name."::".
-            $registration[1]);
+          if ($name != "connectionLoopEndEvent") {
+            Logger::stack("Left module: ".$registration[0]->name."::".
+              $registration[1]);
+          }
         }
       }
       return false;
