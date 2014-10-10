@@ -15,7 +15,8 @@
         // Remove the PID file if we're not /actually/ already running
         unlink(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).".pid");
       }
-      else {
+      elseif (file_exists(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).
+              ".pid")) {
         die("Can't read PID file \"".__PROJECTROOT__."/data/".basename(
           __PROJECTROOT__).".pid\"\n");
       }
