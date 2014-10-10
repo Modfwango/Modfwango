@@ -74,14 +74,15 @@ Modfwango comes packed with some APIs to allow creating modules to be extremely
 easy.  Each class with `Management` or `Handling` in the name is a completely
 static class.  These APIs consist of:
 * `ConnectionManagement`, `Connection` - Allows you to define, undefine,
-connect, and disconnect connections.
+connect, and disconnect connections
 * `EventHandling` - Allows you to create, preprocess, and register for events
+* `Logger` - Allows you to easily log information in various categories
 * `ModuleManagement` - Allows you to control which modules are loaded at any
 given time
 * `SocketManagement`, `Socket` - Allows you to define and undefine server
-sockets that will accept client connections.
+sockets that will accept client connections
 * `StorageHandling` - Allows you to create, delete, write, and read files
-through a simple interface.
+through a simple interface
 
 Let's go over each API, shall we?
 
