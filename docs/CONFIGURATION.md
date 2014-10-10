@@ -30,7 +30,7 @@ conf/ssl/[port]/[address].pem
 ```
 
 #### conf/loglevel.conf
-This file is very simple; it just requires a single numerical value `0-5`.  This
+This file is very simple; it just requires a single numerical value `0-4`.  This
 number specifies which log level at which Modfwango should run.  Each value and
 its associated meaning is listed below.  Alternatively, this value can be
 overridden by populating the first command line argument with the desired value.
