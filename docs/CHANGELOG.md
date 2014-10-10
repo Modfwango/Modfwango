@@ -3,7 +3,8 @@ Change Log
 
 ###### 1.25 - October 9, 2014
 Revamp the logging system; current logging levels:  `silent`, `info`, `stack`,
-`debug`, `devel`.  Each log level is described in the development document.
+`debug`, `devel`.  Each log level is described in the
+[configuration document](/docs/CONFIGURATION.md#confloglevelconf).
 
 Automatically fork into background when in `silent` logging mode; otherwise
 `silent` is equivalent to `info`.  On systems that don't support forking (ex. no
