@@ -2,6 +2,7 @@ Table of Contents
 =================
 
 * [conf/listen.conf](#conflistenconf)
+* [conf/loglevel.conf](#confloglevelconf)
 * [conf/modules.conf](#confmodulesconf)
 * [conf/connections/name.conf](#confconnectionsnameconf)
 
@@ -27,6 +28,20 @@ The path for SSL certificates will be formatted as so when they're generated:
 ```
 conf/ssl/[port]/[address].pem
 ```
+
+#### conf/loglevel.conf
+This file is very simple; it just requires a single numerical value `0-5`.  This
+number specifies which log level at which Modfwango should run.  Each value and
+its associated meaning is listed below.  Alternatively, this value can be
+overridden by populating the first command line argument with the desired value.
+
+| Level | Name   | Definition                                              |
+|:-----:|--------|---------------------------------------------------------|
+|  `0`  | Silent | Backgrounds the project after initialization.           |
+|  `1`  | Info   | Outputs general information during runtime.             |
+|  `2`  | Stack  | Shows when modules start and stop executing and "Info." |
+|  `3`  | Debug  | Shows module workflow as it happens and "Stack."        |
+|  `4`  | Devel  | Shows everything that makes a `Logger` call.            |
 
 #### conf/modules.conf
 This file is likely to be required by everyone; if you intend on implementing

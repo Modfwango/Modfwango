@@ -83,7 +83,7 @@
     public static function loadModule($name, $suppressNotice = false) {
       // Check to see if this module needs to be loaded quietly.
       if ($suppressNotice == false) {
-        Logger::debug("Loading module \"".$name."...\"");
+        Logger::debug("Attempting to load module \"".$name."...\"");
       }
 
       // Set the root path of the module in a temporary variable.
@@ -109,7 +109,11 @@
             // Make sure no dependencies are needed.
             if (self::checkDependencies($module)) {
               // Run setup function to allow the module to prepare itself.
+              Logger::stack("Entering module: ".$module->name.
+                "::isInstantiated()");
               if ($module->isInstantiated()) {
+                Logger::stack("Left module: ".$module->name.
+                  "::isInstantiated()");
                 // Add the module to the list of loaded modules.
                 self::$modules[] = $module;
                 Logger::info("Loaded module \"".$name."\"");
@@ -119,8 +123,12 @@
                 while (count(self::$waitingList) !== $lastCount) {
                   $lastCount = count(self::$waitingList);
                   foreach (self::$waitingList as $key => $item) {
+                    Logger::stack("Entering module: ".$item[1]->name.
+                      "::isInstantiated()");
                     if (self::checkDependencies($item[1])
                         && $item[1]->isInstantiated()) {
+                      Logger::stack("Left module: ".$item[1]->name.
+                        "::isInstantiated()");
                       // Loading the previous module allows this module to be
                       // loaded.
                       self::$modules[] = $item[1];
@@ -128,16 +136,24 @@
                       // Remove newly loaded module from the waiting list.
                       unset(self::$waitingList[$key]);
                     }
+                    else {
+                      Logger::stack("Left module: ".$item[1]->name.
+                        "::isInstantiated()");
+                    }
                   }
                 }
                 return true;
+              }
+              else {
+                Logger::stack("Left module: ".$module->name.
+                  "::isInstantiated()");
               }
             }
             else {
               // Add the module to the waiting list due to unloaded
               // dependencies.
               self::$waitingList[] = array($name, $module);
-              Logger::info("Deferring load of module \"".$name."\"");
+              Logger::debug("Deferring load of module \"".$name."\"");
               return null;
             }
           }
@@ -161,7 +177,7 @@
     }
 
     public static function reloadModule($name) {
-      Logger::debug("Reloading module \"".$name."...\"");
+      Logger::debug("Attempting to reload module \"".$name."...\"");
       // Make sure the module is actually loaded.
       if (self::isLoaded(basename($name))) {
         // Check to see if the module is reloadable.
@@ -185,7 +201,7 @@
     public static function unloadModule($name, $suppressNotice = false) {
       // Check to see if this module needs to be loaded quietly.
       if ($suppressNotice == false) {
-        Logger::debug("Unloading module \"".$name."...\"");
+        Logger::debug("Attempting to unload module \"".$name."...\"");
       }
 
       // Make sure the module is actually loaded.

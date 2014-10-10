@@ -47,7 +47,9 @@
         Logger::debug("Calling dispatch callback for UUID ".$data[0]);
         $module = self::$threads[$data[0]][0];
         $callback = self::$threads[$data[0]][1];
+        Logger::stack("Entering module: ".$module->name."::".$callback);
         $module->$callback($data[0], $data[1]);
+        Logger::stack("Left module: ".$module->name."::".$callback);
         pcntl_wait($null, WNOHANG);
         unset(self::$threads[$data[0]]);
       }

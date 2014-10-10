@@ -12,6 +12,7 @@ Table of Contents
     * [registerAsEventPreprocessor](#registeraseventpreprocessor)
     * [Methods](#methods-1)
   * [IPCHandling](#ipchandling)
+  * [Logger](#logger)
   * [ModuleManagement](#modulemanagement)
   * [SocketManagement](#socketmanagement)
   * [Socket](#socket)
@@ -431,6 +432,19 @@ The only useful method for this class is shown below:
 * `string dispatch(Object $module, String $method, String $callback,
   mixed $data = null)` - Spawns a new thread and calls the specified `$method`
   owned by `$module`.
+
+##### Logger
+
+The `Logger` class allows you to easily categorize logging that you might want
+to (and probably should) incorporate into your modules.  `Logger` has four
+static methods that you might be interested in:  `Logger::info`,
+`Logger::stack`, `Logger::debug`, and `Logger::devel`.  Each method is listed in
+descending order in terms of log severity and accepts a string as its only
+parameter.  More details about each log level can be found
+[here](/docs/CONFIGURATION.md#confloglevelconf).
+
+*Note:  When entering other modules, it would be to your advantage to include
+stack logging to be able to backtrace crashes.*
 
 ##### ModuleManagement
 `ModuleManagement` enables you to control the current set of loaded modules.  A

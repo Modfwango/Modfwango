@@ -47,9 +47,9 @@
             count($event[2]) > 0) {
           // Allow the event to preprocess the data received to determine
           // whether or not it should be triggered.
-          Logger::debug("Event '".$key."' is preprocessing the data.");
+          Logger::stack("Entering module: ".$event[0]->name."::".$event[1]);
           $event[0]->$event[1]($key, $event[2], $connection, trim($data));
-          Logger::debug("Event '".$key."' has preprocessed the data.");
+          Logger::stack("Left module: ".$event[0]->name."::".$event[1]);
         }
       }
       return true;
@@ -92,7 +92,11 @@
             // Make sure the preprocessor callback exists.
             if (method_exists($preprocessor[0], $preprocessor[1])) {
               // Fetch the result of the preprocessor callback.
+              Logger::stack("Entering module: ".$preprocessor[0]->name."::".
+                $preprocessor[1]);
               $result = $preprocessor[0]->$preprocessor[1]($name, $id, $data);
+              Logger::stack("Left module: ".$preprocessor[0]->name."::".
+                $preprocessor[1]);
               // Make sure the result conforms to the result protocol.
               if (is_array($result)) {
                 if ($result[0] === false) {
@@ -113,7 +117,11 @@
               $registration[0]->name."'");
           }
           // Call the specified callback with specified parameters.
+          Logger::stack("Entering module: ".$registration[0]->name."::".
+            $registration[1]);
           return $registration[0]->$registration[1]($name, $data);
+          Logger::stack("Left module: ".$registration[0]->name."::".
+            $registration[1]);
         }
       }
       return false;

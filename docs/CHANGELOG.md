@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+###### 1.25 - October 9, 2014
+Revamp the logging system; current logging levels:  `silent`, `info`, `stack`,
+`debug`, `devel`.  Each log level is described in the development document.
+
+Automatically fork into background when in `silent` logging mode; otherwise
+`silent` is equivalent to `info`.  On systems that don't support forking (ex. no
+PCNTL library), `silent` will default to `info`.
+
+`IPCHandling` related functionality is now conditionally loaded if PCNTL is
+available.  Update modules to verify that `function_exists("pcntl_fork")`
+evaluates to true before attempting to use `IPCHandling`.
+
 ###### 1.24 - October 7, 2014
 Rearrange the documentation into the docs/ folder in the project root.
 

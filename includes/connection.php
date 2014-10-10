@@ -203,7 +203,7 @@
             // Sanitize data.
             $data = trim($data);
             // Return the data.
-            Logger::debug("Data received on '".$this->getConnectionString().
+            Logger::devel("Data received on '".$this->getConnectionString().
               "':  '".$data."'");
             return $data;
           }
@@ -291,7 +291,7 @@
       // Check to make sure the socket is a valid resource.
       if (is_resource($this->socket)) {
         if (trim($data) != null) {
-          Logger::debug("Sending data to client:  '".$data."'");
+          Logger::devel("Sending data to client:  '".$data."'");
         }
         // Send data to the client.
         if ($newline == true) {

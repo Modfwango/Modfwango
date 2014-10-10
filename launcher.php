@@ -30,6 +30,7 @@
   $files = array(
     __PROJECTROOT__."/conf/modules.conf",
     __PROJECTROOT__."/conf/listen.conf",
+    __PROJECTROOT__."/conf/loglevel.conf"
   );
   // Check each directory and don't fail if it doesn't exist
   foreach ($directories as $directory) {

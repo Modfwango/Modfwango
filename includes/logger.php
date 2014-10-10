@@ -1,17 +1,32 @@
 <?php
   class Logger {
     public static function debug($msg) {
-      // Split multi-line messages.
-      if (stristr($msg, "\n")) {
-        foreach (explode("\n", trim($msg)) as $line) {
-          self::displayDebug($line);
-        }
-        return;
-      }
       // If debug mode is on, show debug messages.
-      if (__DEBUG__ == true) {
+      if (__LOGLEVEL__ > 2) {
+        // Split multi-line messages.
+        if (stristr($msg, "\n")) {
+          foreach (explode("\n", trim($msg)) as $line) {
+            self::displayDebug($line);
+          }
+          return;
+        }
         // Show a message.
         self::displayDebug(trim($msg));
+      }
+    }
+
+    public static function devel($msg) {
+      // If debug mode is on, show debug messages.
+      if (__LOGLEVEL__ > 3) {
+        // Split multi-line messages.
+        if (stristr($msg, "\n")) {
+          foreach (explode("\n", trim($msg)) as $line) {
+            self::displayDevel($line);
+          }
+          return;
+        }
+        // Show a message.
+        self::displayDevel(trim($msg));
       }
     }
 
@@ -19,8 +34,16 @@
       echo " [ DEBUG ] ".$msg."\n";
     }
 
+    private static function displayDevel($msg) {
+      echo " [ DEVEL ] ".$msg."\n";
+    }
+
     private static function displayInfo($msg) {
       echo "  [ INFO ] ".$msg."\n";
+    }
+
+    private static function displayStack($msg) {
+      echo " [ STACK ] ".$msg."\n";
     }
 
     public static function info($msg) {
@@ -59,6 +82,21 @@
         $remaining = substr($num, 0, (strlen($num) - (count($number) * 3))).",";
       }
       return $remaining.implode(",", array_reverse($number));
+    }
+
+    public static function stack($msg) {
+      // If stack mode is on, show stack messages.
+      if (__LOGLEVEL__ > 1) {
+        // Split multi-line messages.
+        if (stristr($msg, "\n")) {
+          foreach (explode("\n", trim($msg)) as $line) {
+            self::displayStack($line);
+          }
+          return;
+        }
+        // Show a message.
+        self::displayStack(trim($msg));
+      }
     }
   }
 ?>
