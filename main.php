@@ -59,7 +59,7 @@
         }
 
         // Discard the output buffer and close
-        ob_end_clean();
+        @ob_end_clean();
 
         // Close all of the standard file descriptors
         fclose(STDIN);
