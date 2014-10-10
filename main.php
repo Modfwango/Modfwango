@@ -4,6 +4,22 @@
       // Verify that the bot can run in the provided environment
       $this->verifyEnvironment();
 
+      // Verify that this project isn't already running
+      if (is_readable(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).
+          ".pid")) {
+        $pid = file_get_contents(__PROJECTROOT__."/data/".basename(
+          __PROJECTROOT__).".pid");
+        if (posix_getpgid($pid)) {
+          die("Already running with PID ".intval($pid)."\n");
+        }
+        // Remove the PID file if we're not /actually/ already running
+        unlink(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).".pid");
+      }
+      else {
+        die("Can't read PID file \"".__PROJECTROOT__."/data/".basename(
+          __PROJECTROOT__).".pid\"\n");
+      }
+
       if (isset($argv[1])) {
         // Ensure that any non-default user input is converted to an integer
         $loglevel = (int)$argv[1];
@@ -75,6 +91,10 @@
         if (posix_setsid() < 0 || $pid = pcntl_fork()) {
           die();
         }
+
+        // Make note of our pid
+        file_put_contents(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).
+          ".pid", posix_getpid());
       }
     }
 
