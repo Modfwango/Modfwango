@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.26 - October 11, 2014
+Move shutdown functionality to a public method.
+
 ###### 1.25 - October 9, 2014
 Revamp the logging system; current logging levels:  `silent`, `info`, `stack`,
 `debug`, `devel`.  Each log level is described in the

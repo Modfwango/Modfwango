@@ -346,21 +346,21 @@
       // Register signal handlers
       declare(ticks = 1);
       if (function_exists("pcntl_signal")) {
-        pcntl_signal(SIGINT,
-          function() {
-            echo "\r";
-            Logger::info("Begin shutdown procedure...");
-            foreach (ConnectionManagement::getConnections() as $c) {
-              $c->disconnect();
-            }
-            foreach (SocketManagement::getSockets() as $s) {
-              $s->close();
-            }
-            Logger::info("Shutting down...");
-            die();
-          }
-        );
+        pcntl_signal(SIGINT, array($this, "shutdown"));
       }
+    }
+
+    public function shutdown() {
+      echo "\r";
+      Logger::info("Begin shutdown procedure...");
+      foreach (ConnectionManagement::getConnections() as $c) {
+        $c->disconnect();
+      }
+      foreach (SocketManagement::getSockets() as $s) {
+        $s->close();
+      }
+      Logger::info("Shutting down...");
+      die();
     }
 
     private function setErrorReporting() {
