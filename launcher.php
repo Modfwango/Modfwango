@@ -4,10 +4,9 @@
       die("You must have PHP version 5.1.1 or higher to use Modfwango.\n");
   }
 
-  // Set the default timezone to America/Chicago; modules can temporarily set
-  // their own timezone configuration if they wish.  I'll get around to adding
-  // a configuration parameter for this one day
-  define("__TIMEZONE__", "America/Chicago");
+  // Set the default timezone to UTC; modules can temporarily set
+  // their own timezone configuration if they wish
+  define("__TIMEZONE__", "UTC");
   // Set the project root constant to the launcher's directory
   define("__PROJECTROOT__", dirname(__FILE__));
 
