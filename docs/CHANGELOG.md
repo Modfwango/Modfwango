@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.27 - October 16, 2014
+Use UTC timezone for all projects by default.
+
 ###### 1.26 - October 11, 2014
 Move shutdown functionality to a public method.
 
