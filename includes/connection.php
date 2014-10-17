@@ -19,10 +19,10 @@
         $port = $data[1];
         $ssl = $data[2];
         $options = $data[3];
-        // Verify type restrictions; we don't want anything unexpected.
+        // Verify type restrictions; we don't want anything unexpected
         if (is_string($host) && is_numeric($port) && is_bool($ssl)
             && is_array($options)) {
-          // Assign class properties from construction arguments.
+          // Assign class properties from construction arguments
           if (filter_var($host, FILTER_VALIDATE_IP)) {
             $this->ip = $host;
             $this->host = $this->fetch_ptr($this->ip);
@@ -54,7 +54,7 @@
         $port = $data[1];
         $ssl = $data[2];
         $options = $data[3];
-        // Verify type restrictions; we don't want anything unexpected.
+        // Verify type restrictions; we don't want anything unexpected
         if (is_resource($socket) && is_numeric($port) && is_bool($ssl)
             && is_array($options)) {
           $this->socket = $socket;
@@ -84,21 +84,21 @@
 
     public function connect() {
       if ($this->type == "0") {
-        // Attempt to open a socket to the requested host.
+        // Attempt to open a socket to the requested host
         Logger::debug("Attempting connection to '".
           $this->getConnectionString()."'");
         $this->socket = fsockopen(($this->ssl ? "tls://" : null).$this->host,
           $this->port);
 
-        // Make sure that the stream doesn't block until it receives data.
+        // Make sure that the stream doesn't block until it receives data
         stream_set_blocking($this->socket, 0);
 
-        // Get the connectionConnectedEvent event.
+        // Get the connectionConnectedEvent event
         $event = EventHandling::getEventByName("connectionConnectedEvent");
         if ($event != false) {
           foreach ($event[2] as $id => $registration) {
             // Trigger the connectionConnectedEvent event for each registered
-            // module.
+            // module
             EventHandling::triggerEvent("connectionConnectedEvent", $id,
               $this);
           }
@@ -109,23 +109,23 @@
     }
 
     protected function created() {
-      // Let people know what's going on.
+      // Let people know what's going on
       Logger::debug(($this->getIPC() ? "IPC " : null)."Connection ".
         ($this->type == "0" ? "to" : "from")." '".$this->getConnectionString().
         "' created.");
 
-      // Don't trigger the event for inter-process communication sockets.
+      // Don't trigger the event for inter-process communication sockets
       if ($this->ipc == true) {
         $this->configured = true;
       }
       else {
-        // Get the connectionCreatedEvent event.
+        // Get the connectionCreatedEvent event
         $event = EventHandling::getEventByName("connectionCreatedEvent");
         if ($event != false) {
           if (count($event[2]) > 0) {
             foreach ($event[2] as $id => $registration) {
               // Trigger the connectionCreatedEvent event for each registered
-              // module.
+              // module
               if (EventHandling::triggerEvent("connectionCreatedEvent", $id,
                   $this)) {
                 $this->configured = true;
@@ -142,22 +142,22 @@
 
     public function disconnect() {
       if ($this->socket != null) {
-        // Close the socket.
+        // Close the socket
         Logger::debug("Disconnecting from '".$this->getConnectionString().".'");
 
-        // Destroy the socket.
+        // Destroy the socket
         @stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
         @fclose($this->socket);
         $this->socket = null;
 
-        // Don't trigger the event for inter-process communication sockets.
+        // Don't trigger the event for inter-process communication sockets
         if ($this->ipc != true) {
-          // Get the connectionDisconnectedEvent event.
+          // Get the connectionDisconnectedEvent event
           $event = EventHandling::getEventByName("connectionDisconnectedEvent");
           if ($event != false) {
             foreach ($event[2] as $id => $registration) {
               // Trigger the connectionDisconnectedEvent event for each
-              // registered module.
+              // registered module
               EventHandling::triggerEvent("connectionDisconnectedEvent", $id,
                 $this);
             }
@@ -195,21 +195,21 @@
     }
 
     public function getData() {
-      // Check to make sure the socket is a valid resource.
+      // Check to make sure the socket is a valid resource
       if (is_resource($this->socket)) {
-        // Attempt to read data from the socket.
+        // Attempt to read data from the socket
         if ($data = @stream_get_line($this->socket, 8192, "\n")) {
           if ($data != false) {
-            // Sanitize data.
+            // Sanitize data
             $data = trim($data);
-            // Return the data.
+            // Return the data
             Logger::devel("Data received on '".$this->getConnectionString().
               "':  '".$data."'");
             return $data;
           }
         }
         elseif (feof($this->socket)) {
-          // Kill the socket if it should die upon no data.
+          // Kill the socket if it should die upon no data
           Logger::debug("Socket died");
           $this->disconnect();
         }
@@ -218,7 +218,7 @@
     }
 
     public function getConnectionString() {
-      // Build a connection string to identify this connection.
+      // Build a connection string to identify this connection
       return ($this->ssl ? "tls://" : "tcp://").$this->getHost().":".
         $this->getPort();
     }
@@ -236,47 +236,47 @@
     }
 
     public function getHost() {
-      // Retrieve hostname.
+      // Retrieve hostname
       return $this->host;
     }
 
     public function getIP() {
-      // Retrieve IP.
+      // Retrieve IP
       return $this->ip;
     }
 
     public function getIPC() {
-      // Retrieve IPC.
+      // Retrieve IPC
       return $this->ipc;
     }
 
     public function getLocalHost() {
-      // Retrieve hostname.
+      // Retrieve hostname
       return $this->localhost;
     }
 
     public function getLocalIP() {
-      // Retrieve IP.
+      // Retrieve IP
       return $this->localip;
     }
 
     public function getOption($key) {
-      // Retrieve the requested option if it exists, otherwise return false.
+      // Retrieve the requested option if it exists, otherwise return false
       return (isset($this->options[$key]) ? $this->options[$key] : false);
     }
 
     public function getPort() {
-      // Retrieve port.
+      // Retrieve port
       return $this->port;
     }
 
     public function getSSL() {
-      // Retrieve SSL.
+      // Retrieve SSL
       return $this->ssl;
     }
 
     public function getType() {
-      // Retrieve type.
+      // Retrieve type
       return $this->type;
     }
 
@@ -288,12 +288,12 @@
     }
 
     public function send($data, $newline = true) {
-      // Check to make sure the socket is a valid resource.
+      // Check to make sure the socket is a valid resource
       if (is_resource($this->socket)) {
         if (trim($data) != null) {
           Logger::devel("Sending data to client:  '".$data."'");
         }
-        // Send data to the client.
+        // Send data to the client
         if ($newline == true) {
           $line = $data."\r\n";
           $status = @fputs($this->socket, $line, strlen($line));
@@ -302,7 +302,7 @@
           $status = @fputs($this->socket, $data, strlen($data));
         }
 
-        // Disconnect if an error occurred.
+        // Disconnect if an error occurred
         if ($status === false) {
           $this->disconnect();
         }
@@ -314,7 +314,7 @@
     }
 
     public function setOption($key, $value) {
-      // Set an option for this connection.
+      // Set an option for this connection
       $this->options[$key] = $value;
       return true;
     }

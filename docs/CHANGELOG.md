@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+###### 1.29 - October 18, 2014
+Update `IPCHandling` class to include inline comments.
+
+Make sure all inline comments are compliant with the contribution guidelines.
+
 ###### 1.28 - October 17, 2014
 Alter the `ModuleManagement` class to better conform to standards.
 

@@ -8,9 +8,9 @@
     private $ipc = false;
 
     public function __construct($host, $port, $ipc = false) {
-      // Verify type restrictions.
+      // Verify type restrictions
       if (is_string($host) && !stristr($host, "/") && is_numeric($port)) {
-        // Assign class properties.
+        // Assign class properties
         $this->host = $host;
         $this->port = $port;
         if (substr($this->port, 0, 1) == "+") {
@@ -25,7 +25,7 @@
         if ($ipc == true) {
           $this->ipc = true;
         }
-        // Attempt to bind the socket to a host and port.
+        // Attempt to bind the socket to a host and port
         if ($this->ssl == true) {
           $socket = @stream_socket_server("tls://".$this->host.":".$this->port,
             $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $ctx);
@@ -40,15 +40,15 @@
           $this->configured = true;
         }
       }
-      // Problem with type or binding.
+      // Problem with type or binding
       return $this->configured;
     }
 
     public function close() {
-      // Close the socket.
+      // Close the socket
       Logger::debug("Closing '".$this->getSocketString().".'");
 
-      // Destroy the socket.
+      // Destroy the socket
       @stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
       @fclose($this->socket);
       $this->socket = null;
@@ -103,7 +103,7 @@
     }
 
     public function getSocketString() {
-      // Build a socket string to identify this socket.
+      // Build a socket string to identify this socket
       return ($this->ssl ? "tls://" : "tcp://").$this->host.":".$this->port;
     }
 
@@ -138,18 +138,18 @@
     }
 
     public function accept() {
-      // Accept a new client.
+      // Accept a new client
       $client = @stream_socket_accept($this->socket, 0);
-      // Make sure an actual client was accepted.
+      // Make sure an actual client was accepted
       if (is_resource($client)) {
-        // Set non-blocking.
+        // Set non-blocking
         stream_set_blocking($client, 0);
-        // Add the new socket to the connection management class.
+        // Add the new socket to the connection management class
         ConnectionManagement::newConnection(new Connection("1", array($client,
           $this->port, $this->ssl, array()), $this->ipc));
         return true;
       }
-      // No new client/error accepting client.
+      // No new client/error accepting client
       return false;
     }
   }

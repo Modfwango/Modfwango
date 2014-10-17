@@ -231,15 +231,15 @@ An example of an event that includes a data preprocessor is shown below:
     public function preprocessEvent($name, $registrations, $connection, $data) {
       $ex = explode(" ", $data);
 
-      // Iterate through each registration.
+      // Iterate through each registration
       foreach ($registrations as $id => $registration) {
-        // Trigger the event for a certain registration.
+        // Trigger the event for a certain registration
         EventHandling::triggerEvent($name, $id, array($connection, $data, $ex));
       }
     }
 
     public function isInstantiated() {
-      // Create an event for raw data.
+      // Create an event for raw data
       EventHandling::createEvent("rawEvent", $this, "preprocessEvent");
       return true;
     }
@@ -390,7 +390,7 @@ the dispatched method.  An example module is shown below:
 
     public function receiveConnectionCreated($name, $data) {
       Logger::debug("Test::receiveConnectionCreated");
-      // Spawn a background thread when a new connection is created.
+      // Spawn a background thread when a new connection is created
       $uuid = IPCHandling::dispatch($this, "testIPCMethod",
         "testIPCMethodCallback", rand(5, 10));
       Logger::debug("Thread UUID:  ".$uuid);
@@ -398,7 +398,7 @@ the dispatched method.  An example module is shown below:
     }
 
     public function testIPCMethod($data) {
-      // This is the method that will be dispatched into the background.
+      // This is the method that will be dispatched into the background
       Logger::debug("Test::testIPCMethod");
       $ret = null;
       for ($i = 0; $i < $data; $i++) {
@@ -409,7 +409,7 @@ the dispatched method.  An example module is shown below:
     }
 
     public function testIPCMethodCallback($uuid, $data) {
-      // This method will be called when the dispatched method has finished.
+      // This method will be called when the dispatched method has finished
       Logger::debug("Test::testIPCMethodCallback");
       Logger::debug($uuid);
       Logger::debug(var_export($data, true));
