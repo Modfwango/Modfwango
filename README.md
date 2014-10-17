@@ -10,6 +10,17 @@ object oriented.  This particular repo stemmed from the
 as Modfwango.  I decided to make the separation, because a networking framework
 with reloadable modules is of more use to people than just a simple IRC bot.
 
+Objective
+=========
+
+Normally in PHP, classes cannot be redefined.  This limits you as a developer
+because you don't have the ability to change code on-the-fly and reload it.
+Modfwango solves this problem by creating randomly generated class names for
+each module, every time it's loaded.  After a module is loaded, it's kept in an
+array internal to the `ModuleManagement` class.  You can then decide when to
+load and unload modules at will, and `ModuleManagement` will simply either
+append or truncate your module from its internal array of loaded modules.
+
 Table of Contents
 =================
 
