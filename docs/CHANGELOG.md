@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+###### 1.28 - October 17, 2014
+Alter the `ModuleManagement` class to better conform to standards.
+
+Adjust memory logging methods in `Logger` to better describe their function.
+
 ###### 1.27 - October 16, 2014
 Use UTC timezone for all projects by default.
 

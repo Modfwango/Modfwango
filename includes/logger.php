@@ -58,10 +58,14 @@
       self::displayInfo(trim($msg));
     }
 
-    public static function memoryUsage() {
-      self::info("Memory Usage:  ".self::prepareNumber(intval(
-        memory_get_usage() / 1024 / 1024)). " MB (". self::prepareNumber(intval(
-        memory_get_usage() / 1024)). " KB)");
+    public static function getMemoryUsage() {
+      return "Memory Usage:  ".
+        self::prepareNumber(intval(memory_get_usage() / 1024 / 1024)). " MB (".
+        self::prepareNumber(intval(memory_get_usage() / 1024)). " KB)";
+    }
+
+    public static function printMemoryUsage() {
+      self::info(self::getMemoryUsage());
     }
 
     private static function prepareNumber($num) {

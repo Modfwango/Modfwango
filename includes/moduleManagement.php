@@ -85,8 +85,8 @@
       if ($suppressNotice == false) {
         Logger::debug("Attempting to load module \"".$name."...\"");
       }
-
-      // Set the root path of the module in a temporary variable.
+      // Set the root path of the module in a temporary variable to distinguish
+      // between a framework module and a project module.
       $root = self::determineModuleRoot($name);
       // Make sure a module with said name isn't already loaded and the path is
       // valid.
@@ -95,8 +95,10 @@
         $classname = basename($name).time().mt_rand();
         // Setup the eval string, replacing placeholders with values.
         $eval = str_ireplace("@@CLASSNAME@@", $classname, str_ireplace(
-          "__CLASSNAME__", $classname, substr(trim(file_get_contents($root.
-          "/modules/".$name.".php")), 5, -2)));
+          "__CLASSNAME__", $classname, trim(substr(trim(file_get_contents($root.
+          "/modules/".$name.".php")), 5, -2))));
+        Logger::devel("Evaluating module code:");
+        Logger::devel($eval);
         // Eval the string to create the class.
         eval($eval);
         // Make sure something didn't go wrong.
@@ -105,48 +107,24 @@
           $module = new $classname();
           // Make sure the variable is an object and it conforms to the module
           // API required to load modules.
-          if (is_object($module) && method_exists($module, "isInstantiated")) {
-            // Make sure no dependencies are needed.
+          if (is_object($module) && $module->name == basename($name)
+              && method_exists($module, "isInstantiated")) {
+            // Make sure dependencies are fulfilled.
             if (self::checkDependencies($module)) {
               // Run setup function to allow the module to prepare itself.
               Logger::stack("Entering module: ".$module->name.
                 "::isInstantiated()");
-              if ($module->isInstantiated()) {
-                Logger::stack("Left module: ".$module->name.
-                  "::isInstantiated()");
+              $instantiated = $module->isInstantiated();
+              Logger::stack("Left module: ".$module->name.
+                "::isInstantiated()");
+              if ($instantiated == true) {
                 // Add the module to the list of loaded modules.
-                self::$modules[] = $module;
+                self::$modules[$module->name] = $module;
                 Logger::info("Loaded module \"".$name."\"");
-                // Iterate through the waiting list to check if loading this
-                // module resolved any other dependencies.
-                $lastCount = -1;
-                while (count(self::$waitingList) !== $lastCount) {
-                  $lastCount = count(self::$waitingList);
-                  foreach (self::$waitingList as $key => $item) {
-                    Logger::stack("Entering module: ".$item[1]->name.
-                      "::isInstantiated()");
-                    if (self::checkDependencies($item[1])
-                        && $item[1]->isInstantiated()) {
-                      Logger::stack("Left module: ".$item[1]->name.
-                        "::isInstantiated()");
-                      // Loading the previous module allows this module to be
-                      // loaded.
-                      self::$modules[] = $item[1];
-                      Logger::info("Loaded module \"".$item[0]."\"");
-                      // Remove newly loaded module from the waiting list.
-                      unset(self::$waitingList[$key]);
-                    }
-                    else {
-                      Logger::stack("Left module: ".$item[1]->name.
-                        "::isInstantiated()");
-                    }
-                  }
-                }
+                // Attempt to process the waiting list for modules that can be
+                // loaded because of this module.
+                self::processWaitingList();
                 return true;
-              }
-              else {
-                Logger::stack("Left module: ".$module->name.
-                  "::isInstantiated()");
               }
             }
             else {
@@ -162,18 +140,51 @@
             // module API.
             Logger::info("Unable to load module \"".$name."\"");
             Logger::debug("Class \"".$classname.
-              "\" does not contain method \"isInstantiated()\" or it returned ".
-              "false.  Failing quietly.");
+              "\" does not adhere to the requirements for a Modfwango ".
+              "compatible module, or \"isInstantiated()\" returned false. ".
+              "Failing quietly.");
+            Logger::debug("For more information about Modfwango module ".
+              "requirements, visit https://github.com/Modfwango/Modfwango/".
+              "blob/master/docs/DEVELOPMENT.md#creating-your-first-module");
           }
         }
         else {
-          // A class was not created by eval().
+          // The appropriate class was not created by eval().
           Logger::info("Unable to load module \"".$name.".\"");
           Logger::debug("Class \"".$classname.
-            "\" was not created by eval().  Failing quietly.");
+            "\" was not created by eval(). Failing quietly.");
+          Logger::debug("For information regarding Modfwango module ".
+            "requirements, visit https://github.com/Modfwango/Modfwango/".
+            "blob/master/docs/DEVELOPMENT.md#creating-your-first-module");
         }
       }
       return false;
+    }
+
+    private static function processWaitingList() {
+      // Iterate through the waiting list to check if loading a module resolved
+      // any dependencies.
+      $lastCount = -1;
+      while (count(self::$waitingList) !== $lastCount) {
+        $lastCount = count(self::$waitingList);
+        foreach (self::$waitingList as $key => $item) {
+          if (self::checkDependencies($item[1])) {
+            // Awesome; dependencies were fulfilled.
+            Logger::stack("Entering module: ".$item[1]->name.
+              "::isInstantiated()");
+            $instantiated = $item[1]->isInstantiated();
+            Logger::stack("Left module: ".$item[1]->name.
+              "::isInstantiated()");
+            if ($instantiated == true) {
+              // Loading a previous module allows this module to be loaded.
+              self::$modules[] = $item[1];
+              Logger::info("Loaded module \"".$item[0]."\"");
+              // Remove newly loaded module from the waiting list.
+              unset(self::$waitingList[$key]);
+            }
+          }
+        }
+      }
     }
 
     public static function reloadModule($name) {
