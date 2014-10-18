@@ -1,7 +1,7 @@
-Modfwango
+Modfwango ![Build Status](http://dpr.clayfreeman.com/VubN)
 =========
 
-<img align="right" width=115 src="http://dpr.clayfreeman.com/1cc2Y+">
+<img align="right" width=135 src="http://dpr.clayfreeman.com/1cc2Y+">
 Modfwango (pronounced `mahd-fuān-gogh`) is a modular socket framework written in
 PHP.  This framework has been refined over the past few years for personal use,
 and I decided to make it open to the public.  It is stable, clean, modular, and
@@ -9,18 +9,13 @@ object oriented.  This particular repo stemmed from the
 [IRCBot-PHP](https://github.com/Modfwango/IRCBot-PHP) framework, formerly known
 as Modfwango.  I decided to make the separation, because a networking framework
 with reloadable modules is of more use to people than just a simple IRC bot.
-[<img align="right" width=115 height=18
-src="http://dpr.clayfreeman.com/VubN">](http://dpr.clayfreeman.com/14At9)
-
-Objective
-=========
 
 Normally in PHP, classes cannot be redefined.  This limits you as a developer
 because you don't have the ability to change code on-the-fly and reload it.
 Modfwango solves this problem by creating randomly generated class names for
 each module, every time it's loaded.  After a module is loaded, it's kept in an
 array internal to the `ModuleManagement` class.  You can then decide when to
-load and unload modules at will, and `ModuleManagement` will simply either
+load and unload modules at will, and the `ModuleManagement` will simply either
 append or truncate your module from its internal array of loaded modules.
 
 Table of Contents
