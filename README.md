@@ -1,7 +1,7 @@
 Modfwango
 =========
 
-<img align="right" width=120 src="http://dpr.clayfreeman.com/1cc2Y+">
+<img align="right" width=115 src="http://dpr.clayfreeman.com/1cc2Y+">
 Modfwango (pronounced `mahd-fuān-gogh`) is a modular socket framework written in
 PHP.  This framework has been refined over the past few years for personal use,
 and I decided to make it open to the public.  It is stable, clean, modular, and
@@ -9,7 +9,7 @@ object oriented.  This particular repo stemmed from the
 [IRCBot-PHP](https://github.com/Modfwango/IRCBot-PHP) framework, formerly known
 as Modfwango.  I decided to make the separation, because a networking framework
 with reloadable modules is of more use to people than just a simple IRC bot.
-[<img align="right" width=120 height=18
+[<img align="right" width=115 height=18
 src="http://dpr.clayfreeman.com/VubN">](http://dpr.clayfreeman.com/14At9)
 
 Objective
