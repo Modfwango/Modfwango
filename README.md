@@ -9,8 +9,8 @@ object oriented.  This particular repo stemmed from the
 [IRCBot-PHP](https://github.com/Modfwango/IRCBot-PHP) framework, formerly known
 as Modfwango.  I decided to make the separation, because a networking framework
 with reloadable modules is of more use to people than just a simple IRC bot.
-[<a href=""><img align="right" style="padding-right: 23px"
-src="http://dpr.clayfreeman.com/VubN"></a>](http://dpr.clayfreeman.com/14At9)
+[<img align="right" style="padding-right: 23px"
+src="http://dpr.clayfreeman.com/VubN">](http://dpr.clayfreeman.com/14At9)
 
 Objective
 =========
