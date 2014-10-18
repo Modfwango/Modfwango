@@ -1,7 +1,7 @@
 <?php
   // Make sure that we're running on a compatible version of PHP
-  if (version_compare(phpversion(), '5.2', '<')) {
-    echo "You must have PHP version 5.2 or higher to use Modfwango.\n";
+  if (version_compare(phpversion(), '5.3', '<')) {
+    echo "You must have PHP version 5.3 or higher to use Modfwango.\n";
     exit(1);
   }
 
