@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+###### 1.30 - October 19, 2014
+Switch all `die()` functions to `exit(int)` for proper exit statuses.
+
+Implement Travis CI for build testing.
+
 ###### 1.29 - October 18, 2014
 Update `IPCHandling` class to include inline comments.
 
