@@ -10,15 +10,17 @@
         $pid = file_get_contents(__PROJECTROOT__."/data/".basename(
           __PROJECTROOT__).".pid");
         if (posix_getpgid($pid)) {
-          die("Already running with PID ".intval($pid)."\n");
+          echo "Already running with PID ".intval($pid)."\n";
+          exit(1);
         }
         // Remove the PID file if we're not /actually/ already running
         unlink(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).".pid");
       }
       elseif (file_exists(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).
               ".pid")) {
-        die("Can't read PID file \"".__PROJECTROOT__."/data/".basename(
-          __PROJECTROOT__).".pid\"\n");
+        echo "Can't read PID file \"".__PROJECTROOT__."/data/".basename(
+          __PROJECTROOT__).".pid\"\n";
+        exit(1);
       }
 
       if (isset($argv[1])) {
@@ -72,7 +74,7 @@
       if (__LOGLEVEL__ == 0 && function_exists("pcntl_fork")
           && function_exists("pcntl_fork")) {
         if ($pid = pcntl_fork()) {
-          die();
+          exit(0);
         }
 
         // Discard the output buffer and close
@@ -90,7 +92,7 @@
         );
 
         if (posix_setsid() < 0 || $pid = pcntl_fork()) {
-          die();
+          exit(0);
         }
 
         // Make note of our pid
@@ -184,7 +186,7 @@
           $modules[] = $module;
           if (ModuleManagement::loadModule($module) === false) {
             Logger::info("Module \"".$module."\" failed to load.");
-            die();
+            exit(1);
           }
         }
       }
@@ -198,7 +200,7 @@
           $modules[] = $module;
           if (ModuleManagement::loadModule($module) === false) {
             Logger::info("Module \"".$module."\" failed to load.");
-            die();
+            exit(1);
           }
         }
       }
@@ -207,7 +209,7 @@
       foreach ($modules as $module) {
         if (!ModuleManagement::isLoaded(basename($module))) {
           Logger::info("Module \"".$module."\" failed to load.");
-          die();
+          exit(1);
         }
       }
     }
@@ -360,7 +362,7 @@
         $s->close();
       }
       Logger::info("Shutting down...");
-      die();
+      exit(0);
     }
 
     private function setErrorReporting() {
@@ -371,13 +373,15 @@
     private function verifyEnvironment() {
       // Verify that the current directory structure is named safely
       if (!preg_match("/^[a-zA-Z0-9\\/.\\-]+$/", dirname(__FILE__))) {
-        die("The full path to this file must match this regular expression:\n^".
-          "[a-zA-Z0-9\\/.\\-]+$\n");
+        echo "The full path to this file must match this regular expression:\n".
+          "^[a-zA-Z0-9\\/.\\-]+$\n";
+        exit(1);
       }
 
       // Verify that the launcher script has setup the project root constant
       if (!defined("__PROJECTROOT__")) {
-        die("__PROJECTROOT__ hasn't been defined by a launcher script.\n");
+        echo "__PROJECTROOT__ hasn't been defined by a launcher script.\n";
+        exit(1);
       }
     }
   }

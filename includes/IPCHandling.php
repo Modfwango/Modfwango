@@ -11,7 +11,7 @@
       $pid = pcntl_fork();
       if ($pid == -1) {
         Logger::info("Couldn't fork. Exiting...");
-        die();
+        exit(1);
       }
       elseif ($pid) {
         // We're in the parent; log success and add the child PID to thread info
@@ -46,8 +46,8 @@
             break;
           }
         }
-        // Make sure the child dies after it's done processing data
-        die();
+        // Make sure the child exits after it's done processing data
+        exit(0);
       }
     }
 

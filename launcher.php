@@ -1,7 +1,8 @@
 <?php
   // Make sure that we're running on a compatible version of PHP
-  if (version_compare(phpversion(), '5.1.1', '<')) {
-      die("You must have PHP version 5.1.1 or higher to use Modfwango.\n");
+  if (version_compare(phpversion(), '5.2', '<')) {
+    echo "You must have PHP version 5.2 or higher to use Modfwango.\n";
+    exit(1);
   }
 
   // Set the default timezone to UTC; modules can temporarily set
@@ -48,8 +49,9 @@
   // Tell the user if there was a missing file that was mandatory
   $ending = "\n * ";
   if (count($missing) > 0) {
-    die("Some mandatory configuration files were missing, and thus replaced.  ".
-      "They are listed below:".$ending.implode($ending, $missing)."\n");
+    echo "Some mandatory configuration files were missing, and thus replaced. ".
+      "They are listed below:".$ending.implode($ending, $missing)."\n";
+    exit(0);
   }
 
   // Require Modfwango core to ignite the project
