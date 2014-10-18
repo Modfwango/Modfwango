@@ -1,4 +1,4 @@
-Modfwango ![Build Status](http://dpr.clayfreeman.com/VubN)
+Modfwango [![Build Status](http://bit.ly/1ntkobG)](http://bit.ly/1zg30fI)
 =========
 
 <img align="right" width=135 src="http://dpr.clayfreeman.com/1cc2Y+">
