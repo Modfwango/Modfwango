@@ -352,7 +352,7 @@
       }
     }
 
-    public function shutdown() {
+    public function shutdown($exit = true) {
       echo "\r";
       Logger::info("Begin shutdown procedure...");
       foreach (ConnectionManagement::getConnections() as $c) {
@@ -362,7 +362,9 @@
         $s->close();
       }
       Logger::info("Shutting down...");
-      exit(0);
+      if ($exit == true) {
+        exit(0);
+      }
     }
 
     private function setErrorReporting() {
