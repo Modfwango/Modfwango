@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.31 - December 6, 2014
+Allow optional `exit(0)` when using `Main->shutdown()`.
+
 ###### 1.30 - October 19, 2014
 Switch all `die()` functions to `exit(int)` for proper exit statuses.
 
