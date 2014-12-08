@@ -92,7 +92,8 @@
       // valid
       if (!self::isLoaded(basename($name)) && $root != false) {
         // Generate a random class name to allow for reloadable modules
-        $classname = basename($name).time().mt_rand();
+        $classname = preg_replace("/[^a-z0-9]/i", null, basename($name)).
+          time().mt_rand();
         // Setup the eval string, replacing placeholders with values
         $eval = str_ireplace("@@CLASSNAME@@", $classname, str_ireplace(
           "__CLASSNAME__", $classname, trim(substr(trim(file_get_contents($root.
