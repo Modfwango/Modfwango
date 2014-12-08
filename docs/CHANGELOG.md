@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+###### 1.32 - December 7, 2014
+Strip non-alphanumeric characters from class names for modules.
+Only allow `Connection` to connect if socket is `null`.
+
 ###### 1.31 - December 6, 2014
 Allow optional `exit(0)` when using `Main->shutdown()`.
 

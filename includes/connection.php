@@ -83,7 +83,7 @@
     }
 
     public function connect() {
-      if ($this->type == "0") {
+      if ($this->type == "0" && $this->socket == null) {
         // Attempt to open a socket to the requested host
         Logger::debug("Attempting connection to '".
           $this->getConnectionString()."'");
