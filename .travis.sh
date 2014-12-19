@@ -3,3 +3,4 @@ git init
 git submodule add https://github.com/Modfwango/Modfwango.git .modfwango
 cp .modfwango/launcher.php main.php
 php main.php
+touch conf/noupdatecheck
