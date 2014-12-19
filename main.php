@@ -107,18 +107,20 @@
         __MODFWANGOVERSION__.".");
       // Check for updates to Modfwango
       $version = "1.00";
-      $contents = @explode("\n", @file_get_contents("https://raw.githubusercon".
-        "tent.com/Modfwango/Modfwango/master/docs/CHANGELOG.md", 0,
-        stream_context_create(array('http' => array('timeout' => 1)))));
-      if (is_array($contents)) {
-        foreach ($contents as $line) {
-          if (preg_match("/^[#]{6} (.*)$/i", trim($line), $matches)) {
-            $v = explode(" ", $matches[1]);
-            $v = trim($v[0]);
-            if (version_compare(__MODFWANGOVERSION__, $v, "<")) {
-              Logger::info("An update is available at http://modfwango.com/");
+      if (!file_exists(__PROJECTROOT__."/conf/noupdatecheck")) {
+        $contents = @explode("\n", @file_get_contents("https://raw.githubuserc".
+          "ontent.com/Modfwango/Modfwango/master/docs/CHANGELOG.md", 0,
+          stream_context_create(array('http' => array('timeout' => 1)))));
+        if (is_array($contents)) {
+          foreach ($contents as $line) {
+            if (preg_match("/^[#]{6} (.*)$/i", trim($line), $matches)) {
+              $v = explode(" ", $matches[1]);
+              $v = trim($v[0]);
+              if (version_compare(__MODFWANGOVERSION__, $v, "<")) {
+                Logger::info("An update is available at http://modfwango.com/");
+              }
+              return;
             }
-            return;
           }
         }
       }

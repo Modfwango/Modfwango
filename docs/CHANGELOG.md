@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+###### 1.33 - December 18, 2014
+Allow project to skip checking for updates to Modfwango by creating file
+`conf/noupdatecheck` in the project root.
+
 ###### 1.32 - December 7, 2014
 Strip non-alphanumeric characters from class names for modules.
 Only allow `Connection` to connect if socket is `null`.

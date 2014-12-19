@@ -62,6 +62,10 @@ events/RawEvent
 libraries/Timer
 ```
 
+#### conf/noupdatecheck
+If this file exists in the project root, Modfwango will not attempt to check for
+updates.  The content of this file doesn't matter, and will not be checked.
+
 #### conf/connections/name.conf
 If you need to connect to other servers, you need to create a file for each
 connection.  Each file is parsed with the built-in PHP INI file parser.  An
