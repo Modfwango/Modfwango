@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.34 - December 23, 2014
+Connect to IP to prevent unnecessary DNS lookup.
+
 ###### 1.33 - December 18, 2014
 Allow project to skip checking for updates to Modfwango by creating file
 `conf/noupdatecheck` in the project root.
