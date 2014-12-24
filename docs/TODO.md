@@ -1,3 +1,3 @@
 | Importance | Description                                                     |
 |:----------:|-----------------------------------------------------------------|
-|     `0`    | There are currently no items in the TODO list.                  |
+|  `3`/`10`  | Add support for loading entire folders to `ModuleManagement`    |
