@@ -51,7 +51,7 @@
   }
 
   // End if prelaunch is requested
-  if (strtolower($argv[1]) == "prelaunch") {
+  if (isset($argv[1]) && strtolower($argv[1]) == "prelaunch") {
     exit(0);
   }
 
