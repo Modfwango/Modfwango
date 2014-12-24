@@ -50,6 +50,11 @@
     exit(0);
   }
 
+  // End if prelaunch is requested
+  if (strtolower($argv[1]) == "prelaunch") {
+    exit(0);
+  }
+
   // Require Modfwango core to ignite the project
   require_once(__PROJECTROOT__."/.modfwango/main.php");
 ?>
