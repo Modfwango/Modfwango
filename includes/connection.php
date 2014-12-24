@@ -108,6 +108,8 @@
           }
           return true;
         }
+        Logger::debug("Connection to '".$this->getConnectionString().
+          "' failed.");
       }
       return false;
     }
