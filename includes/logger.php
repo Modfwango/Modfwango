@@ -31,19 +31,19 @@
     }
 
     private static function displayDebug($msg) {
-      echo " [ DEBUG ] ".$msg."\n";
+      echo " DEBUG | ".$msg."\n";
     }
 
     private static function displayDevel($msg) {
-      echo " [ DEVEL ] ".$msg."\n";
+      echo " DEVEL | ".$msg."\n";
     }
 
     private static function displayInfo($msg) {
-      echo "  [ INFO ] ".$msg."\n";
+      echo "  INFO | ".$msg."\n";
     }
 
     private static function displayStack($msg) {
-      echo " [ STACK ] ".$msg."\n";
+      echo " STACK | ".$msg."\n";
     }
 
     public static function info($msg) {
