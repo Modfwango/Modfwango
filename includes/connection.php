@@ -83,12 +83,13 @@
     }
 
     public function connect() {
+      $null = null;
       if ($this->type == "0" && $this->socket == null) {
         // Attempt to open a socket to the requested host
         Logger::debug("Attempting connection to '".
           $this->getConnectionString()."'");
         $socket = @fsockopen(($this->ssl ? "tls://" : null).$this->ip,
-          $this->port);
+          $this->port, $null, $null, 3);
 
         if (is_resource($socket)) {
           $this->socket = $socket;
