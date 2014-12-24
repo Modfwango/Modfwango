@@ -1,4 +1,3 @@
-Importance is in the brackets.  This is on a scale of 0-9.  The higher the
-number, the more important a task is.
-
-Nothing to do currently...
+| Importance | Description                                                     |
+|:----------:|-----------------------------------------------------------------|
+|     `0`    | There are currently no items in the TODO list.                  |
