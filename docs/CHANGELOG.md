@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.35 - December 23, 2014
+General stability and performance improvements.
+
 ###### 1.34 - December 23, 2014
 Connect to IP to prevent unnecessary DNS lookup.
 

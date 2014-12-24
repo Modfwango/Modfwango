@@ -5,21 +5,18 @@
       $this->verifyEnvironment();
 
       // Verify that this project isn't already running
-      if (is_readable(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).
-          ".pid")) {
-        $pid = file_get_contents(__PROJECTROOT__."/data/".basename(
-          __PROJECTROOT__).".pid");
+      $pidfile = __PROJECTROOT__."/data/".basename(__PROJECTROOT__).".pid";
+      if (is_readable($pidfile)) {
+        $pid = file_get_contents($pidfile);
         if (posix_getpgid($pid)) {
           echo "Already running with PID ".intval($pid)."\n";
           exit(1);
         }
         // Remove the PID file if we're not /actually/ already running
-        unlink(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).".pid");
+        unlink($pidfile);
       }
-      elseif (file_exists(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).
-              ".pid")) {
-        echo "Can't read PID file \"".__PROJECTROOT__."/data/".basename(
-          __PROJECTROOT__).".pid\"\n";
+      elseif (file_exists($pidfile)) {
+        echo "Can't read PID file \"".$pidfile."\"\n";
         exit(1);
       }
 
@@ -106,7 +103,6 @@
       Logger::info("You're running Modfwango v".
         __MODFWANGOVERSION__.".");
       // Check for updates to Modfwango
-      $version = "1.00";
       if (!file_exists(__PROJECTROOT__."/conf/noupdatecheck")) {
         $contents = @explode("\n", @file_get_contents("https://raw.githubuserc".
           "ontent.com/Modfwango/Modfwango/master/docs/CHANGELOG.md", 0,
@@ -119,7 +115,7 @@
               if (version_compare(__MODFWANGOVERSION__, $v, "<")) {
                 Logger::info("An update is available at http://modfwango.com/");
               }
-              return;
+              break;
             }
           }
         }
@@ -137,28 +133,32 @@
     }
 
     private function discoverSockets() {
-      // Load the listen configuration
-      $listen = trim(file_get_contents(__PROJECTROOT__."/conf/listen.conf"));
-      $listen = explode("\n", $listen);
-      // Iterate through each line
-      foreach ($listen as $sock) {
-        // Make sure there are no stray line endings
-        $sock = trim($sock);
-        // Make sure the line has a non-null value and a comma
-        if (strlen($sock) > 0 && strstr($sock, ",")) {
-          // Separate bind address from bind port
-          $sock = explode(",", $sock);
-          // Make sure we have the correct amount of parameters
-          if (count($sock) == 2) {
-            // Attempt to create a socket
-            $sock = new Socket(trim($sock[0]), trim($sock[1]));
-            if ($sock != false) {
-              // Add it to the socket management class
-              SocketManagement::newSocket($sock);
-            }
-            else {
-              // Couldn't bind!
-              Logger::debug("Could not bind to address.");
+      // Check if listen.conf is readable
+      $listen = __PROJECTROOT__."/conf/listen.conf";
+      if (is_readable($listen)) {
+        // Load the listen configuration
+        $listen = trim(file_get_contents($listen));
+        $listen = explode("\n", $listen);
+        // Iterate through each line
+        foreach ($listen as $sock) {
+          // Make sure there are no stray line endings
+          $sock = trim($sock);
+          // Make sure the line has a non-null value and a comma
+          if (strlen($sock) > 0 && strstr($sock, ",")) {
+            // Separate bind address from bind port
+            $sock = explode(",", $sock);
+            // Make sure we have the correct amount of parameters
+            if (count($sock) == 2) {
+              // Attempt to create a socket
+              $sock = new Socket(trim($sock[0]), trim($sock[1]));
+              if ($sock != false) {
+                // Add it to the socket management class
+                SocketManagement::newSocket($sock);
+              }
+              else {
+                // Couldn't bind!
+                Logger::debug("Could not bind to address.");
+              }
             }
           }
         }
@@ -179,39 +179,27 @@
     }
 
     private function loadModules() {
-      // Load modules in requested order in modfwango conf/modules.conf
-      foreach (explode("\n",
-          trim(file_get_contents(__MODFWANGOROOT__."/conf/modules.conf")))
-          as $module) {
-        $module = trim($module);
-        if (strlen($module) > 0) {
-          $modules[] = $module;
-          if (ModuleManagement::loadModule($module) === false) {
-            Logger::info("Module \"".$module."\" failed to load.");
-            exit(1);
-          }
-        }
-      }
+      // Define an array of paths to config files and module roots
+      $paths = array(
+        __MODFWANGOROOT__."/conf/modules.conf",
+        __PROJECTROOT__."/conf/modules.conf"
+      );
 
-      // Load modules in requested order in project conf/modules.conf
-      foreach (explode("\n",
-          trim(file_get_contents(__PROJECTROOT__."/conf/modules.conf")))
-          as $module) {
-        $module = trim($module);
-        if (strlen($module) > 0) {
-          $modules[] = $module;
-          if (ModuleManagement::loadModule($module) === false) {
-            Logger::info("Module \"".$module."\" failed to load.");
-            exit(1);
+      // Load modules in requested order in each path
+      foreach ($paths as $path) {
+        // Make sure path is readable
+        if (is_readable($path)) {
+          // Iterate over each line
+          foreach (explode("\n", trim(file_get_contents($path))) as $line) {
+            $line = trim($line);
+            if (strlen($line) > 0) {
+              // Attempt to load the requested module
+              if (ModuleManagement::loadModule($line) === false) {
+                Logger::info("Module \"".$line."\" failed to load.");
+                exit(1);
+              }
+            }
           }
-        }
-      }
-
-      // Make sure all requested modules were loaded
-      foreach ($modules as $module) {
-        if (!ModuleManagement::isLoaded(basename($module))) {
-          Logger::info("Module \"".$module."\" failed to load.");
-          exit(1);
         }
       }
     }
@@ -233,29 +221,15 @@
           // Fetch any received data
           $data = trim($connection->getData());
           if ($data != false) {
-            if (stristr($data, "\n")) {
-              foreach (explode("\n", $data) as $line) {
-                if (function_exists("pcntl_fork")
-                    && $connection->getIPC() == true) {
-                  // Pass the connection and associated data to the IPC handler
-                  IPCHandling::receiveData($connection, trim($line));
-                }
-                else {
-                  // Pass the connection and associated data to the event
-                  // handler
-                  EventHandling::receiveData($connection, trim($line));
-                }
-              }
-            }
-            else {
+            foreach (explode("\n", $data) as $line) {
               if (function_exists("pcntl_fork")
                   && $connection->getIPC() == true) {
                 // Pass the connection and associated data to the IPC handler
-                IPCHandling::receiveData($connection, trim($data));
+                IPCHandling::receiveData($connection, trim($line));
               }
               else {
                 // Pass the connection and associated data to the event handler
-                EventHandling::receiveData($connection, trim($data));
+                EventHandling::receiveData($connection, trim($line));
               }
             }
           }
@@ -280,10 +254,10 @@
       define("__MODFWANGOROOT__", dirname(__FILE__));
 
       // Locate the latest version in docs/CHANGELOG.md
+      $contents = __MODFWANGOROOT__."/docs/CHANGELOG.md";
       $version = "1.00";
-      if (file_exists(__MODFWANGOROOT__."/docs/CHANGELOG.md")) {
-        $contents = explode("\n", file_get_contents(__MODFWANGOROOT__.
-          "/docs/CHANGELOG.md"));
+      if (is_readable($contents)) {
+        $contents = explode("\n", file_get_contents($contents));
         foreach ($contents as $line) {
           if (preg_match("/^[#]{6} (.*)$/i", trim($line), $matches)) {
             $version = explode(" ", $matches[1]);
@@ -333,11 +307,13 @@
       require_once(__MODFWANGOROOT__."/includes/eventHandling.php");
 
       // Make sure the launcher is up-to-date
-      if (!file_exists(__PROJECTROOT__."/main.php")
-          || hash("md5", file_get_contents(__MODFWANGOROOT__."/launcher.php"))
-          != hash("md5", file_get_contents(__PROJECTROOT__."/main.php"))) {
-        file_put_contents(__PROJECTROOT__."/main.php", file_get_contents(
-          __MODFWANGOROOT__."/launcher.php"));
+      $launcher = __MODFWANGOROOT__."/launcher.php";
+      $main = __PROJECTROOT__."/main.php";
+      if (!file_exists(__PROJECTROOT__."/main.php") ||
+          (is_readable($launcher) && is_readable($main) &&
+           hash("md5", file_get_contents($launcher)) !=
+           hash("md5", file_get_contents($main)))) {
+        file_put_contents($main, file_get_contents($launcher));
         Logger::info("The launcher has been updated.");
       }
 

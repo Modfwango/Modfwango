@@ -27,11 +27,7 @@
     __PROJECTROOT__."/modules"
   );
   // Define mandatory files
-  $files = array(
-    __PROJECTROOT__."/conf/modules.conf",
-    __PROJECTROOT__."/conf/listen.conf",
-    __PROJECTROOT__."/conf/loglevel.conf"
-  );
+  $files = array();
   // Check each directory and don't fail if it doesn't exist
   foreach ($directories as $directory) {
     if (!file_exists($directory)) {
