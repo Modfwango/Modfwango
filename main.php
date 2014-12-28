@@ -298,9 +298,11 @@
       require_once(__MODFWANGOROOT__."/includes/socketManagement.php");
 
       if (function_exists("pcntl_fork")) {
-        Logger::debug("PCNTL support isn't available.");
         // Load the inter-process communication handler
         require_once(__MODFWANGOROOT__."/includes/IPCHandling.php");
+      }
+      else {
+        Logger::debug("PCNTL support isn't available.");
       }
 
       // Load the event handler
