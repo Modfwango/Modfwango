@@ -351,7 +351,10 @@
       error_reporting(E_ALL);
       ini_set("display_errors", 1);
       set_error_handler(function($errno, $errstr) {
-        debug_print_backtrace();
+        if (error_reporting() & $errno) {
+          // Print a backtrace if this error is supposed to be shown
+          debug_print_backtrace();
+        }
         return false;
       });
     }
