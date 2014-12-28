@@ -350,6 +350,10 @@
     private function setErrorReporting() {
       error_reporting(E_ALL);
       ini_set("display_errors", 1);
+      set_error_handler(function($errno, $errstr) {
+        debug_print_backtrace();
+        return false;
+      });
     }
 
     private function verifyEnvironment() {
