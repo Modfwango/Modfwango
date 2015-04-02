@@ -4,6 +4,8 @@ Table of Contents
 * [conf/listen.conf](#conflistenconf)
 * [conf/loglevel.conf](#confloglevelconf)
 * [conf/modules.conf](#confmodulesconf)
+* [conf/name.conf](#confnameconf)
+* [conf/noupdatecheck](#confnoupdatecheck)
 * [conf/connections/name.conf](#confconnectionsnameconf)
 
 Configuration
@@ -61,6 +63,11 @@ events/RawEvent
 
 libraries/Timer
 ```
+
+#### conf/name.conf
+If this file exists in the project root, Modfwango will set the process name to
+the value of the first line.  If the title could not be set, or the file doesn't
+exist, the process title will be "modfwango" by default.
 
 #### conf/noupdatecheck
 If this file exists in the project root, Modfwango will not attempt to check for

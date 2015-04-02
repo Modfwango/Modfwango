@@ -33,6 +33,24 @@
         $loglevel = 0;
       }
 
+      // Set the process name using a config file
+      if (is_readable(__PROJECTROOT__."/conf/name.conf")) {
+        // Read the name from conf/name.conf
+        $title = explode("\n", trim(file_get_contents(__PROJECTROOT__.
+          "/conf/name.conf")));
+        $title = trim($title[0]);
+        if (strlen($title) > 0)
+          // Only set the title if it is not null
+          if (!cli_set_process_title($title))
+            // Unset $title if the title couldn't be set
+            unset($title);
+      }
+
+      // Set the process name using a default value
+      if (!isset($title) || strlen($title) < 1) {
+        cli_set_process_title("modfwango");
+      }
+
       // Activate full error reporting
       $this->setErrorReporting();
 
