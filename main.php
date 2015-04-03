@@ -33,8 +33,10 @@
         $loglevel = 0;
       }
 
+      $title = null;
       // Set the process name using a config file
-      if (is_readable(__PROJECTROOT__."/conf/name.conf")) {
+      if (version_compare(phpversion(), '5.5', '>=') &&
+          is_readable(__PROJECTROOT__."/conf/name.conf")) {
         // Read the name from conf/name.conf
         $title = explode("\n", trim(file_get_contents(__PROJECTROOT__.
           "/conf/name.conf")));
