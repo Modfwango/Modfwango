@@ -96,9 +96,9 @@
         @ob_end_clean();
 
         // Close all of the standard file descriptors
-        fclose(STDIN);
-        fclose(STDOUT);
-        fclose(STDERR);
+        // fclose(STDIN);
+        // fclose(STDOUT);
+        // fclose(STDERR);
 
         register_shutdown_function(
           function() {
