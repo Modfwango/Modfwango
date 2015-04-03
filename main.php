@@ -113,6 +113,15 @@
         // Make note of our pid
         file_put_contents(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).
           ".pid", posix_getpid());
+
+        // Get the backgroundEvent event
+        $event = EventHandling::getEventByName("backgroundEvent");
+        if ($event != false) {
+          foreach ($event[2] as $id => $registration) {
+            // Trigger the backgroundEvent event for each registered module
+            EventHandling::triggerEvent("backgroundEvent", $id);
+          }
+        }
       }
     }
 
