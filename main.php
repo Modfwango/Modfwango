@@ -43,9 +43,7 @@
         $title = trim($title[0]);
         if (strlen($title) > 0)
           // Only set the title if it is not null
-          if (!cli_set_process_title($title))
-            // Unset $title if the title couldn't be set
-            unset($title);
+          cli_set_process_title($title)
       }
 
       // Set the process name using a default value
