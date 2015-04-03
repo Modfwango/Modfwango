@@ -95,6 +95,9 @@
         // Discard the output buffer and close
         @ob_end_clean();
 
+        // Hide all further output
+        ob_start();
+
         register_shutdown_function(
           function() {
             posix_kill(posix_getpid(), SIGHUP);
@@ -108,11 +111,6 @@
         // Make note of our pid
         file_put_contents(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).
           ".pid", posix_getpid());
-
-        // Close all of the standard file descriptors
-        fclose(STDIN);
-        fclose(STDOUT);
-        fclose(STDERR);
 
         // Get the backgroundEvent event
         $event = EventHandling::getEventByName("backgroundEvent");
