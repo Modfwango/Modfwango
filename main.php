@@ -383,9 +383,9 @@
 
     private function verifyEnvironment() {
       // Verify that the current directory structure is named safely
-      if (!preg_match("/^[a-zA-Z0-9\\/.-]+$/", dirname(__FILE__))) {
+      if (!preg_match("/^[a-zA-Z0-9\\/._-]+$/", dirname(__FILE__))) {
         echo "The full path to this file must match this regular expression:\n".
-          "^[a-zA-Z0-9/.-]+$\n";
+          "^[a-zA-Z0-9/._-]+$\n";
         exit(1);
       }
 
