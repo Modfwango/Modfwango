@@ -241,7 +241,7 @@
         // Iterate through each connection
         foreach (ConnectionManagement::getConnections() as $connection) {
           // Fetch any received data
-          $data = trim($connection->getData());
+          $data = $connection->getData();
           if ($data !== false) {
             foreach (explode("\n", $data) as $line) {
               if (function_exists("pcntl_fork")
