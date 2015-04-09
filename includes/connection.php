@@ -296,7 +296,7 @@
     public function send($data, $newline = true) {
       // Check to make sure the socket is a valid resource
       if (is_resource($this->socket)) {
-        if (trim($data) != null) {
+        if ($data != null) {
           Logger::devel("Sending data to client:  '".$data."'");
         }
         // Send data to the client
