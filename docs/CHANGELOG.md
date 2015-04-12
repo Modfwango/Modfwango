@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+###### 1.36 - April 11, 2015
+Added the `BackgroundEvent` to allow modules to be notified when Modfwango forks
+into the background.
+
+Allow setting a process title for PHP versions >= 5.5.
+
+Modfwango now prints backtraces for non-fatal errors so that issues are easier
+to track down.
+
 ###### 1.35 - December 23, 2014
 General stability and performance improvements.
 
