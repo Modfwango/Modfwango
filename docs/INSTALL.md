@@ -12,9 +12,10 @@ mkdir ProjectName && cd ProjectName
 git init
 git submodule add https://github.com/Modfwango/Modfwango.git .modfwango
 cp .modfwango/launcher.php main.php
-php main.php
+php main.php 1
 ```
 
 Those commands will initialize a git repository, add Modfwango as a submodule,
 provide you with a launcher for your project, and create a base directory/file
-structure.
+structure.  Use `Ctrl`+`C` to exit the initial execution of Modfwango if it
+doesn't exit automatically.
