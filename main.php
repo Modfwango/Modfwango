@@ -20,6 +20,10 @@
         exit(1);
       }
 
+      // Make note of our pid
+      file_put_contents(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).
+        ".pid", posix_getpid());
+
       if (isset($argv[1])) {
         // Ensure that any non-default user input is converted to an integer
         $loglevel = (int)$argv[1];
@@ -104,10 +108,6 @@
         if (posix_setsid() < 0 || $pid = pcntl_fork()) {
           exit(0);
         }
-
-        // Make note of our pid
-        file_put_contents(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).
-          ".pid", posix_getpid());
 
         // Get the backgroundEvent event
         $event = EventHandling::getEventByName("backgroundEvent");
