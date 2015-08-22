@@ -4,7 +4,7 @@
     public $name = "Timer";
     private $timers = array();
 
-    public function connectionLoopEnd() {
+    public function checkTimers() {
       // Iterate through each timer
       foreach ($this->timers as $id => $timer) {
         // Check to see if the timer is valid and ready to fire
@@ -85,10 +85,8 @@
     }
 
     public function isInstantiated() {
-      // Register for connectionLoopEndEvent to obtain an opportunity at the end
-      // of every loop to check timers
-      EventHandling::registerForEvent("connectionLoopEndEvent", $this,
-        "connectionLoopEnd");
+      // Register a the 'checkTimers' method to be called on every tick
+      register_tick_function(array(&$this, 'checkTimers'));
       return true;
     }
   }
