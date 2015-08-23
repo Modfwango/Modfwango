@@ -20,9 +20,8 @@
         exit(1);
       }
 
-      // Make note of our pid
-      file_put_contents(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).
-        ".pid", posix_getpid());
+      // Write PID
+      $this->writePID();
 
       if (isset($argv[1])) {
         // Ensure that any non-default user input is converted to an integer
@@ -108,6 +107,9 @@
         if (posix_setsid() < 0 || $pid = pcntl_fork()) {
           exit(0);
         }
+
+        // Update PID
+        $this->writePID();
 
         // Get the backgroundEvent event
         $event = EventHandling::getEventByName("backgroundEvent");
@@ -394,6 +396,12 @@
         echo "__PROJECTROOT__ hasn't been defined by a launcher script.\n";
         exit(1);
       }
+    }
+
+    private function writePID() {
+      // Make note of our pid
+      file_put_contents(__PROJECTROOT__."/data/".basename(__PROJECTROOT__).
+        ".pid", posix_getpid());
     }
   }
 
