@@ -47,9 +47,6 @@
       // Make the cursor visible
       ncurses_curs_set(2);
 
-      // Check if we should enter panic mode
-      self::sizePanic();
-
       // Create the main window
       self::$mainWindow = ncurses_newwin(0, 0, 0, 0);
       // Get the max coordinates for the main window
@@ -62,6 +59,9 @@
       // Get the max coordinates for the output window
       ncurses_getmaxyx(self::$outputWindow, self::$outputWindowRows,
         self::$outputWindowCols);
+
+      // Set the prompt to the default value
+      self::setPrompt(self::$prompt);
 
       // Update the input line
       self::updateInput();
