@@ -38,7 +38,7 @@
 
       // Set the process name using a config file
       if (version_compare(phpversion(), '5.5', '>=')) {
-        cli_set_process_title("modfwango");
+        @cli_set_process_title("modfwango");
         if (is_readable(__PROJECTROOT__."/conf/name.conf")) {
           // Read the name from conf/name.conf
           $title = explode("\n", trim(file_get_contents(__PROJECTROOT__.
@@ -46,7 +46,7 @@
           $title = trim($title[0]);
           if (strlen($title) > 0) {
             // Only set the title if it is not null
-            cli_set_process_title($title);
+            @cli_set_process_title($title);
           }
         }
       }
