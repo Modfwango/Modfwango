@@ -1,7 +1,4 @@
 <?php
-  // Check that ncurses is available
-  function_exists('ncurses_init') or return;
-
   // Define missing keys
   define('NCURSES_KEY_CARRIAGE_RETURN', 13);
   define('NCURSES_KEY_DEL', 127);
@@ -38,6 +35,9 @@
     private static $started = false;
 
     public static function begin() {
+      // Check that ncurses is available
+      function_exists('ncurses_init') or return;
+
       // Update the state control variable to reflect ncurses initialization
       self::$started = true;
       // Register a shutdown function to cleanly end the ncurses session
