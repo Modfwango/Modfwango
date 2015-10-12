@@ -312,8 +312,9 @@
       // output type
       define("__LOGLEVEL__", $loglevel);
 
-      // Load the Shell class
-      require_once(__MODFWANGOROOT__."/includes/shell.php");
+      // Load the Shell class if ncurses is available
+      if (function_exists('ncurses_init'))
+        require_once(__MODFWANGOROOT__."/includes/shell.php");
 
       // Load the logger
       require_once(__MODFWANGOROOT__."/includes/logger.php");
