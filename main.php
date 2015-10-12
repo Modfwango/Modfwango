@@ -86,8 +86,8 @@
 
     private function background() {
       // Only background if we're in silent mode and have PCNTL
-      if (__LOGLEVEL__ == 0 && function_exists("pcntl_fork")
-          && function_exists("pcntl_fork")) {
+      if (__LOGLEVEL__ == 0 && !Shell::started() &&
+          function_exists("pcntl_fork") && function_exists("pcntl_fork")) {
         if ($pid = pcntl_fork()) {
           exit(0);
         }
