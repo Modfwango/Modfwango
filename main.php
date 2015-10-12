@@ -231,6 +231,10 @@
     public function loop() {
       // Infinitely loop
       while (true) {
+        // Fetch input from STDIN if Shell is activated
+        if (class_exists('Shell') && Shell::started())
+          Shell::processInput();
+
         // Iterate through each socket
         foreach (SocketManagement::getSockets() as $socket) {
           // Attempt to accept new connections
