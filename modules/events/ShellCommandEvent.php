@@ -10,8 +10,10 @@
       if (is_array($event) && is_array($event[2]))
         // Iterate over each registration to verify validity
         foreach ($event[2] as $id => $registration)
-          // Trigger registrations with matching command preference
-          if (strtolower($registration[2]) == strtolower($cmd))
+          // Trigger registrations with matching command preference (null
+          // accepts any command)
+          if (strtolower($registration[2]) == strtolower($cmd) ||
+              $registration[2] == null)
             EventHandling::triggerEvent($name, $id, array($cmd, $args));
     }
 
