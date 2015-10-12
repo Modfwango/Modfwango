@@ -2,7 +2,11 @@ Change Log
 ==========
 
 ###### 1.37 - October 12, 2015
-Added the `Shell` class to enable shell emulation for various projects.
+Added the `Shell` class to enable shell emulation for various projects.  This
+class will not exist if `ncurses` support is not available.
+
+Added the `ShellCommandEvent` module to allow other modules to intercept shell
+commands.
 
 ###### 1.36 - April 11, 2015
 Added the `BackgroundEvent` to allow modules to be notified when Modfwango forks

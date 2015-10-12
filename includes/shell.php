@@ -1,7 +1,6 @@
 <?php
   // Check that ncurses is available
-  if (!function_exists('ncurses_init'))
-    return;
+  if (!function_exists('ncurses_init')) return;
 
   // Define missing keys
   define('NCURSES_KEY_CARRIAGE_RETURN', 13);
@@ -305,7 +304,7 @@
         $cmd  = array_shift($args);
 
         // Attempt to fetch the ShellCommandEvent object
-        $event = EventHandling::getEventByName('ShellCommandEvent');
+        $event = EventHandling::getEventByName('shellCommandEvent');
         if (is_object($event[0]))
           // Offload the command to the ShellCommandEvent module for processing
           $event[0]->receiveCommand($cmd, $args);
