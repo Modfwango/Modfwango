@@ -4,11 +4,11 @@ Modfwango [![Build Status](http://bit.ly/1ntkobG)](http://bit.ly/1zg30fI)
 <img align="right" width=135 src="http://d.pr/1cc2Y+">
 Modfwango (pronounced `\ˈmɒd.fweɪn.goʊ\`) is a modular socket framework written
 in PHP.  This framework has been refined over the past few years for personal
-use, and I decided to make it open to the public.  It is stable, clean, modular,
-and object oriented.  This particular repo stemmed from the
-[IRCBot-PHP](https://github.com/Modfwango/IRCBot-PHP) framework, formerly known
-as Modfwango.  I decided to make the separation, because a networking framework
-with reloadable modules is of more use to people than just a simple IRC bot.
+use, and I decided to make it open to the public.  This particular repo stemmed
+from the [IRCBot-PHP](https://github.com/Modfwango/IRCBot-PHP) framework,
+formerly known as Modfwango.  I decided to make the separation, because a
+networking framework with reloadable modules is of more use to people than just
+a simple IRC bot.
 
 Normally in PHP, classes cannot be redefined.  This limits you as a developer
 because you don't have the ability to change code on-the-fly and reload it.

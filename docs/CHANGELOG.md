@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+###### 1.37 - October 12, 2015
+Added the `Shell` class to enable shell emulation for various projects.
+
 ###### 1.36 - April 11, 2015
 Added the `BackgroundEvent` to allow modules to be notified when Modfwango forks
 into the background.
