@@ -64,7 +64,7 @@
       self::setPrompt(self::$prompt);
 
       // Update the input line
-      self::updateInput();
+      self::update();
     }
 
     public static function end() {
@@ -83,7 +83,7 @@
         while (count(self::$outputBuffer) > self::$outputWindowRows)
           array_shift(self::$outputBuffer);
         // Update the output window
-        self::updateOutput();
+        self::update();
       }
     }
 
@@ -219,7 +219,7 @@
             // Add the character to the current line
             self::insertCharacter(chr($c));
           // Update the input buffer display
-          self::updateInput();
+          self::update();
         }
       }
     }
@@ -308,26 +308,9 @@
       }
     }
 
-    private static function updateInput() {
-      // Move the input cursor to its origin
-      self::moveInputCursor();
-      // Clear the current line
-      ncurses_clrtoeol();
-      // Print the prompt
-      ncurses_addstr(self::$prompt);
+    private static function update() {
+      /** Update the output section **/
 
-      // Correct the prompt text preview window
-      self::correctTextPreview();
-
-      // Show the calculated text on the input line
-      ncurses_addstr(self::getLinePreview());
-      // Move the input cursor into position [needed for text scrolling]
-      self::moveInputCursor(strlen(self::$prompt) + self::getPreviewCursor());
-      // Refresh the main window
-      ncurses_refresh();
-    }
-
-    private static function updateOutput() {
       // Clear the output window
       ncurses_wclear(self::$outputWindow);
       // Move the output cursor to its origin
@@ -337,5 +320,23 @@
         ncurses_waddstr(self::$outputWindow, $line.chr(NCURSES_KEY_LINE_FEED));
       // Refresh the output window
       ncurses_wrefresh(self::$outputWindow);
+
+
+      /** Update the input section **/
+
+      // Move the input cursor to its origin
+      self::moveInputCursor();
+      // Clear the current line
+      ncurses_clrtoeol();
+      // Print the prompt
+      ncurses_addstr(self::$prompt);
+      // Correct the prompt text preview window
+      self::correctTextPreview();
+      // Show the calculated text on the input line
+      ncurses_addstr(self::getLinePreview());
+      // Move the input cursor into position [needed for text scrolling]
+      self::moveInputCursor(strlen(self::$prompt) + self::getPreviewCursor());
+      // Refresh the main window
+      ncurses_refresh();
     }
   }
