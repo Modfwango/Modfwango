@@ -312,6 +312,9 @@
       // output type
       define("__LOGLEVEL__", $loglevel);
 
+      // Load the Shell class
+      require_once(__MODFWANGOROOT__."/includes/shell.php");
+
       // Load the logger
       require_once(__MODFWANGOROOT__."/includes/logger.php");
 
@@ -351,9 +354,9 @@
 
       // Register signal handlers
       declare(ticks = 1);
-      if (function_exists("pcntl_signal")) {
-        pcntl_signal(SIGINT, array($this, "shutdown"));
-      }
+      register_shutdown_function(array($this, "shutdown"), false);
+      if (function_exists("pcntl_signal"))
+        pcntl_signal(SIGINT, function() { exit(0); });
     }
 
     public function shutdown($exit = true) {

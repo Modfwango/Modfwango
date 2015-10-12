@@ -31,19 +31,35 @@
     }
 
     private static function displayDebug($msg) {
-      echo " DEBUG | ".$msg."\n";
+      $msg = " DEBUG | ".$msg;
+      if (class_exists("Shell") && Shell::started())
+        Shell::appendOutput($msg);
+      else
+        echo $msg."\n";
     }
 
     private static function displayDevel($msg) {
-      echo " DEVEL | ".$msg."\n";
+      $msg = " DEVEL | ".$msg;
+      if (class_exists("Shell") && Shell::started())
+        Shell::appendOutput($msg);
+      else
+        echo $msg."\n";
     }
 
     private static function displayInfo($msg) {
-      echo "  INFO | ".$msg."\n";
+      $msg = "  INFO | ".$msg;
+      if (class_exists("Shell") && Shell::started())
+        Shell::appendOutput($msg);
+      else
+        echo $msg."\n";
     }
 
     private static function displayStack($msg) {
-      echo " STACK | ".$msg."\n";
+      $msg = " STACK | ".$msg;
+      if (class_exists("Shell") && Shell::started())
+        Shell::appendOutput($msg);
+      else
+        echo $msg."\n";
     }
 
     public static function info($msg) {
