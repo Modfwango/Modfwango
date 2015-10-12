@@ -35,36 +35,38 @@
     private static $started = false;
 
     public static function begin() {
-      // Update the state control variable to reflect ncurses initialization
-      self::$started = true;
-      // Register a shutdown function to cleanly end the ncurses session
-      register_shutdown_function(array('Shell', 'end'));
+      if (self::$started == false) {
+        // Update the state control variable to reflect ncurses initialization
+        self::$started = true;
+        // Register a shutdown function to cleanly end the ncurses session
+        register_shutdown_function(array('Shell', 'end'));
 
-      // Initialize ncurses
-      ncurses_init();
-      // Disable the display of user input
-      ncurses_noecho();
-      // Make the cursor visible
-      ncurses_curs_set(2);
+        // Initialize ncurses
+        ncurses_init();
+        // Disable the display of user input
+        ncurses_noecho();
+        // Make the cursor visible
+        ncurses_curs_set(2);
 
-      // Create the main window
-      self::$mainWindow = ncurses_newwin(0, 0, 0, 0);
-      // Get the max coordinates for the main window
-      ncurses_getmaxyx(self::$mainWindow, self::$mainWindowRows,
-        self::$mainWindowCols);
+        // Create the main window
+        self::$mainWindow = ncurses_newwin(0, 0, 0, 0);
+        // Get the max coordinates for the main window
+        ncurses_getmaxyx(self::$mainWindow, self::$mainWindowRows,
+          self::$mainWindowCols);
 
-      // Create the output window
-      self::$outputWindow = ncurses_newwin(self::$mainWindowRows - 1,
-        self::$mainWindowCols, 0, 0);
-      // Get the max coordinates for the output window
-      ncurses_getmaxyx(self::$outputWindow, self::$outputWindowRows,
-        self::$outputWindowCols);
+        // Create the output window
+        self::$outputWindow = ncurses_newwin(self::$mainWindowRows - 1,
+          self::$mainWindowCols, 0, 0);
+        // Get the max coordinates for the output window
+        ncurses_getmaxyx(self::$outputWindow, self::$outputWindowRows,
+          self::$outputWindowCols);
 
-      // Set the prompt to the default value
-      self::setPrompt(self::$prompt);
+        // Set the prompt to the default value
+        self::setPrompt(self::$prompt);
 
-      // Update the input line
-      self::update();
+        // Update the input line
+        self::update();
+      }
     }
 
     public static function end() {
@@ -133,7 +135,7 @@
       return self::$scrollback[self::$scrollbackPosition];
     }
 
-    public static function getLineLength() {
+    public static function getWidth() {
       return self::$mainWindowCols - 1;
     }
 
