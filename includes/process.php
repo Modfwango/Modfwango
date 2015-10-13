@@ -77,6 +77,28 @@
       $this->envs = array();
     }
 
+    public function getData($err = false) {
+      // Check to make sure the process is a valid resource
+      if (is_resource($this->process)) {
+        // Attempt to read data from the process
+        if ($data = @stream_get_line(($err ? $this->err : $this->in),
+            8192, "\n")) {
+          if ($data != false) {
+            // Sanitize data
+            $data = trim($data);
+            // Return the data
+            Logger::devel("Data received from '".$this->path."':  '".$data."'");
+            return $data;
+          }
+        }
+      }
+      return false;
+    }
+
+    public function getPath() {
+      return $this->path;
+    }
+
     public function get_pid() {
       return $this->pid;
     }
