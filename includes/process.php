@@ -85,8 +85,7 @@
       // Check to make sure the process is a valid resource
       if (is_resource($this->process)) {
         // Attempt to read data from the process
-        if ($data = @stream_get_line(($err ? $this->err : $this->in),
-            8192, "\n")) {
+        if ($data = @fread(($err ? $this->err : $this->in), 8192)) {
           if ($data != false) {
             // Sanitize data
             $data = trim($data);
