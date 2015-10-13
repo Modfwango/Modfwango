@@ -87,11 +87,13 @@
       if (is_resource($fd)) {
         // Attempt to read data from the process
         if ($data = @stream_get_line($fd, 8192, "\n")) {
-          // Sanitize data
-          $data = trim($data);
-          // Return the data
-          Logger::devel("Data received from '".$this->path."':  '".$data."'");
-          return $data;
+          if ($data != false) {
+            // Sanitize data
+            $data = trim($data);
+            // Return the data
+            Logger::devel("Data received from '".$this->path."':  '".$data."'");
+            return $data;
+          }
         }
       }
       return false;
