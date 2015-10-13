@@ -117,6 +117,24 @@
       return $this->out;
     }
 
+    public function send($data, $newline = true) {
+      // Check to make sure the pipe is a valid resource
+      if (is_resource($this->in)) {
+        if ($data != null) {
+          Logger::devel("Sending data to client:  '".$data."'");
+        }
+        // Send data to the client
+        if ($newline == true)
+          $line = $data."\r\n";
+        $status = @fputs($this->in, $data, strlen($data));
+
+        // Disconnect if an error occurred
+        if ($status === false)
+          $this->stop();
+      }
+      return $this->check();
+    }
+
     public function start() {
       // Refuse to run if not configured properly
       if ($this->configured != true || $this->check() == true)
