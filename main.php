@@ -229,6 +229,8 @@
     }
 
     public function loop() {
+      // Clear the output buffer of the Shell
+      if (class_exists('Shell')) Shell::clearOutput();
       // Infinitely loop
       while (true) {
         // Fetch input from STDIN if Shell is activated
