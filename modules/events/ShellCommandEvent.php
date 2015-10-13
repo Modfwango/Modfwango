@@ -1,11 +1,14 @@
 <?php
   class __CLASSNAME__ {
+    public $depend = array("UnknownShellCommandEvent");
     public $name = "ShellCommandEvent";
 
     public function receiveCommand($cmd, $args) {
       // Fetch this module's event
       $name  = "shellCommandEvent";
       $event = EventHandling::getEventByName($name);
+      // Create a variable to store the count of events fired
+      $count = 0;
       // Ensure the event is valid
       if (is_array($event) && is_array($event[2]))
         // Iterate over each registration to verify validity
@@ -18,9 +21,18 @@
             $filter = array(strtolower($registration[2]));
           // Trigger registrations with matching command preference (null
           // accepts any command)
-          if (in_array(strtolower($cmd), $filter) || $filter == null)
+          if (in_array(strtolower($cmd), $filter) || $filter == null) {
             EventHandling::triggerEvent($name, $id, array($cmd, $args));
+            ++$count;
+          }
         }
+      // If there were no events fired, we've hit an unknown command
+      if ($count == 0) {
+        EventHandling::getEventByName("unknownShellCommandEvent");
+        if (is_array($event) && is_array($event[2]))
+          foreach ($event[2] as $id => $registration)
+            EventHandling::triggerEvent($name, $id, null);
+      }
     }
 
     public function isInstantiated() {
