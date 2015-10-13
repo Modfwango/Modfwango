@@ -84,9 +84,9 @@
     public function getData($err = false) {
       $fd = ($err ? $this->err : $this->out);
       // Check to make sure the process is a valid resource
-      if (is_resource($fd) && !feof($fd)) {
+      if (is_resource($fd)) {
         // Attempt to read data from the process
-        while ($data = stream_get_line($fd, 8192)) {
+        if ($data = @stream_get_line($fd, 8192)) {
           // Sanitize data
           $data = trim($data);
           // Return the data
@@ -166,7 +166,6 @@
         $status = proc_get_status($this->process);
         $this->pid = $status['pid'];
       }
-      // echo var_export($this, true)."\n";
       return true;
     }
 
