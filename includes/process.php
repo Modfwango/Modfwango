@@ -86,7 +86,7 @@
       // Check to make sure the process is a valid resource
       if (is_resource($fd) && !feof($fd)) {
         // Attempt to read data from the process
-        if ($data = fgets($fd, 8192, "\n")) {
+        if ($data = fgets($fd, 8192)) {
           // Sanitize data
           $data = trim($data);
           // Return the data
