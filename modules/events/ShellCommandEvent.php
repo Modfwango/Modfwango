@@ -18,10 +18,10 @@
             $filter = array_map('strtolower', array_map('trim',
               $registration[2]));
           else
-            $filter = array(strtolower($registration[2]));
+            $filter = array(strtolower(trim($registration[2])));
           // Trigger registrations with matching command preference (null
           // accepts any command)
-          if (in_array(strtolower($cmd), $filter) || $filter == null) {
+          if (in_array(strtolower($cmd), $filter) || in_array(null, $filter)) {
             EventHandling::triggerEvent($name, $id, array($cmd, $args));
             ++$count;
           }
