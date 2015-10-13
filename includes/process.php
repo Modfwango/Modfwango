@@ -26,7 +26,9 @@
       $this->args = array_merge($this->args, $args);
       $this->envs = $envs;
 
-      Logger::info("Created process \"".$this->path."\"");
+      Logger::debug("Created process \"".$this->path."\" with arguments \"".
+        $args."\" and environment variables \"".var_export($this->envs,
+        true)."\"");
     }
 
     public function add_argument($arg) {
@@ -122,7 +124,6 @@
       if ($this->configured != true || $this->check() == true)
         return false;
 
-      Logger::info("Starting process \"".$this->path."\" ...");
       // Prepare arguments to append to the command path
       $args = implode(' ', array_map('escapeshellarg', $this->args));
 
@@ -134,12 +135,15 @@
       );
 
       // Open the process
+      Logger::debug("Starting process \"".$this->path."\" with arguments \"".
+        $args."\" and environment variables \"".var_export($this->envs,
+        true)."\" ...");
       $this->process = proc_open($this->path.' '.$args, $fd, $pipes,
         getcwd(), $this->envs);
 
       // If the process failed to start, reset the resource variable
       if (!is_resource($this->process)) {
-        Logger::info("Failed to start process \"".$this->path."\" ...");
+        Logger::debug("Failed to start process \"".$this->path."\" ...");
         $this->process = null;
         return false;
       }
@@ -158,7 +162,7 @@
     }
 
     public function stop() {
-      Logger::info("Stopping process \"".$this->path."\" ...");
+      Logger::debug("Stopping process \"".$this->path."\" ...");
       // Close the pipes for the process
       fclose($this->err);
       fclose($this->in);
