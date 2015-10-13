@@ -150,6 +150,11 @@
         $this->in  = $pipes[0];
         $this->out = $pipes[1];
 
+        // Set pipes to non-blocking
+        stream_set_blocking($this->err, 0);
+        stream_set_blocking($this->in,  0);
+        stream_set_blocking($this->out, 0);
+
         // Log the pipes that we received
         Logger::debug("Got pipe file descriptors: ".var_export(
           array_map('is_resource', $pipes), true));
