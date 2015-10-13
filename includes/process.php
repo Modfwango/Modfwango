@@ -63,7 +63,7 @@
           return false;
         }
       }
-      else if ($this->pid > 0) {
+      else if ($this->pid > 0 && $hasData == false) {
         $this->stop();
         return false;
       }
