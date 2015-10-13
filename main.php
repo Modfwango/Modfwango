@@ -269,7 +269,7 @@
           $data = $process->getData();
           if ($data !== false)
             foreach (explode("\n", $data) as $line) {
-              $name  = "processDataEvent"
+              $name  = "processDataEvent";
               $event = EventHandling::getEventByName($name);
               if ($event != false)
                 foreach ($event[2] as $id => $registration) {
