@@ -91,6 +91,7 @@
 
     public static function clearOutput() {
       self::$outputBuffer = array();
+      self::update();
     }
 
     private static function correctTextPreview() {
