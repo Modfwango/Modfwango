@@ -86,9 +86,7 @@
       // Check to make sure the process is a valid resource
       if (is_resource($fd) && !feof($fd)) {
         // Attempt to read data from the process
-        $data = stream_get_line($fd, 8192);
-        Logger::devel(var_export($data, true));
-        if ($data != false) {
+        if ($data = stream_get_line($fd, 8192)) {
           // Sanitize data
           $data = trim($data);
           // Return the data
