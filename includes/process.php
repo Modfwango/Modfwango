@@ -154,7 +154,8 @@
         $this->out = $pipes[1];
 
         // Log the pipes that we received
-        Logger::debug("Got pipe file descriptors: ".var_export(array($this->in,
+        Logger::debug("Got pipe file descriptors: ".var_export($pipes, true));
+        Logger::debug("Copied file descriptors: ".var_export(array($this->in,
           $this->out, $this->err), true));
 
         // Fetch the PID of the process
