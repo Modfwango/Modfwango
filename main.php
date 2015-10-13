@@ -266,8 +266,10 @@
         // Iterate through each process
         foreach (ProcessManagement::getProcesses() as $process) {
           // Fetch any received data
-          $data = $process->getData().$process->getData(true);
-          if ($data !== false)
+          $outdata = $process->getData();
+          $errdata = $process->getData(true);
+          if ($outdata !== false || $errdata !== false) {
+            $data = $outdata.$errdata;
             foreach (explode("\n", $data) as $line) {
               $name  = "processDataEvent";
               $event = EventHandling::getEventByName($name);
@@ -278,6 +280,7 @@
                   EventHandling::triggerEvent($name, $id, $data);
                 }
             }
+          }
         }
 
         // Get the connectionLoopEndEvent event
