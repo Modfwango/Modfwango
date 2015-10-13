@@ -25,6 +25,8 @@
       // Copy the provided arguments and environment variables
       $this->args = array_merge($this->args, $args);
       $this->envs = $envs;
+
+      Logger::info("Created process \"".$this->path."\"");
     }
 
     public function add_argument($arg) {
@@ -116,11 +118,11 @@
     }
 
     public function start() {
-      // echo var_export($this, true)."\n";
       // Refuse to run if not configured properly
       if ($this->configured != true || $this->check() == true)
         return false;
 
+      Logger::info("Starting process \"".$this->path."\" ...");
       // Prepare arguments to append to the command path
       $args = implode(' ', array_map('escapeshellarg', $this->args));
 
@@ -137,6 +139,7 @@
 
       // If the process failed to start, reset the resource variable
       if (!is_resource($this->process)) {
+        Logger::info("Failed to start process \"".$this->path."\" ...");
         $this->process = null;
         return false;
       }
@@ -155,6 +158,7 @@
     }
 
     public function stop() {
+      Logger::info("Stopping process \"".$this->path."\" ...");
       // Close the pipes for the process
       fclose($this->err);
       fclose($this->in);
