@@ -120,13 +120,13 @@
     public function send($data, $newline = true) {
       // Check to make sure the pipe is a valid resource
       if (is_resource($this->in)) {
-        if ($data != null) {
+        if ($data != null)
           Logger::devel("Sending data to client:  '".$data."'");
-        }
         // Send data to the client
         if ($newline == true)
           $line = $data."\r\n";
         $status = @fputs($this->in, $data, strlen($data));
+        @fflush($this->in);
 
         // Disconnect if an error occurred
         if ($status === false)
