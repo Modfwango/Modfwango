@@ -8,6 +8,9 @@ class will not exist if `ncurses` support is not available.
 Added the `ShellCommandEvent` module to allow other modules to intercept shell
 commands.
 
+Added the `Process` and `ProcessManagement` classes to allow you to open and
+interact with processes.
+
 ###### 1.36 - April 11, 2015
 Added the `BackgroundEvent` to allow modules to be notified when Modfwango forks
 into the background.

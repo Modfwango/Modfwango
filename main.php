@@ -263,6 +263,23 @@
           }
         }
 
+        // Iterate through each process
+        foreach (ProcessManagement::getProcesses() as $process) {
+          // Fetch any received data
+          $data = $process->getData();
+          if ($data !== false)
+            foreach (explode("\n", $data) as $line) {
+              $name  = "processDataEvent"
+              $event = EventHandling::getEventByName($name);
+              if ($event != false)
+                foreach ($event[2] as $id => $registration) {
+                  // Trigger the processDataEvent for each received line of data
+                  // from this process
+                  EventHandling::triggerEvent($name, $id, $data);
+                }
+            }
+        }
+
         // Get the connectionLoopEndEvent event
         $event = EventHandling::getEventByName("connectionLoopEndEvent");
         if ($event != false) {
@@ -323,11 +340,13 @@
       // Load the logger
       require_once(__MODFWANGOROOT__."/includes/logger.php");
 
-      // Load the connection related classes
+      // Load the connection and process related classes
       require_once(__MODFWANGOROOT__."/includes/connection.php");
       require_once(__MODFWANGOROOT__."/includes/connectionManagement.php");
       require_once(__MODFWANGOROOT__."/includes/socket.php");
       require_once(__MODFWANGOROOT__."/includes/socketManagement.php");
+      require_once(__MODFWANGOROOT__."/includes/process.php");
+      require_once(__MODFWANGOROOT__."/includes/processManagement.php");
 
       if (function_exists("pcntl_fork")) {
         // Load the inter-process communication handler
