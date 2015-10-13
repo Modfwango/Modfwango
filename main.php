@@ -266,7 +266,7 @@
         // Iterate through each process
         foreach (ProcessManagement::getProcesses() as $process) {
           // Fetch any received data
-          $data = $process->getData();
+          $data = $process->getData().$process->getData(true);
           if ($data !== false)
             foreach (explode("\n", $data) as $line) {
               $name  = "processDataEvent";
