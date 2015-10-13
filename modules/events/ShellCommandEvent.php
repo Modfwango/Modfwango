@@ -14,15 +14,15 @@
         // Iterate over each registration to verify validity
         foreach ($event[2] as $id => $registration) {
           // Prepare the command filter array for processing
+          $filter = null;
           if (is_array($registration[2]))
             $filter = array_map('strtolower', array_map('trim',
               $registration[2]));
-          else
+          else if ($registration[2] != null)
             $filter = array(strtolower(trim($registration[2])));
           // Trigger registrations with matching command preference (null
           // accepts any command)
-          if (in_array(strtolower($cmd), $filter) ||
-              (count($filter) == 1 && $filter[0] == null)) {
+          if (!is_array($filter) || in_array(strtolower($cmd), $filter)) {
             EventHandling::triggerEvent($name, $id, array($cmd, $args));
             ++$count;
           }
