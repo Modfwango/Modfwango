@@ -93,7 +93,7 @@
           Logger::devel("Data received from '".$this->path."':  '".$data."'");
           return $data;
         }
-        else
+        elseif (feof($fd))
           // Ensure the Process is still running
           $this->check();
       }
