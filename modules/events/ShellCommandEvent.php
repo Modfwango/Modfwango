@@ -31,7 +31,7 @@
         EventHandling::getEventByName("unknownShellCommandEvent");
         if (is_array($event) && is_array($event[2]))
           foreach ($event[2] as $id => $registration)
-            EventHandling::triggerEvent($name, $id, null);
+            EventHandling::triggerEvent($name, $id, $cmd);
       }
     }
 
