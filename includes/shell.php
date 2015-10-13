@@ -197,7 +197,7 @@
         while (stream_select($read, $null, $null, 0)) {
           // Grab a single character from STDIN
           $c = ncurses_getch();
-          if ($c == NCURSES_KEY_DEL)
+          if ($c == NCURSES_KEY_BACKSPACE || $c == NCURSES_KEY_DEL)
             // Remove a character from the current line
             self::deleteCharacter();
           elseif ($c == NCURSES_KEY_CARRIAGE_RETURN ||
