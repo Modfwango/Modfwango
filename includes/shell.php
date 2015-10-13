@@ -89,6 +89,10 @@
       }
     }
 
+    public static function clearOutput() {
+      self::$outputBuffer = array();
+    }
+
     private static function correctTextPreview() {
       // Reset the line column position if it's out of bounds
       if (self::$lineColumn > strlen(self::getCurrentLine()))
