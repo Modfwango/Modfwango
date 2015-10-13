@@ -96,8 +96,8 @@
           return $data;
         }
       }
-      return false;
       Logger::stack("-getData()");
+      return false;
     }
 
     public function getPath() {
