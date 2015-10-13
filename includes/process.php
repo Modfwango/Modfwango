@@ -53,7 +53,11 @@
 
     public function check() {
       // Determine if there is still data to be read from the process
-      $hasData = !(feof($this->err) && feof($this->out));
+      $hasData = false;
+      if (is_resource($this->err))
+        $hasData |= !feof($this->err);
+      if (is_resource($this->out))
+        $hasData |= !feof($this->out);
       // If the process has been started, and isn't running
       if (is_resource($this->process)) {
         $status = proc_get_status($this->process);
