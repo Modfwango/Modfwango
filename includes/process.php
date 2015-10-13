@@ -82,18 +82,18 @@
     }
 
     public function getData($err = false) {
+      $fd = ($err ? $this->err : $this->in);
       // Check to make sure the process is a valid resource
-      if (is_resource($this->process)) {
+      if (is_resource($fd)) {
         // Attempt to read data from the process
-        if ($data = @stream_get_line(($err ? $this->err : $this->in),
-            8192, "\n")) {
-          // if ($data !== false) {
+        if ($data = @stream_get_line($fd, 8192, "\n")) {
+          if ($data != false) {
             // Sanitize data
             $data = trim($data);
             // Return the data
             Logger::devel("Data received from '".$this->path."':  '".$data."'");
             return $data;
-          // }
+          }
         }
       }
       return false;
