@@ -93,6 +93,9 @@
           Logger::devel("Data received from '".$this->path."':  '".$data."'");
           return $data;
         }
+        else
+          // Ensure the Process is still running
+          $this->check();
       }
       return false;
     }
@@ -182,6 +185,14 @@
         // Fetch the PID of the process
         $status = proc_get_status($this->process);
         $this->pid = $status['pid'];
+
+        // Get the associated event
+        $name  = "processStartedEvent";
+        $event = EventHandling::getEventByName($name);
+        if ($event != false)
+          foreach ($event[2] as $id => $registration)
+            // Trigger the event for each registration
+            EventHandling::triggerEvent($name, $id, $this);
       }
       return true;
     }
@@ -197,5 +208,13 @@
       // Close the process
       proc_close($this->process);
       $this->process = null;
+
+      // Get the associated event
+      $name  = "processStoppedEvent";
+      $event = EventHandling::getEventByName($name);
+      if ($event != false)
+        foreach ($event[2] as $id => $registration)
+          // Trigger the event for each registration
+          EventHandling::triggerEvent($name, $id, $this);
     }
   }

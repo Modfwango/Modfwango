@@ -279,7 +279,8 @@
                 foreach ($event[2] as $id => $registration) {
                   // Trigger the processDataEvent for each received line of data
                   // from this process
-                  EventHandling::triggerEvent($name, $id, $data);
+                  EventHandling::triggerEvent($name, $id, array($process,
+                    $data));
                 }
             }
           }
