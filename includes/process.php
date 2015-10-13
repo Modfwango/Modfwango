@@ -84,7 +84,7 @@
     public function getData($err = false) {
       $fd = ($err ? $this->err : $this->in);
       // Check to make sure the process is a valid resource
-      if (is_resource($fd)) {
+      if (!feof($fd)) {
         // Attempt to read data from the process
         if ($data = @stream_get_line($fd, 8192, "\n")) {
           if ($data != false) {
