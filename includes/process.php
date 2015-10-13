@@ -82,7 +82,7 @@
     }
 
     public function getData($err = false) {
-      $fd = ($err ? $this->err : $this->in);
+      $fd = ($err ? $this->err : $this->out);
       // Check to make sure the process is a valid resource
       if (is_resource($fd) && !feof($fd)) {
         // Attempt to read data from the process
