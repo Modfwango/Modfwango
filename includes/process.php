@@ -27,8 +27,8 @@
       $this->envs = $envs;
 
       Logger::debug("Created process \"".$this->path."\" with arguments \"".
-        $args."\" and environment variables \"".var_export($this->envs,
-        true)."\"");
+        var_export($args, true)."\" and environment variables \"".
+        var_export($this->envs, true)."\"");
     }
 
     public function add_argument($arg) {
