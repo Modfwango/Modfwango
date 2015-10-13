@@ -52,11 +52,13 @@
     }
 
     public function check() {
+      // Determine if there is still data to be read from the process
+      $hasData = !(feof($this->err) && feof($this->out));
       // If the process has been started, and isn't running
       if (is_resource($this->process)) {
         $status = proc_get_status($this->process);
         // Clean up if the process has stopped running
-        if ($status['running'] == false) {
+        if ($status['running'] == false && $hasData == false) {
           $this->stop();
           return false;
         }
@@ -93,7 +95,7 @@
           Logger::devel("Data received from '".$this->path."':  '".$data."'");
           return $data;
         }
-        elseif (feof($fd))
+        else
           // Ensure the Process is still running
           $this->check();
       }
