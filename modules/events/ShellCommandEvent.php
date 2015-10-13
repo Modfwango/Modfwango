@@ -22,7 +22,7 @@
           // Trigger registrations with matching command preference (null
           // accepts any command)
           if (in_array(strtolower($cmd), $filter) ||
-              in_array(null, $filter, true)) {
+              (count($filter) == 1 && $filter[0] == null)) {
             EventHandling::triggerEvent($name, $id, array($cmd, $args));
             ++$count;
           }
