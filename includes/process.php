@@ -82,23 +82,20 @@
     }
 
     public function getData($err = false) {
-      Logger::stack("+getData()");
       $fd = ($err ? $this->err : $this->in);
       // Check to make sure the process is a valid resource
-      if (is_resource($fd) && !feof($fd)) {
+      if (is_resource($fd) && fflush($fd) && !feof($fd)) {
         // Attempt to read data from the process
         $data = stream_get_line($fd, 8192);
-        Logger::devel(var_export($data, true));
+        // Logger::devel(var_export($data, true));
         if ($data != false) {
           // Sanitize data
           $data = trim($data);
           // Return the data
           Logger::devel("Data received from '".$this->path."':  '".$data."'");
-          Logger::stack("-getData()");
           return $data;
         }
       }
-      Logger::stack("-getData()");
       return false;
     }
 
