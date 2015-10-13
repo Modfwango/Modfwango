@@ -82,6 +82,7 @@
     }
 
     public function getData($err = false) {
+      Logger::stack("+getData()");
       $fd = ($err ? $this->err : $this->in);
       // Check to make sure the process is a valid resource
       if (is_resource($fd) && !feof($fd)) {
@@ -91,10 +92,12 @@
           $data = trim($data);
           // Return the data
           Logger::devel("Data received from '".$this->path."':  '".$data."'");
+          Logger::stack("-getData()");
           return $data;
         }
       }
       return false;
+      Logger::stack("-getData()");
     }
 
     public function getPath() {
