@@ -2,6 +2,7 @@
   class Process {
     // Store configuration and state information
     private $configured = false;
+    private $options    = array();
     private $process    = null;
 
     // Pipes, and process information
@@ -15,7 +16,8 @@
     private $args = array();
     private $envs = array();
 
-    public function __construct($path, $args = array(), $envs = array()) {
+    public function __construct($path, $args = array(), $envs = array(),
+        $options = array()) {
       // Check that the provided path is an executable file
       if (is_file($path) && is_executable($path)) {
         $this->path       = $path;
@@ -26,27 +28,30 @@
       $this->args = array_merge($this->args, $args);
       $this->envs = $envs;
 
+      // Assign the given options
+      $this->options = $options;
+
       Logger::debug("Created process \"".$this->path."\" with arguments \"".
         var_export($args, true)."\" and environment variables \"".
         var_export($this->envs, true)."\"");
     }
 
-    public function add_argument($arg) {
+    public function addArgument($arg) {
       // Add the requested argument
       $this->args[] = $arg;
     }
 
-    public function add_arguments($args) {
+    public function addArguments($args) {
       // Add the requested arguments
       $this->args = array_merge($this->args, $args);
     }
 
-    public function add_environment($env) {
+    public function addEnvironment($env) {
       // Add the requested argument
       $this->envs[] = $env;
     }
 
-    public function add_environments($envs) {
+    public function addEnvironments($envs) {
       // Add the requested arguments
       $this->envs = array_merge($this->envs, $envs);
     }
@@ -77,12 +82,12 @@
       return true;
     }
 
-    public function clear_arguments() {
+    public function clearArguments() {
       // Clear the arguments array
       $this->args = array();
     }
 
-    public function clear_environments() {
+    public function clearEnvironments() {
       // Clear the environments array
       $this->envs = array();
     }
@@ -106,23 +111,28 @@
       return false;
     }
 
+    public function getOption($key) {
+      // Retrieve the requested option if it exists, otherwise return false
+      return (isset($this->options[$key]) ? $this->options[$key] : false);
+    }
+
     public function getPath() {
       return $this->path;
     }
 
-    public function get_pid() {
+    public function getPID() {
       return $this->pid;
     }
 
-    public function get_stderr() {
+    public function getSTDERR() {
       return $this->err;
     }
 
-    public function get_stdin() {
+    public function getSTDIN() {
       return $this->in;
     }
 
-    public function get_stdout() {
+    public function getSTDOUT() {
       return $this->out;
     }
 
@@ -141,6 +151,12 @@
           $this->stop();
       }
       return $this->check();
+    }
+
+    public function setOption($key, $value) {
+      // Set an option for this connection
+      $this->options[$key] = $value;
+      return true;
     }
 
     public function start() {
