@@ -30,7 +30,8 @@
         }
       // If there were no events fired, we've hit an unknown command
       if ($count == 0) {
-        $event = EventHandling::getEventByName("unknownShellCommandEvent");
+        $name  = "shellCommandEvent";
+        $event = EventHandling::getEventByName($name);
         if (is_array($event) && is_array($event[2]))
           foreach ($event[2] as $id => $registration)
             EventHandling::triggerEvent($name, $id, $cmd);
