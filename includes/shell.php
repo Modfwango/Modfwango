@@ -367,7 +367,8 @@
           chr(NCURSES_KEY_LINE_FEED));
       // Print a teaser if not the last line
       if (self::$outputPosition != count(self::$outputBuffer))
-        ncurses_waddstr(self::$outputWindow, " ...".chr(NCURSES_KEY_LINE_FEED));
+        ncurses_waddstr(self::$outputWindow, " -- Ctrl+F to move forward --".
+          chr(NCURSES_KEY_LINE_FEED));
       else
         ncurses_waddstr(self::$outputWindow, self::$outputBuffer[
           self::$outputPosition - 1].chr(NCURSES_KEY_LINE_FEED));
