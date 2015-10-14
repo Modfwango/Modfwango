@@ -358,7 +358,7 @@
       $begin = self::$outputPosition - self::$outputWindowRows;
       if ($begin < 0) $begin = 0;
       // Calculate the ending line to print
-      $end   = self::$outputWindowRows;
+      $end   = $begin + self::$outputWindowRows;
       if ($end > count(self::$outputBuffer)) $end = count(self::$outputBuffer);
       // Print each line in the output buffer to the output window
       for ($i = $begin; $i < $end; ++$i)
