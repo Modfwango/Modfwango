@@ -357,11 +357,6 @@
       ncurses_wclear(self::$outputWindow);
       // Move the output cursor to its origin
       self::moveOutputCursor();
-      // Correct output position if it is negative
-      if (self::$outputPosition < 0)
-        self::$outputPosition = count(self::$outputBuffer) <
-          self::$outputWindowRows ? count(self::$outputBuffer) :
-          self::$outputWindowRows;
       // Calculate the beginning line to start printing
       $begin = self::$outputPosition - self::$outputWindowRows;
       if ($begin < 0) $begin = 0;
@@ -373,7 +368,8 @@
         ncurses_waddstr(self::$outputWindow, self::$outputBuffer[$i].
           chr(NCURSES_KEY_LINE_FEED));
       // Print a teaser if not the last line
-      if (self::$outputPosition != count(self::$outputBuffer))
+      if (count(self::$outputBuffer) > self::$outputWindowRows &&
+          self::$outputPosition != count(self::$outputBuffer))
         ncurses_waddstr(self::$outputWindow, " -- Ctrl+F to move forward --".
           chr(NCURSES_KEY_LINE_FEED));
       else
