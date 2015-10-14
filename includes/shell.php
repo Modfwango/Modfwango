@@ -347,6 +347,8 @@
         array_unshift(self::$scrollback, null);
         // Reset the cursor and scrollback position
         self::$lineColumn = self::$scrollbackPosition = 0;
+        // Add the last command to the output buffer
+        self::appendOutput(self::$prompt.self::$history[0]);
 
         // Fetch the last command
         $args = explode(' ', self::$history[0]);
