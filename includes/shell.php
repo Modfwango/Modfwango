@@ -254,7 +254,7 @@
             // Advance scrollback column position
             self::$lineColumn += (self::$lineColumn < strlen(
               self::getCurrentLine()) ? 1 : 0);
-          elseif ($c != NULL)
+          elseif ($c > 31 && $c < 127)
             // Add the character to the current line
             self::insertCharacter(chr($c));
           // Update the input buffer display
