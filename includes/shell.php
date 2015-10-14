@@ -82,11 +82,11 @@
       if (self::$started) {
         // Split the message based on length
         $msg = str_split($msg, self::$mainWindowCols - 1);
-        // Merge the given lines into the output buffer
-        self::$outputBuffer = array_merge(self::$outputBuffer, $msg);
         // Update the output position if necessary
         if (self::$outputPosition == count(self::$outputBuffer))
-          ++self::$outputPosition;
+          self::$outputPosition += count($msg);
+        // Merge the given lines into the output buffer
+        self::$outputBuffer = array_merge(self::$outputBuffer, $msg);
         // Update the output window
         self::update();
       }
