@@ -1,9 +1,9 @@
 <?php
   // Define missing keys
-  define('NCURSES_KEY_BACKWARD', 2);
+  define('NCURSES_KEY_BACKWARD', 25);
   define('NCURSES_KEY_CARRIAGE_RETURN', 13);
   define('NCURSES_KEY_DEL', 127);
-  define('NCURSES_KEY_FORWARD', 6);
+  define('NCURSES_KEY_FORWARD', 22);
   define('NCURSES_KEY_LINE_FEED', 10);
 
   class Shell {
@@ -46,6 +46,8 @@
 
         // Initialize ncurses
         ncurses_init();
+        // Enter raw terminal mode
+        ncurses_raw();
         // Disable the display of user input
         ncurses_noecho();
         // Make the cursor visible
