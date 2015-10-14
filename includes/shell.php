@@ -211,13 +211,14 @@
     }
 
     private static function prevPage() {
-      // If the current output position is greater than the number of lines
+      // If the new output position is greater than the number of lines
       // displayed, then decrement by the number of lines displayed
-      if (self::$outputPosition > self::$outputWindowRows)
+      if (self::$outputPosition - self::$outputWindowRows >
+          self::$outputWindowRows)
         self::$outputPosition -= self::$outputWindowRows;
-      // Otherwise, decrement by the current output position
+      // Otherwise, set the output position to the number of output rows
       else
-        self::$outputPosition -= self::$outputPosition;
+        self::$outputPosition  = self::$outputWindowRows;
     }
 
     public static function processInput() {
