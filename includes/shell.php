@@ -359,7 +359,9 @@
       self::moveOutputCursor();
       // Correct output position if it is negative
       if (self::$outputPosition < 0)
-        self::$outputPosition = self::$outputWindowRows;
+        self::$outputPosition = count(self::$outputBuffer) <
+          self::$outputWindowRows ? count(self::$outputBuffer) :
+          self::$outputWindowRows;
       // Calculate the beginning line to start printing
       $begin = self::$outputPosition - self::$outputWindowRows;
       if ($begin < 0) $begin = 0;
