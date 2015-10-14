@@ -362,9 +362,15 @@
       $end   = $begin + self::$outputWindowRows;
       if ($end > count(self::$outputBuffer)) $end = count(self::$outputBuffer);
       // Print each line in the output buffer to the output window
-      for ($i = $begin; $i < $end; ++$i)
+      for ($i = $begin; $i < $end - 1; ++$i)
         ncurses_waddstr(self::$outputWindow, self::$outputBuffer[$i].
           chr(NCURSES_KEY_LINE_FEED));
+      // Print a teaser if not the last line
+      if (self::$outputPosition != count(self::$outputBuffer))
+        ncurses_waddstr(self::$outputWindow, " ...".chr(NCURSES_KEY_LINE_FEED));
+      else
+        ncurses_waddstr(self::$outputWindow, self::$outputBuffer[
+          self::$outputPosition - 1].chr(NCURSES_KEY_LINE_FEED));
       // Refresh the output window
       ncurses_wrefresh(self::$outputWindow);
 
