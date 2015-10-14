@@ -357,6 +357,9 @@
       ncurses_wclear(self::$outputWindow);
       // Move the output cursor to its origin
       self::moveOutputCursor();
+      // Correct output position if it is negative
+      if (self::$outputPosition < 0)
+        self::$outputPosition = self::$outputWindowRows;
       // Calculate the beginning line to start printing
       $begin = self::$outputPosition - self::$outputWindowRows;
       if ($begin < 0) $begin = 0;
