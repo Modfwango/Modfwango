@@ -201,26 +201,32 @@
     }
 
     private static function nextPage() {
-      // Calculate the remaining distance to the end
-      $distanceToEnd = count(self::$outputBuffer) - self::$outputPosition;
-      // If the distance to the end is greater than the number of lines
-      // displayed, then increment by the number of lines displayed
-      if ($distanceToEnd > self::$outputWindowRows)
-        self::$outputPosition += self::$outputWindowRows;
-      // Otherwise, increment by the distance to the end
-      else
-        self::$outputPosition += $distanceToEnd;
+      // Only adjust output position if the output buffer doesn't fit
+      if (count(self::$outputBuffer) > self::$outputWindowRows) {
+        // Calculate the remaining distance to the end
+        $distanceToEnd = count(self::$outputBuffer) - self::$outputPosition;
+        // If the distance to the end is greater than the number of lines
+        // displayed, then increment by the number of lines displayed
+        if ($distanceToEnd > self::$outputWindowRows)
+          self::$outputPosition += self::$outputWindowRows;
+        // Otherwise, increment by the distance to the end
+        else
+          self::$outputPosition += $distanceToEnd;
+      }
     }
 
     private static function prevPage() {
-      // If the new output position is greater than the number of lines
-      // displayed, then decrement by the number of lines displayed
-      if (self::$outputPosition - self::$outputWindowRows >
-          self::$outputWindowRows)
-        self::$outputPosition -= self::$outputWindowRows;
-      // Otherwise, set the output position to the number of output rows
-      else
-        self::$outputPosition  = self::$outputWindowRows;
+      // Only adjust output position if the output buffer doesn't fit
+      if (count(self::$outputBuffer) > self::$outputWindowRows) {
+        // If the new output position is greater than the number of lines
+        // displayed, then decrement by the number of lines displayed
+        if (self::$outputPosition - self::$outputWindowRows >
+            self::$outputWindowRows)
+          self::$outputPosition -= self::$outputWindowRows;
+        // Otherwise, set the output position to the number of output rows
+        else
+          self::$outputPosition  = self::$outputWindowRows;
+      }
     }
 
     public static function processInput() {
@@ -368,9 +374,8 @@
         ncurses_waddstr(self::$outputWindow, self::$outputBuffer[$i].
           chr(NCURSES_KEY_LINE_FEED));
       // Print a teaser if not the last line
-      if (count(self::$outputBuffer) > self::$outputWindowRows &&
-          self::$outputPosition != count(self::$outputBuffer))
-        ncurses_waddstr(self::$outputWindow, " -- Ctrl+F to move forward --".
+      if (self::$outputPosition != count(self::$outputBuffer))
+        ncurses_waddstr(self::$outputWindow, " -- Ctrl+V to move forward --".
           chr(NCURSES_KEY_LINE_FEED));
       else
         ncurses_waddstr(self::$outputWindow, self::$outputBuffer[
