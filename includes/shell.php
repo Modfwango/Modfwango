@@ -1,7 +1,9 @@
 <?php
   // Define missing keys
+  define('NCURSES_KEY_BACKWARD', 25);
   define('NCURSES_KEY_CARRIAGE_RETURN', 13);
   define('NCURSES_KEY_DEL', 127);
+  define('NCURSES_KEY_FORWARD', 22);
   define('NCURSES_KEY_LINE_FEED', 10);
 
   class Shell {
@@ -29,7 +31,8 @@
     private static $outputWindowRows = 0;
 
     // Content array for output window
-    private static $outputBuffer = array();
+    private static $outputBuffer   = array();
+    private static $outputPosition = 0;
 
     // State variable
     private static $started = false;
@@ -81,16 +84,17 @@
         $msg = str_split($msg, self::$mainWindowCols - 1);
         // Merge the given lines into the output buffer
         self::$outputBuffer = array_merge(self::$outputBuffer, $msg);
-        // Remove oldest lines that are out of bounds
-        while (count(self::$outputBuffer) > self::$outputWindowRows)
-          array_shift(self::$outputBuffer);
+        // Update the output position if necessary
+        if (self::$outputPosition == count(self::$outputBuffer))
+          ++self::$outputPosition;
         // Update the output window
         self::update();
       }
     }
 
     public static function clearOutput() {
-      self::$outputBuffer = array();
+      self::$outputBuffer   = array();
+      self::$outputPosition = 0;
       self::update();
     }
 
@@ -194,6 +198,28 @@
       ncurses_wmove(self::$outputWindow, $row, $col);
     }
 
+    private static function nextPage() {
+      // Calculate the remaining distance to the end
+      $distanceToEnd = count(self::$outputBuffer) - self::$outputPosition;
+      // If the distance to the end is greater than the number of lines
+      // displayed, then increment by the number of lines displayed
+      if ($distanceToEnd > self::$outputWindowRows)
+        self::$outputPosition += self::$outputWindowRows;
+      // Otherwise, increment by the distance to the end
+      else
+        self::$outputPosition += $distanceToEnd;
+    }
+
+    private static function prevPage() {
+      // If the current output position is greater than the number of lines
+      // displayed, then decrement by the number of lines displayed
+      if (self::$outputPosition > self::$outputWindowRows)
+        self::$outputPosition -= self::$outputWindowRows;
+      // Otherwise, decrement by the current output position
+      else
+        self::$outputPosition -= self::$outputPosition;
+    }
+
     public static function processInput() {
       if (self::$started) {
         $read = array(STDIN);
@@ -209,6 +235,12 @@
                   $c == NCURSES_KEY_LINE_FEED)
             // Submit the current line as a command
             self::submitCommand();
+          elseif ($c == NCURSES_KEY_BACKWARD)
+            // Show previous output buffer page
+            self::prevPage();
+          elseif ($c == NCURSES_KEY_FORWARD)
+            // Show next output buffer page
+            self::nextPage();
           elseif ($c == NCURSES_KEY_DOWN)
             // Scroll up in history
             self::scrollDown();
@@ -322,9 +354,16 @@
       ncurses_wclear(self::$outputWindow);
       // Move the output cursor to its origin
       self::moveOutputCursor();
+      // Calculate the beginning line to start printing
+      $begin = self::$outputPosition - self::$outputWindowRows;
+      if ($begin < 0) $begin = 0;
+      // Calculate the ending line to print
+      $end   = self::$outputWindowRows;
+      if ($end > count(self::$outputBuffer)) $end = count(self::$outputBuffer);
       // Print each line in the output buffer to the output window
-      foreach (self::$outputBuffer as $line)
-        ncurses_waddstr(self::$outputWindow, $line.chr(NCURSES_KEY_LINE_FEED));
+      for ($i = $begin; $i < $end; ++$i)
+        ncurses_waddstr(self::$outputWindow, self::$outputBuffer[$i].
+          chr(NCURSES_KEY_LINE_FEED));
       // Refresh the output window
       ncurses_wrefresh(self::$outputWindow);
 
