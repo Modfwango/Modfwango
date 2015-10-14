@@ -1,10 +1,11 @@
 <?php
   // Define missing keys
-  define('NCURSES_KEY_BACKWARD', 25);
+  define('NCURSES_KEY_QUIT',            3);
+  define('NCURSES_KEY_LINE_FEED',       10);
   define('NCURSES_KEY_CARRIAGE_RETURN', 13);
-  define('NCURSES_KEY_DEL', 127);
-  define('NCURSES_KEY_FORWARD', 22);
-  define('NCURSES_KEY_LINE_FEED', 10);
+  define('NCURSES_KEY_FORWARD',         22);
+  define('NCURSES_KEY_BACKWARD',        25);
+  define('NCURSES_KEY_DEL',             127);
 
   class Shell {
     // History & scrollback variables
@@ -263,6 +264,9 @@
             // Advance scrollback column position
             self::$lineColumn += (self::$lineColumn < strlen(
               self::getCurrentLine()) ? 1 : 0);
+          elseif ($c == NCURSES_KEY_QUIT)
+            // Exit the program
+            exit(0);
           elseif ($c > 31 && $c < 127)
             // Add the character to the current line
             self::insertCharacter(chr($c));
