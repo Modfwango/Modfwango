@@ -227,7 +227,8 @@
       fclose($this->out);
       $this->err = $this->in = $this->out = -1;
 
-      // Close the process
+      // Terminate & close the process
+      proc_terminate($this->process);
       proc_close($this->process);
       $this->process = null;
 
