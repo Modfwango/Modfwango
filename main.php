@@ -335,7 +335,7 @@
       define("__STARTTIME__", time());
 
       // Define the time to sleep at the end of every infinite loop
-      define("__DELAY__", 10000);
+      define("__DELAY__", 5000);
 
       // Define the debug constant to allow the logger determine the correct
       // output type
