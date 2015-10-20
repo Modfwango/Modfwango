@@ -43,7 +43,7 @@
         // Update the state control variable to reflect ncurses initialization
         self::$started = true;
         // Register a shutdown function to cleanly end the ncurses session
-        register_shutdown_function(array('Shell', 'end'));
+        register_shutdown_function(array('Shell', 'end'), true);
 
         // Initialize ncurses
         ncurses_init();
@@ -75,10 +75,13 @@
       }
     }
 
-    public static function end() {
+    public static function end($printError = false) {
+      $error = error_get_last();
       if (self::$started)
         // Cleanly end the ncurses session
         ncurses_end();
+      if ($printError && $error['type'] == E_ERROR)
+        debug_print_backtrace();
     }
 
     public static function appendOutput($msg) {
