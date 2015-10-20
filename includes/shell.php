@@ -386,7 +386,7 @@
       if (self::$outputPosition != count(self::$outputBuffer))
         ncurses_waddstr(self::$outputWindow, " -- Ctrl+V to move forward --".
           chr(NCURSES_KEY_LINE_FEED));
-      else
+      elseif (self::$outputPosition > 0)
         ncurses_waddstr(self::$outputWindow, self::$outputBuffer[
           self::$outputPosition - 1].chr(NCURSES_KEY_LINE_FEED));
       // Refresh the output window
