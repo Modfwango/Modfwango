@@ -45,6 +45,9 @@
         // Register a shutdown function to cleanly end the ncurses session
         register_shutdown_function(array('Shell', 'end'), true);
 
+        // Clear the log file
+        file_put_contents(__PROJECTROOT__."/shell.log", null);
+
         // Initialize ncurses
         ncurses_init();
         // Enter raw terminal mode
@@ -93,6 +96,10 @@
           self::$outputPosition += count($msg);
         // Merge the given lines into the output buffer
         self::$outputBuffer = array_merge(self::$outputBuffer, $msg);
+        // Append the new lines to the shell log
+        foreach ($msg as $line)
+          file_put_contents(__PROJECTROOT__."/shell.log", $line."\n",
+            FILE_APPEND);
         // Update the output window
         self::update();
       }
