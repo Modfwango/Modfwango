@@ -65,9 +65,10 @@
         $hasData |= !feof($this->out);
       // If the process has been started, and isn't running
       if (is_resource($this->process)) {
-        $status = proc_get_status($this->process);
+        $status = @proc_get_status($this->process);
         // Clean up if the process has stopped running
-        if ($status['running'] == false && $hasData == false) {
+        if (is_array($status) && $status['running'] == false &&
+            $hasData == false) {
           $this->stop();
           return false;
         }
@@ -177,7 +178,7 @@
       // Open the process
       Logger::debug("Starting process \"".$this->path.' '.$args."\" with ".
         "environment variables \"".var_export($this->envs, true)."\" ...");
-      $this->process = proc_open($this->path.' '.$args, $fd, $pipes,
+      $this->process = @proc_open($this->path.' '.$args, $fd, $pipes,
         getcwd(), $this->envs);
 
       // If the process failed to start, reset the resource variable
@@ -222,14 +223,14 @@
     public function stop() {
       Logger::debug("Stopping process \"".$this->path."\" ...");
       // Close the pipes for the process
-      fclose($this->err);
-      fclose($this->in);
-      fclose($this->out);
+      @fclose($this->err);
+      @fclose($this->in);
+      @fclose($this->out);
       $this->err = $this->in = $this->out = -1;
 
       // Terminate & close the process
-      proc_terminate($this->process);
-      proc_close($this->process);
+      @proc_terminate($this->process);
+      @proc_close($this->process);
       $this->process = null;
 
       // Get the associated event
