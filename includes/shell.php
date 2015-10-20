@@ -81,7 +81,7 @@
         // Cleanly end the ncurses session
         ncurses_end();
       if ($printError && $error['type'] == E_ERROR)
-        debug_print_backtrace();
+        print_r($error);
     }
 
     public static function appendOutput($msg) {
