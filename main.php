@@ -216,7 +216,7 @@
           // Iterate over each line
           foreach (explode("\n", trim(file_get_contents($path))) as $line) {
             $line = trim($line);
-            if (strlen($line) > 0) {
+            if (strlen(trim($line)) > 0) {
               // Attempt to load the requested module
               if (ModuleManagement::loadModule($line) === false) {
                 Logger::info("Module \"".$line."\" failed to load.");
@@ -410,7 +410,7 @@
       set_error_handler(function($errno, $errstr) {
         if (error_reporting() & $errno) {
           // Print a backtrace if this error is supposed to be shown
-          debug_print_backtrace();
+          Logger::info(var_export(debug_backtrace(), true));
         }
         return false;
       });
