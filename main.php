@@ -245,6 +245,8 @@
 
         // Prune dead connections
         ConnectionManagement::pruneConnections();
+        // Prune dead processes
+        ProcessManagement::pruneProcesses();
 
         // Iterate through each connection
         foreach (ConnectionManagement::getConnections() as $connection) {

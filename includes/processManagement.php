@@ -39,5 +39,14 @@
     public static function getProcesses() {
       return self::$processes;
     }
+
+    public static function pruneProcesses() {
+      foreach (self::$processes as $key => $process) {
+        if (!$process->check()) {
+          Logger::debug("Pruning process '".$process->getPath().".'");
+          unset(self::$process[$key]);
+        }
+      }
+    }
   }
 ?>
