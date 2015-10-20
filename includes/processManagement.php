@@ -44,7 +44,7 @@
       foreach (self::$processes as $key => $process) {
         if (!$process->check()) {
           Logger::debug("Pruning process '".$process->getPath().".'");
-          unset(self::$process[$key]);
+          unset(self::$processes[$key]);
         }
       }
     }
