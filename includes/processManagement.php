@@ -60,8 +60,8 @@
         $rese[] = $process->getSTDERR();
         $reso[] = $process->getSTDOUT();
         // Assign housekeeping array variables
-        $reade[$process->getSTDERR()] = $index;
-        $reado[$process->getSTDOUT()] = $index;
+        $reade[@intval($process->getSTDERR())] = $index;
+        $reado[@intval($process->getSTDOUT())] = $index;
       }
 
       // Perform the socket_select(...) calls
@@ -72,10 +72,10 @@
       if ($status) {
         foreach (array_merge($rese, $reso) as $resource) {
           // Add any existent processes to the result array
-          if (isset($reade[$resource]))
-            $result[] = self::$processes[$reade[$resource]];
-          if (isset($reado[$resource]))
-            $result[] = self::$processes[$reado[$resource]];
+          if (isset($reade[@intval($resource)]))
+            $result[] = self::$processes[$reade[@intval($resource)]];
+          if (isset($reado[@intval($resource)]))
+            $result[] = self::$processes[$reado[@intval($resource)]];
         }
       }
 
