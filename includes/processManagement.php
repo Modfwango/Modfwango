@@ -40,6 +40,49 @@
       return self::$processes;
     }
 
+    public static function getProcessesWithData() {
+      // Define a default return value
+      $result = array();
+
+      // Define storage for the resources
+      $reade  = array();
+      $reado  = array();
+      $write  = null;
+      $except = null;
+
+      // Define storage for the results from socket_select(...)
+      $rese   = array();
+      $reso   = array();
+
+      // Populate the arrays used by socket_select(...)
+      foreach (self::getProcesses() as $index => $process) {
+        // Assign mutable array variables
+        $rese[] = $process->getSTDERR();
+        $reso[] = $process->getSTDOUT();
+        // Assign housekeeping array variables
+        $reade[$process->getSTDERR()] = $index;
+        $reado[$process->getSTDOUT()] = $index;
+      }
+
+      // Perform the socket_select(...) calls
+      $status  = socket_select($rese, $write, $except, 0);
+      $status |= socket_select($reso, $write, $except, 0);
+
+      // Check if there are any sockets with waiting buffers
+      if ($status) {
+        foreach (array_merge($rese, $reso) as $resource) {
+          // Add any existent processes to the result array
+          if (isset($reade[$resource]))
+            $result[] = self::$processes[$reade[$resource]];
+          if (isset($reado[$resource]))
+            $result[] = self::$processes[$reado[$resource]];
+        }
+      }
+
+      // Return any processes with waiting buffers
+      return $result;
+    }
+
     public static function pruneProcesses() {
       foreach (self::$processes as $key => $process) {
         if (!$process->check()) {

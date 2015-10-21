@@ -146,6 +146,7 @@
         if ($newline == true)
           $data .= "\r\n";
         $status = @fputs($this->in, $data, strlen($data));
+        @fflush($this->in);
 
         // Disconnect if an error occurred
         if ($status === false)
