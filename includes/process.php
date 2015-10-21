@@ -98,7 +98,7 @@
       // Check to make sure the process is a valid resource
       if (is_resource($fd)) {
         // Attempt to read data from the process
-        if ($data = @fgets($fd, 262144)) {
+        if ($data = @stream_get_line($fd, 8192, "\n")) {
           // Sanitize data
           $data = trim($data);
           // Return the data
