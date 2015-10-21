@@ -71,6 +71,7 @@
 
       // Check if there are any sockets with waiting buffers
       if ($status) {
+        Logger::debug("Process has data available.");
         foreach (array_merge($rese, $reso) as $resource) {
           // Add any existent processes to the result array
           if (isset($reade[@intval($resource)]))
