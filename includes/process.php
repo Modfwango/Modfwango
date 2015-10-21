@@ -221,7 +221,7 @@
       return true;
     }
 
-    public function stop() {
+    public function stop($terminate = true) {
       Logger::debug("Stopping process \"".$this->path."\" ...");
       // Close the pipes for the process
       @fclose($this->err);
@@ -230,7 +230,8 @@
       $this->err = $this->in = $this->out = -1;
 
       // Terminate & close the process
-      @proc_terminate($this->process);
+      if ($terminate)
+        @proc_terminate($this->process);
       @proc_close($this->process);
       $this->process = null;
 
