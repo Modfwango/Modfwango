@@ -268,7 +268,7 @@
         }
 
         // Iterate through each process
-        foreach (ProcessManagement::getProcessesWithData() as $process) {
+        foreach (ProcessManagement::getProcesses() as $process) {
           // Fetch any received data
           $outdata = $process->getData();
           $errdata = $process->getData(true);
