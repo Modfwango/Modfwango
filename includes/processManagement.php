@@ -65,8 +65,8 @@
       }
 
       // Perform the socket_select(...) calls
-      $status  = socket_select($rese, $write, $except, 0);
-      $status |= socket_select($reso, $write, $except, 0);
+      $status  = @socket_select($rese, $write, $except, 0);
+      $status |= @socket_select($reso, $write, $except, 0);
 
       // Check if there are any sockets with waiting buffers
       if ($status) {
