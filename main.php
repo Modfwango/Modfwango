@@ -273,11 +273,11 @@
           $outdata = $process->getData();
           $errdata = $process->getData(true);
           $data = $outdata.$errdata;
-          if (($outdata !== false || $errdata !== false) && strlen($data) > 0) {
+          if ($outdata !== false || $errdata !== false) {
             foreach (explode("\n", $data) as $line) {
               $name  = "processDataEvent";
               $event = EventHandling::getEventByName($name);
-              if ($event != false)
+              if ($event != false && strlen(trim($data)) > 0)
                 foreach ($event[2] as $id => $registration) {
                   // Trigger the processDataEvent for each received line of data
                   // from this process
