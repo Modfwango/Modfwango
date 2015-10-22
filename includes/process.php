@@ -177,8 +177,9 @@
       );
 
       // Open the process
-      Logger::debug("Starting process \"".$this->path.' '.$args."\" with ".
-        "environment variables \"".var_export($this->envs, true)."\" ...");
+      Logger::debug("Starting process \"".$this->path.' '.$args."\" ...");
+      Logger::devel("With environment variables \"".var_export($this->envs,
+        true)."\" ...");
       $this->process = @proc_open($this->path.' '.$args, $fd, $pipes,
         getcwd(), $this->envs);
 
