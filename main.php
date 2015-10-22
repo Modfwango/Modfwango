@@ -273,7 +273,7 @@
           $outdata = $process->getData();
           $errdata = $process->getData(true);
           $data = $outdata.$errdata;
-          if ($outdata !== false || $errdata !== false) {
+          if (is_string($outdata) || is_string($errdata)) {
             $outdata = trim($outdata);
             $errdata = trim($errdata);
             foreach (explode("\n", $data) as $line) {
