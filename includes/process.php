@@ -32,8 +32,9 @@
       $this->options = $options;
 
       Logger::debug("Created process \"".$this->path."\" with arguments \"".
-        var_export($args, true)."\" and environment variables \"".
-        var_export($this->envs, true)."\"");
+        var_export($args, true)."\" ...");
+      Logger::devel("And environment variables \"".var_export($this->envs,
+        true)."\"");
     }
 
     public function addArgument($arg) {
