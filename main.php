@@ -274,6 +274,8 @@
           $errdata = $process->getData(true);
           $data = $outdata.$errdata;
           if ($outdata !== false || $errdata !== false) {
+            $outdata = trim($outdata);
+            $errdata = trim($errdata);
             foreach (explode("\n", $data) as $line) {
               $name  = "processDataEvent";
               $event = EventHandling::getEventByName($name);
