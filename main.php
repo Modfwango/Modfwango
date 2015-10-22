@@ -272,8 +272,8 @@
           // Fetch any received data
           $outdata = $process->getData();
           $errdata = $process->getData(true);
-          if ($outdata !== false || $errdata !== false) {
-            $data = $outdata.$errdata;
+          $data = $outdata.$errdata;
+          if (($outdata !== false || $errdata !== false) && strlen($data) > 0) {
             foreach (explode("\n", $data) as $line) {
               $name  = "processDataEvent";
               $event = EventHandling::getEventByName($name);
