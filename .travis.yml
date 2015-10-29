@@ -6,3 +6,4 @@ php:
   - 5.3
 before_script: sh .travis.sh
 script: php test/main.php
+sudo: false
