@@ -121,7 +121,7 @@
               $registration[1]);
           }
           // Call the specified callback with specified parameters
-          return call_user_func($registration[0], $registration[1]], 
+          return call_user_func([$registration[0], $registration[1]], 
             $name, $data);
           if ($name != "connectionLoopEndEvent") {
             Logger::stack("Left module: ".$registration[0]->name."::".
