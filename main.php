@@ -233,6 +233,7 @@
       if (class_exists('Shell')) Shell::clearOutput();
       // Infinitely loop
       while (true) {
+        pcntl_signal_dispatch();
         // Fetch input from STDIN if Shell is activated
         if (class_exists('Shell') && Shell::started())
           Shell::processInput();
