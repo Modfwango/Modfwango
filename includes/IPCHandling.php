@@ -37,8 +37,7 @@
             $connection->connect();
             // Run the specified method and send its output to the IPC socket
             $connection->send(json_encode(array(
-              $uuid,
-              $module->$method($data)
+              $uuid, call_user_func([$module, $method], $data)
             )));
             // Disconnect from the IPC socket
             $connection->disconnect();
@@ -62,7 +61,7 @@
         $callback = self::$threads[$data[0]][1];
         // Call the provided callback for this thread
         Logger::stack("Entering module: ".$module->name."::".$callback);
-        $module->$callback($data[0], $data[1]);
+        call_user_func([$module, $callback], $data[0], $data[1]);
         Logger::stack("Left module: ".$module->name."::".$callback);
         // Attempt to wait on the child
         pcntl_wait($null, WNOHANG);
