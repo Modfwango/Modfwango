@@ -23,7 +23,7 @@
               // Make sure both classnames match
               if (get_class($mod) == get_class($class)) {
                 Logger::stack("Entering module: ".$class->name."::".$callback);
-                $class->$callback($timer["params"]);
+                call_user_func([$class, $callback], $timer["params"]);
                 Logger::stack("Left module: ".$class->name."::".$callback);
               }
               else {
@@ -37,7 +37,7 @@
           else {
             if (is_object($class)) {
               Logger::stack("Entering module: ".$class->name."::".$callback);
-              $class->$callback($timer["params"]);
+              call_user_func([$class, $callback], $timer["params"]);
               Logger::stack("Left module: ".$class->name."::".$callback);
             }
           }
