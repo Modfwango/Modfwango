@@ -85,8 +85,9 @@
     }
 
     public function isInstantiated() {
-      // Register a the 'checkTimers' method to be called on every tick
-      register_tick_function(array(&$this, 'checkTimers'));
+      // Call 'checkTimers' method after every connection loop
+      EventHandling::registerForEvent("connectionLoopEndEvent", 
+        $this, 'checkTimers');
       return true;
     }
   }
